@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             Glass Option — Form View
+             ============================================================ -->
+        <record id="wincraft_glass_lite_view_form" model="ir.ui.view">
+            <field name="name">wincraft.glass.lite.form</field>
+            <field name="model">wincraft.glass.lite</field>
+            <field name="arch" type="xml">
+                <form string="Glass Option">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived"
+                                bg_color="text-bg-danger"
+                                invisible="active"/>
+                        <group>
+                            <group string="Glass Specification">
+                                <field name="thickness"/>
+                                <field name="glass_type"/>
+                                <field name="tint_colour"/>
+                                <field name="coating"/>
+                                <field name="coating_surface"
+                                       invisible="coating == 'none'"/>
+                            </group>
+                            <group string="Inventory Link">
+                                <field name="product_id"
+                                       context="{'default_type': 'product'}"/>
+                                <field name="product_price"/>
+                                <field name="product_uom"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="name" string="Generated Name"/>
+                        </group>
+                        <group string="CSV Upload">
+                            <group>
+                                <field name="sequence"/>
+                                <field name="external_code"/>
+                                <field name="part_name"/>
+                                <field name="is_discount_eligible"/>
+                                <field name="has_shape_charge"/>
+                                <field name="is_purchased"/>
+                            </group>
+                            <group>
+                                <field name="is_available_outside"/>
+                                <field name="is_available_middle"/>
+                                <field name="is_available_inside"/>
+                                <field name="sf_price_3mm"/>
+                                <field name="sf_price_4mm"/>
+                                <field name="sf_price_5mm"/>
+                                <field name="sf_price_6mm"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Glass Option — List View
+             ============================================================ -->
+        <record id="wincraft_glass_lite_view_list" model="ir.ui.view">
+            <field name="name">wincraft.glass.lite.list</field>
+            <field name="model">wincraft.glass.lite</field>
+            <field name="arch" type="xml">
+                <list string="Glass Options">
+                    <field name="name"/>
+                    <field name="part_name"/>
+                    <field name="external_code"/>
+                    <field name="thickness"/>
+                    <field name="glass_type"/>
+                    <field name="tint_colour"/>
+                    <field name="coating"/>
+                    <field name="coating_surface"
+                           column_invisible="True"/>
+                    <field name="product_id"/>
+                    <field name="product_price" string="Price"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Glass Option — Search View
+             ============================================================ -->
+        <record id="wincraft_glass_lite_view_search" model="ir.ui.view">
+            <field name="name">wincraft.glass.lite.search</field>
+            <field name="model">wincraft.glass.lite</field>
+            <field name="arch" type="xml">
+                <search string="Glass Options">
+                    <field name="name"/>
+                    <field name="part_name"/>
+                    <field name="external_code"/>
+                    <field name="glass_type"/>
+                    <field name="thickness"/>
+                    <field name="product_id"/>
+                    <filter string="Clear" name="clear"
+                            domain="[('glass_type', '=', 'clear')]"/>
+                    <filter string="Low-E" name="low_e"
+                            domain="[('glass_type', '=', 'low_e')]"/>
+                    <filter string="Toughened" name="toughened"
+                            domain="[('glass_type', '=', 'toughened')]"/>
+                    <filter string="Laminated" name="laminated"
+                            domain="[('glass_type', '=', 'laminated')]"/>
+                    <separator/>
+                    <filter string="Archived" name="archived"
+                            domain="[('active', '=', False)]"/>
+                    <group>
+                        <filter string="Glass Type" name="group_glass_type"
+                                context="{'group_by': 'glass_type'}"/>
+                        <filter string="Thickness" name="group_thickness"
+                                context="{'group_by': 'thickness'}"/>
+                        <filter string="Coating" name="group_coating"
+                                context="{'group_by': 'coating'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Glass Option — Action
+             ============================================================ -->
+        <record id="wincraft_glass_lite_action" model="ir.actions.act_window">
+            <field name="name">Glass Options</field>
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import your glass price list (CSV) or create a glass option
+                </p>
+                <p>
+                    Glass options are the glasses available in the designer (e.g. CLEAR,
+                    LOWE 180ESC), imported from the supplier price list and linked to
+                    inventory products for costing and stock.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

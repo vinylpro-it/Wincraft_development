@@ -1,0 +1,4428 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   WinCraft Studio — Modern UI Theme
+   Fonts: DM Mono (mono), Sora (UI)
+   Clean panels · glassmorphism accents · depth via shadows · polished micro-UX
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Variables ──────────────────────────────────────────────────────────── */
+$wc-bg:          #f0f2f5;
+$wc-panel:       #ffffff;
+$wc-surface:     #f7f8fa;
+$wc-surface-alt: #eef1f5;
+$wc-border:      #e2e5ea;
+$wc-border-light:#eceef2;
+$wc-text:        #1a1f36;
+$wc-text-dim:    #6b7a90;
+$wc-text-muted:  #9ca8b9;
+$wc-primary:     #4f6ef7;
+$wc-accent:      $wc-primary;
+$wc-primary-hover: #3b5ce4;
+$wc-primary-soft: rgba(79, 110, 247, 0.08);
+$wc-gold:        #f5a623;
+$wc-blue:        #4f6ef7;
+$wc-green:       #22c55e;
+$wc-red:         #ef4444;
+$wc-orange:      #f97316;
+$wc-canvas-bg:   #1b1e27;
+$wc-canvas-grid: #252830;
+$wc-topbar-bg:   #0f172a;
+$wc-mono:        'DM Mono', 'Fira Code', monospace;
+$wc-sans:        'Sora', 'Inter', system-ui, sans-serif;
+$wc-radius:      12px;
+$wc-radius-sm:   8px;
+$wc-shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+$wc-shadow-md:   0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+$wc-shadow-lg:   0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+
+// Extended palette — grays, semantic colors
+$wc-gray-100:    #f8f9fa;
+$wc-gray-200:    #e9ecef;
+$wc-gray-300:    #dee2e6;
+$wc-gray-500:    #adb5bd;
+$wc-gray-600:    #6c757d;
+$wc-gray-700:    #495057;
+$wc-gray-900:    #1a1a2e;
+$wc-warning:     #ffc107;
+$wc-success:     #28a745;
+$wc-danger-alt:  #cc0000;
+$wc-focus-ring:  rgba($wc-primary, 0.4);
+
+/* ── Google Fonts ────────────────────────────────────────────────────────
+   Loaded via XML template (views/wincraft_assets.xml) to avoid breaking
+   the Odoo CSS bundle.  The @import url() with semicolons in the Google
+   Fonts CSS2 API URL is mishandled by the asset bundler.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* ═════════════════════════════════════════════════════════════════════════
+   ROOT — Full-screen action container
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-designer-root {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: $wc-bg;
+    color: $wc-text;
+    font-family: $wc-sans;
+    font-size: 13px;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+
+    // Global focus-visible for all interactive elements
+    button:focus-visible,
+    [role="button"]:focus-visible,
+    select:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+        outline: 2px solid $wc-primary;
+        outline-offset: 2px;
+    }
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   TOPBAR — Light header with tabs
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    min-height: 56px;
+    background: $wc-panel;
+    border-bottom: 1px solid $wc-border;
+    padding: 0 20px;
+    gap: 16px;
+    box-shadow: $wc-shadow-sm;
+    z-index: 10;
+}
+
+// WS-17: 4-section config header, launches per-section popups.
+.wc-config-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 40px;
+    min-height: 40px;
+    background: $wc-surface;
+    border-bottom: 1px solid $wc-border;
+    padding: 0 20px;
+    z-index: 9;
+}
+
+.wc-config-header-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: $wc-text-dim;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    &:hover:not(:disabled) {
+        color: $wc-text;
+        border-bottom-color: $wc-accent;
+    }
+    &--disabled {
+        color: $wc-text-dim;
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}
+
+.wc-topbar-left,
+.wc-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wc-topbar-back {
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    color: $wc-text-dim;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 7px 10px;
+    border-radius: $wc-radius-sm;
+    transition: all 0.2s ease;
+    &:hover {
+        background: $wc-surface-alt;
+        color: $wc-text;
+        border-color: $wc-border;
+    }
+}
+
+.wc-topbar-brand {
+    font-family: $wc-sans;
+    font-size: 16px;
+    color: $wc-text-dim;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    b {
+        color: $wc-text;
+        font-weight: 700;
+    }
+}
+
+/* Tabs in center */
+.wc-topbar-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
+}
+
+.wc-topbar-tab {
+    background: transparent;
+    border: none;
+    color: $wc-text-muted;
+    font-family: $wc-sans;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 16px;
+    height: 100%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+    &:hover {
+        color: $wc-text;
+    }
+    &.active {
+        color: $wc-primary;
+        border-bottom-color: $wc-primary;
+        font-weight: 600;
+    }
+    i {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+}
+
+.wc-topbar-tab-sep {
+    width: 1px;
+    height: 20px;
+    background: $wc-border;
+    margin: 0 4px;
+}
+
+.wc-topbar-btn {
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    color: $wc-text-dim;
+    border-radius: $wc-radius-sm;
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: $wc-sans;
+    font-weight: 500;
+    &:hover {
+        background: $wc-surface-alt;
+        color: $wc-text;
+        border-color: $wc-border;
+    }
+    &:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+}
+
+.wc-topbar-save {
+    background: linear-gradient(135deg, $wc-gold, darken($wc-gold, 6%));
+    border-color: transparent;
+    color: #1a1a1a;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba($wc-gold, 0.3);
+    &:hover {
+        background: linear-gradient(135deg, lighten($wc-gold, 5%), $wc-gold);
+        color: #1a1a1a;
+        box-shadow: 0 3px 12px rgba($wc-gold, 0.4);
+    }
+}
+
+.wc-topbar-cta {
+    background: linear-gradient(135deg, $wc-primary, darken($wc-primary, 8%));
+    border: none;
+    color: #ffffff;
+    border-radius: 24px;
+    padding: 8px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: $wc-sans;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 12px rgba($wc-primary, 0.35);
+    &:hover {
+        background: linear-gradient(135deg, lighten($wc-primary, 5%), $wc-primary);
+        box-shadow: 0 4px 20px rgba($wc-primary, 0.45);
+        transform: translateY(-1px);
+    }
+}
+
+/* ─── Window Navigator (topbar) ──────────────────────────────────────── */
+
+.wc-window-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 16px;
+    padding: 4px 6px;
+    background: $wc-surface;
+    border-radius: 10px;
+    border: 1px solid $wc-border-light;
+}
+
+.wc-nav-btn {
+    background: transparent;
+    border: none;
+    color: $wc-text-muted;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.15s ease;
+    &:hover {
+        background: $wc-surface-alt;
+        color: $wc-text;
+    }
+    &.wc-nav-delete {
+        color: rgba($wc-red, 0.6);
+        margin-left: 2px;
+        &:hover {
+            background: rgba($wc-red, 0.08);
+            color: $wc-red;
+        }
+    }
+}
+
+.wc-nav-label {
+    color: $wc-text-dim;
+    font-size: 12px;
+    font-family: $wc-mono;
+    font-weight: 500;
+    min-width: 36px;
+    text-align: center;
+    user-select: none;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DESIGNER BODY — three-panel row
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-designer-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CONFIGURATOR PANEL (Left Panel)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-library-panel {
+    width: 290px;
+    min-width: 290px;
+    background: $wc-surface;
+    border-right: 1px solid $wc-border-light;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 12px;
+    gap: 10px;
+}
+
+/* ─── Section Card (used in left panel) ───────────────── */
+.wc-cfg-card {
+    background: $wc-panel;
+    border-radius: $wc-radius;
+    border: 1px solid $wc-border-light;
+    padding: 14px;
+    box-shadow: $wc-shadow-sm;
+    transition: box-shadow 0.2s ease;
+}
+
+.wc-cfg-card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $wc-text;
+    letter-spacing: 0.01em;
+}
+
+.wc-cfg-card-icon {
+    color: $wc-primary;
+    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $wc-primary-soft;
+    border-radius: 7px;
+}
+
+/* System Type 2-column grid */
+.wc-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.wc-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 4px 8px;
+    border-radius: $wc-radius-sm;
+    border: 1.5px solid $wc-border-light;
+    background: $wc-surface;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        background: $wc-primary-soft;
+        transform: translateY(-1px);
+        box-shadow: $wc-shadow-sm;
+    }
+    &.active {
+        border-color: $wc-primary;
+        background: linear-gradient(135deg, rgba($wc-primary, 0.06), rgba($wc-primary, 0.12));
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+    }
+}
+
+.wc-type-card-icon {
+    width: 48px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.wc-type-card-label {
+    font-size: 10px;
+    color: $wc-text;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Pill buttons */
+.wc-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.wc-pill-row--stack {
+    flex-direction: column;
+}
+
+.wc-pill {
+    background: $wc-surface;
+    border: 1.5px solid $wc-border-light;
+    border-radius: $wc-radius-sm;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: $wc-text;
+    cursor: pointer;
+    font-family: $wc-sans;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        background: $wc-primary-soft;
+        color: $wc-primary;
+    }
+    &.active {
+        background: $wc-primary;
+        border-color: $wc-primary;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba($wc-primary, 0.25);
+    }
+}
+
+.wc-pill--sm {
+    padding: 3px 8px;
+    font-size: 10px;
+    border-radius: 10px;
+}
+
+.wc-pill--wide {
+    text-align: left;
+    width: 100%;
+    border-radius: $wc-radius-sm;
+}
+
+.wc-config-hint {
+    font-size: 11px;
+    color: $wc-text-dim;
+    font-style: italic;
+}
+
+.wc-config-hint-box {
+    padding: 14px 16px;
+    font-size: 12px;
+    color: $wc-text-dim;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: $wc-panel;
+    border: 1px solid $wc-border-light;
+    border-radius: $wc-radius;
+    box-shadow: $wc-shadow-sm;
+    line-height: 1.5;
+    i {
+        color: $wc-gold;
+        font-size: 16px;
+        margin-top: 1px;
+    }
+    b {
+        color: $wc-text;
+        font-weight: 600;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CANVAS
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #e8eaef;
+    border-radius: 0;
+}
+
+.wc-canvas-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 34px; // leave room for wc-canvas-footer
+    width: 100%;
+    height: calc(100% - 34px);
+    cursor: default;
+    outline: none;
+    &.wc-panning {
+        cursor: grab;
+    }
+}
+
+/* Rulers — hidden (dot grid replaces them) */
+.wc-ruler {
+    display: none;
+}
+
+/* Rubber-band selection */
+.wc-rubber-band {
+    fill: rgba($wc-blue, 0.15);
+    stroke: rgba($wc-blue, 0.6);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 2;
+    pointer-events: none;
+}
+
+/* ─── Floating Canvas Toolbar ──────────────────────────────────────────── */
+
+/* Canvas Footer — flat light bar at bottom of canvas, matches status bar style */
+.wc-canvas-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $wc-surface-alt;
+    border-top: 1px solid $wc-border-light;
+    padding: 0 8px;
+    gap: 4px;
+}
+
+.wc-cf-group {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.wc-cf-btn {
+    background: transparent;
+    border: none;
+    color: $wc-text-dim;
+    font-size: 11px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    &:hover {
+        color: $wc-text;
+        background: $wc-border;
+    }
+    &:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+    &.active {
+        color: $wc-primary;
+        background: $wc-primary-soft;
+    }
+}
+
+.wc-cf-btn-danger {
+    color: $wc-red;
+    &:hover {
+        color: #fff;
+        background: rgba($wc-red, 0.15);
+    }
+}
+
+.wc-cf-btn-3d {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    .wc-cf-btn-label {
+        font-weight: 600;
+        font-size: 10px;
+        letter-spacing: 0.4px;
+    }
+    &.wc-cf-btn-active {
+        color: $wc-primary;
+        background: $wc-primary-soft;
+    }
+}
+
+/* Any Odoo Dialog opened via dialogService.add() from inside the designer
+   (Window Configuration, Save as Template, Bay/Bow 3D iso, ...) needs its
+   z-index boosted above .wc-designer-root (1060) and the canvas root
+   demoted so the modal receives clicks — see utils/overlay_dialog_fix.js's
+   useOverlayDialogLayerFix(), which every such dialog component calls in
+   setup(). Originally built narrowly for the iso-3d popup only
+   (wc-iso-3d-open); generalised 2026-09-24 after the same invisible-dialog
+   bug turned up on WindowConfigurationDialog (WS-17). Body-class based
+   (rather than :has()-only) so it doesn't depend on :has() support and
+   works regardless of when the modal/backdrop nodes are inserted.
+   Reference-counted in JS so nested/sequential dialogs don't fight over
+   the class. */
+body.wc-overlay-dialog-open .o_dialog_container,
+body.wc-overlay-dialog-open .o_dialog,
+body.wc-overlay-dialog-open .modal,
+body.wc-overlay-dialog-open .modal-backdrop {
+    position: fixed !important;
+    z-index: 2000 !important;
+}
+body.wc-overlay-dialog-open .o_dialog .modal {
+    z-index: 2001 !important;
+}
+/* Demote the canvas root so the modal/backdrop receive clicks.
+   .wc-designer-root is position:fixed; z-index:1060; full viewport,
+   so it would otherwise intercept pointer events. */
+body.wc-overlay-dialog-open .wc-designer-root {
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+body.wc-overlay-dialog-open .o_dialog_container,
+body.wc-overlay-dialog-open .o_dialog_container * {
+    pointer-events: auto;
+}
+
+.wc-cf-sep {
+    width: 1px;
+    height: 14px;
+    background: $wc-border;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.wc-cf-zoom {
+    color: $wc-text-dim;
+    font-size: 10.5px;
+    font-family: $wc-mono;
+    font-weight: 600;
+    min-width: 32px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    &:hover {
+        color: $wc-text;
+        background: $wc-border;
+    }
+}
+
+.wc-cf-elem-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: $wc-text-dim;
+    font-size: 10.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 0 4px;
+    i { font-size: 11px; opacity: 0.7; }
+}
+
+.wc-cf-dim-editor {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.wc-cf-dim-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: $wc-text-dim;
+    font-family: $wc-mono;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.wc-cf-dim-input {
+    width: 54px;
+    border: 1px solid $wc-border;
+    border-radius: 4px;
+    outline: none;
+    font-family: $wc-mono;
+    font-size: 11px;
+    font-weight: 600;
+    color: $wc-text;
+    text-align: center;
+    background: $wc-panel;
+    padding: 1px 4px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    &:focus {
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+    }
+}
+
+.wc-cf-dim-unit {
+    font-size: 10px;
+    color: $wc-text-muted;
+    font-family: $wc-mono;
+}
+
+/* Zoom presets dropdown — opens upward from footer */
+.wc-zoom-presets-up {
+    bottom: calc(100% + 6px);
+    top: auto;
+}
+
+/* Old dark toolbar classes — kept for reference, unused */
+.wc-canvas-toolbar { display: none; }
+.wc-toolbar-btn, .wc-toolbar-sep, .wc-toolbar-zoom,
+.wc-toolbar-btn-danger, .wc-toolbar-elem-label { display: none; }
+
+
+/* ─── Zoom Control with Presets Dropdown ──────────────────────────────── */
+
+.wc-zoom-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.wc-zoom-label {
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+    &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+.wc-zoom-presets {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: $wc-panel;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    padding: 4px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    min-width: 80px;
+}
+
+.wc-zoom-preset-btn {
+    background: none;
+    border: none;
+    padding: 6px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-family: $wc-mono;
+    color: $wc-text;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.12s ease;
+    &:hover {
+        background: $wc-primary-soft;
+    }
+    &.active {
+        background: $wc-primary;
+        color: white;
+        font-weight: 600;
+    }
+}
+
+.wc-zoom-preset-custom {
+    border-top: 1px solid $wc-border-light;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.wc-zoom-input {
+    width: 100%;
+    background: $wc-surface;
+    border: 1px solid $wc-border;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: $wc-mono;
+    text-align: center;
+    color: $wc-text;
+    outline: none;
+    &:focus {
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+    }
+}
+
+/* Window objects — light canvas */
+.wc-window-obj {
+    cursor: move;
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.12));
+    transition: filter 0.25s ease;
+    &:hover {
+        filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.18));
+    }
+
+    // Space-held or unselected → grab cursor for whole-window drag
+    .wc-panning & {
+        cursor: grab;
+    }
+}
+
+.wc-window-selected {
+    filter: drop-shadow(0 0 16px rgba($wc-blue, 0.25)) drop-shadow(0 6px 20px rgba(0, 0, 0, 0.12));
+}
+
+.wc-dim-label {
+    fill: #334155;
+    font-family: $wc-mono;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.wc-dim-editable {
+    cursor: pointer;
+    .wc-dim-pill {
+        transition: fill 0.15s ease, stroke-opacity 0.15s ease;
+    }
+    &:hover .wc-dim-pill {
+        fill: #f0f4ff;
+        stroke-opacity: 0.6;
+    }
+    &:hover text {
+        fill: #1e40af;
+        text-decoration: underline;
+    }
+}
+
+/* Inline dimension editor inside toolbar */
+.wc-toolbar-dim-editor {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: $wc-radius-sm;
+    padding: 2px 8px;
+    animation: wc-dim-fadein 0.15s ease;
+}
+
+.wc-toolbar-dim-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: $wc-mono;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.wc-toolbar-dim-input {
+    width: 56px;
+    border: none;
+    outline: none;
+    font-family: $wc-mono;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    padding: 2px 4px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    &:focus {
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 1.5px rgba($wc-primary, 0.5);
+    }
+}
+
+.wc-toolbar-dim-unit {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+    font-family: $wc-mono;
+}
+
+.wc-toolbar-dim-close {
+    padding: 4px 5px !important;
+    font-size: 11px !important;
+    color: rgba(255, 255, 255, 0.35) !important;
+    &:hover {
+        color: #ff6b6b !important;
+    }
+}
+
+@keyframes wc-dim-fadein {
+    from { opacity: 0; transform: translateY(-2px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.wc-resize-handle {
+    fill: #ffffff;
+    stroke: #6b8aff;
+    stroke-width: 1.5;
+    cursor: nwse-resize;
+    rx: 5;
+    ry: 5;
+    transition: fill 0.15s ease;
+    &:hover {
+        fill: #6b8aff;
+        stroke: #fff;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PROPERTIES PANEL (Right Panel)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-properties-panel {
+    width: 100%;
+    background: $wc-surface;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    padding: 0;
+    gap: 0;
+}
+
+/* ─── Properties Panel Tabs ─────────────────────────────── */
+.wc-pp-tabs {
+    display: flex;
+    border-bottom: 1px solid $wc-border-light;
+    background: $wc-panel;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.wc-pp-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: $wc-text-muted;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    letter-spacing: 0.02em;
+
+    i { font-size: 11px; }
+
+    &:hover {
+        color: $wc-text;
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    &.active {
+        color: $wc-primary;
+        border-bottom-color: $wc-primary;
+        background: $wc-primary-soft;
+    }
+}
+
+.wc-pp-tab-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 0 16px;
+}
+
+.wc-pp-tab-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px 16px;
+    color: $wc-text-muted;
+    font-size: 12px;
+    text-align: center;
+
+    i { font-size: 24px; opacity: 0.4; }
+}
+
+/* ─── Table-row layout for Properties Panel ─────────────── */
+.wc-tbl-section-head {
+    display: flex;
+    align-items: center;
+    padding: 4px 12px 2px;
+    margin-top: 6px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: $wc-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    &.wc-tbl-section-head--mt {
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: 1px solid $wc-border-light;
+    }
+}
+
+.wc-tbl-row {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 3px 12px;
+    gap: 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+
+    &:last-child { border-bottom: none; }
+
+    &.wc-tbl-row--col {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 4px 12px;
+    }
+
+    &.wc-tbl-row--colour {
+        align-items: center;
+        min-height: 34px;
+    }
+
+    &.wc-tbl-row--total {
+        background: rgba($wc-primary, 0.04);
+        font-weight: 600;
+    }
+}
+
+/* ─── Glazing configuration summary card ─────────────── */
+.wc-glazing-summary {
+    margin: 4px 12px 6px;
+    padding: 6px 10px;
+    background: rgba($wc-primary, 0.04);
+    border: 1px solid rgba($wc-primary, 0.12);
+    border-radius: 6px;
+}
+
+.wc-glazing-summary-row {
+    display: flex;
+    align-items: baseline;
+    padding: 2px 0;
+
+    .wc-tbl-label {
+        flex: 0 0 65px;
+        font-size: 10px;
+    }
+
+    .wc-tbl-value {
+        flex: 1;
+        font-size: 11px;
+
+        &.wc-text-sm {
+            font-size: 10px;
+            color: $wc-text-muted;
+        }
+    }
+}
+
+.wc-tbl-label {
+    flex: 0 0 78px;
+    font-size: 11px;
+    color: $wc-text-muted;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.wc-tbl-value {
+    flex: 1;
+    font-size: 11px;
+    color: $wc-text;
+
+    &.wc-tbl-hint {
+        color: $wc-text-muted;
+        font-style: italic;
+        font-size: 10px;
+    }
+}
+
+.wc-tbl-unit {
+    font-size: 10px;
+    color: $wc-text-muted;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.wc-tbl-hint {
+    font-size: 10px;
+    color: $wc-text-muted;
+}
+
+.wc-tbl-input {
+    flex: 1;
+    height: 24px;
+    padding: 0 6px;
+    font-size: 11px;
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    border-radius: 4px;
+    color: $wc-text;
+    min-width: 0;
+
+    &.wc-tbl-input--sm {
+        max-width: 70px;
+        flex: none;
+        width: 70px;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.12);
+    }
+}
+
+.wc-tbl-select {
+    flex: 1;
+    height: 24px;
+    padding: 0 4px;
+    font-size: 11px;
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    border-radius: 4px;
+    color: $wc-text;
+    min-width: 0;
+
+    &:focus {
+        outline: none;
+        border-color: $wc-primary;
+    }
+}
+
+// WS-17 Window Configuration popup — read-only display + hardware checklist.
+.wc-wincfg {
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.wc-wincfg-hint {
+    background: $wc-primary-soft;
+    border: 1px solid rgba($wc-primary, 0.25);
+    border-radius: $wc-radius-sm;
+    color: $wc-text-dim;
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+}
+
+/* ─── WS-17 redesign (2026-09-24): 2-col grid, select-style fields ────── */
+.wc-cfg-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 10px;
+
+    &:first-child { margin-top: 4px; }
+}
+
+.wc-cfg-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $wc-primary;
+    white-space: nowrap;
+}
+
+.wc-cfg-section-rule {
+    flex: 1;
+    height: 1px;
+    background: $wc-border;
+}
+
+.wc-cfg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+}
+
+.wc-cfg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+
+    &.wc-cfg-field--span2 { grid-column: 1 / -1; }
+}
+
+.wc-cfg-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: $wc-text;
+}
+
+.wc-cfg-select, .wc-cfg-input {
+    width: 100%;
+    height: 34px;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: $wc-text;
+    background: $wc-surface;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    min-width: 0;
+    transition: border-color .12s ease, box-shadow .12s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 3px rgba($wc-primary, 0.12);
+    }
+}
+
+.wc-cfg-select {
+    padding-right: 28px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%239ca8b9' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+
+    &:disabled {
+        color: $wc-text-muted;
+        background-color: $wc-surface-alt;
+        cursor: not-allowed;
+    }
+}
+
+.wc-cfg-readonly {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12.5px;
+    color: $wc-text-dim;
+    background: $wc-surface;
+    border: 1px dashed $wc-border;
+    border-radius: $wc-radius-sm;
+}
+
+.wc-cfg-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* Casement Hardware: closed select-style control that opens a floating checklist */
+.wc-multiselect {
+    position: relative;
+}
+
+.wc-multiselect-control {
+    width: 100%;
+    height: 34px;
+    padding: 0 28px 0 10px;
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: $wc-text-muted;
+    background: $wc-surface url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%239ca8b9' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 10px center;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color .12s ease, box-shadow .12s ease;
+
+    &.wc-multiselect-control--filled { color: $wc-text; font-weight: 500; }
+}
+
+.wc-multiselect--open .wc-multiselect-control {
+    border-color: $wc-primary;
+    box-shadow: 0 0 0 3px rgba($wc-primary, 0.12);
+}
+
+.wc-hw-panel {
+    display: none;
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: $wc-panel;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    box-shadow: $wc-shadow-lg;
+    padding: 8px 10px;
+}
+
+.wc-multiselect--open .wc-hw-panel { display: block; }
+
+.wc-hw-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid $wc-border-light;
+
+    input[type="search"] {
+        flex: 1;
+        height: 26px;
+        padding: 0 8px;
+        font-size: 11px;
+        border: 1px solid $wc-border;
+        border-radius: 5px;
+        background: $wc-surface;
+        margin-right: 8px;
+        color: $wc-text;
+
+        &:focus { outline: none; border-color: $wc-primary; }
+    }
+}
+
+.wc-hw-toolbar-link {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: $wc-primary;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.wc-hw-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px 14px;
+    max-height: 170px;
+    overflow-y: auto;
+}
+
+.wc-hw-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: $wc-text;
+    cursor: pointer;
+    line-height: 1.3;
+
+    input { accent-color: $wc-primary; flex-shrink: 0; }
+}
+
+/* ─── WS-17 compact layout (2026-10-09): label | control | control rows in cards ── */
+.wc-cfgx-card {
+    border: 1px solid $wc-border;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: visible;
+}
+
+.wc-cfgx-card-head {
+    margin: 0;
+    padding: 5px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $wc-primary;
+    background: $wc-surface-alt;
+    border-bottom: 1px solid $wc-border;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span { color: $wc-text-muted; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 11px; }
+}
+
+.wc-cfgx-rows { padding: 4px 12px 6px; }
+
+.wc-cfgx-row {
+    display: grid;
+    grid-template-columns: 104px 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 3px 0;
+
+    .wc-cfg-select, .wc-cfg-readonly { height: 30px; }
+
+    &.wc-cfgx-row--wide { grid-template-columns: 104px 1fr; }
+}
+
+.wc-cfgx-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: $wc-text-dim;
+}
+
+.wc-cfgx-trim {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 10px 12px;
+    padding: 10px 12px 12px;
+    align-items: end;
+
+    .wc-cfg-select, .wc-cfg-input { height: 30px; width: 100%; }
+    .wc-cfgx-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.wc-cfgx-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.wc-cfgx-field--full { grid-column: 1 / -1; }
+
+// Wrapper that lets a colour's Company + Colour fields join the parent grid.
+.wc-cfgx-contents, .wc-cfgx-pair { display: contents; }
+
+.wc-cfgx-twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+
+    .wc-cfgx-row--wide { grid-template-columns: 92px 1fr; }
+}
+
+.wc-cfgx-seg {
+    display: inline-flex;
+    justify-self: start;
+    align-self: flex-start;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    overflow: hidden;
+
+    button {
+        border: 0;
+        background: transparent;
+        padding: 0 16px;
+        height: 28px;
+        font-size: 12.5px;
+        color: $wc-text-dim;
+        cursor: pointer;
+
+        &.on { background: $wc-primary; color: #fff; }
+    }
+}
+
+.wc-cfgx-glass {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 6px 12px 8px;
+
+    > div > span { display: block; font-size: 11px; color: $wc-text-dim; margin-bottom: 2px; }
+    .wc-cfg-select { height: 30px; }
+}
+
+.wc-multiselect-control--chips {
+    height: auto;
+    min-height: 30px;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    white-space: normal;
+}
+
+.wc-cfgx-chip {
+    background: $wc-primary-soft;
+    color: $wc-primary;
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 11.5px;
+}
+
+.wc-cfgx-footnote {
+    margin-right: auto;
+    font-size: 11.5px;
+    color: $wc-text-muted;
+}
+
+.wc-tbl-readonly {
+    flex: 1;
+    font-size: 11px;
+    color: $wc-text-dim;
+    padding: 0 4px;
+}
+
+.wc-tbl-checkbox-list {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+}
+
+.wc-tbl-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: $wc-text;
+    cursor: pointer;
+}
+
+.wc-tbl-textarea {
+    width: 100%;
+    padding: 4px 6px;
+    font-size: 11px;
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    border-radius: 4px;
+    color: $wc-text;
+    resize: vertical;
+    font-family: inherit;
+
+    &:focus {
+        outline: none;
+        border-color: $wc-primary;
+    }
+}
+
+.wc-tbl-colour-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.wc-tbl-colour-pick {
+    width: 26px;
+    height: 22px;
+    border: 1px solid $wc-border-light;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 1px;
+    background: transparent;
+
+    &:focus { outline: none; }
+}
+
+.wc-swatch-mini-row {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.wc-swatch-mini {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+
+    &:hover { transform: scale(1.15); border-color: rgba(0,0,0,0.2); }
+    &.active { border-color: $wc-primary; box-shadow: 0 0 0 2px rgba($wc-primary, 0.3); }
+}
+
+.wc-tbl-check-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    cursor: pointer;
+
+    input[type="checkbox"] { cursor: pointer; }
+}
+
+.wc-pp-tab-body .wc-pill--sm {
+    height: 22px !important;
+    padding: 0 8px !important;
+    font-size: 10px !important;
+    border-radius: 4px !important;
+}
+
+.wc-pill-row--compact {
+    gap: 3px !important;
+}
+
+/* ─── Property Card (used in right panel) ─────────────── */
+.wc-prop-card {
+    background: $wc-panel;
+    border-radius: $wc-radius;
+    border: 1px solid $wc-border-light;
+    padding: 14px;
+    box-shadow: $wc-shadow-sm;
+}
+
+.wc-prop-card--price {
+    padding: 14px 0 0;
+    .wc-prop-card-head {
+        padding: 0 14px;
+    }
+}
+
+.wc-prop-card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $wc-text;
+    letter-spacing: 0.01em;
+}
+
+.wc-prop-card-icon {
+    color: $wc-primary;
+    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $wc-primary-soft;
+    border-radius: 7px;
+}
+
+.wc-prop-saving {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: $wc-primary;
+    font-weight: 500;
+    padding: 8px 14px;
+    background: $wc-panel;
+    border-radius: $wc-radius;
+    border: 1px solid $wc-border-light;
+}
+
+.wc-prop-section {
+    margin-bottom: 6px;
+}
+
+.wc-prop-row {
+    display: flex;
+    gap: 10px;
+}
+
+.wc-prop-half {
+    flex: 1;
+}
+
+.wc-prop-label {
+    display: block;
+    font-size: 11px;
+    color: $wc-text-dim;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.wc-prop-input,
+.wc-prop-select,
+.wc-prop-textarea {
+    width: 100%;
+    background: $wc-surface;
+    border: 1.5px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    padding: 9px 12px;
+    color: $wc-text;
+    font-size: 13px;
+    font-family: $wc-mono;
+    outline: none;
+    transition: all 0.2s ease;
+    &:focus {
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 3px rgba($wc-primary, 0.1);
+        background: #fff;
+    }
+    &:hover:not(:focus) {
+        border-color: darken($wc-border, 6%);
+    }
+}
+
+.wc-prop-select {
+    font-family: $wc-sans;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%236b7a90' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+
+    &[readonly] {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+}
+
+.wc-prop-textarea {
+    resize: vertical;
+    min-height: 56px;
+    font-family: $wc-sans;
+    font-size: 12px;
+    &::placeholder {
+        color: $wc-text-muted;
+    }
+}
+
+.wc-prop-sublabel {
+    display: block;
+    font-size: 11px;
+    color: $wc-text-dim;
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+
+.wc-mt-8 {
+    margin-top: 10px;
+}
+
+/* ─── Price Breakdown Table ───────────────────────────────────────────── */
+
+.wc-price-table {
+    background: $wc-surface;
+    border-radius: $wc-radius;
+    border: 1px solid $wc-border-light;
+    overflow: hidden;
+}
+
+.wc-price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: $wc-text;
+    border-bottom: 1px solid $wc-border-light;
+    transition: background 0.15s ease;
+    &:last-child {
+        border-bottom: none;
+    }
+    &:hover:not(.wc-price-total) {
+        background: rgba(0, 0, 0, 0.015);
+    }
+    span:last-child {
+        font-family: $wc-mono;
+        font-weight: 500;
+    }
+}
+
+.wc-price-total {
+    background: linear-gradient(135deg, rgba($wc-primary, 0.04), rgba($wc-primary, 0.08));
+    font-weight: 600;
+    font-size: 13px;
+    span:last-child {
+        color: $wc-primary;
+        font-weight: 700;
+    }
+}
+
+.wc-prop-price-block {
+    background: $wc-surface;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid $wc-border;
+}
+
+.wc-prop-price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: $wc-text-dim;
+    margin-bottom: 4px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.wc-prop-price-total {
+    font-weight: 600;
+    color: $wc-primary;
+    font-size: 14px;
+}
+
+.wc-prop-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $wc-text-muted;
+    p {
+        text-align: center;
+        font-size: 13px;
+        max-width: 200px;
+        line-height: 1.5;
+        margin-top: 14px;
+    }
+}
+
+.wc-prop-empty-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: $wc-panel;
+    border: 1px solid $wc-border-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: $wc-shadow-sm;
+    i {
+        font-size: 22px;
+        color: $wc-text-muted;
+        opacity: 0.5;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   COLOUR SWATCH SELECTOR
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-swatch-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.wc-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 2.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+    &:hover {
+        transform: scale(1.12);
+        border-color: rgba($wc-blue, 0.3);
+        box-shadow: $wc-shadow-md;
+    }
+}
+
+.wc-swatch--active {
+    border-color: $wc-blue;
+    box-shadow: 0 0 0 2px rgba($wc-blue, 0.2), inset 0 0 0 1px rgba(0,0,0,0.08);
+    transform: scale(1.05);
+}
+
+.wc-colour-input {
+    width: 100%;
+    height: 32px;
+    border: 1.5px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    padding: 2px;
+    cursor: pointer;
+    background: $wc-surface;
+    transition: border-color 0.2s ease;
+    &:hover {
+        border-color: darken($wc-border, 6%);
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CONTEXT TABS (Right Panel)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-context-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid $wc-border-light;
+    margin-bottom: 10px;
+}
+
+.wc-context-tab {
+    flex: 1;
+    background: $wc-surface;
+    border: 1.5px solid $wc-border-light;
+    border-radius: $wc-radius-sm;
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: $wc-text-dim;
+    cursor: pointer;
+    font-family: $wc-sans;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    transition: all 0.2s ease;
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        color: $wc-primary;
+    }
+    &.active {
+        background: $wc-primary;
+        border-color: $wc-primary;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba($wc-primary, 0.2);
+    }
+    i {
+        font-size: 11px;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SASH LAYOUT GRID (Left Panel)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-sash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+}
+
+.wc-sash-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    border-radius: $wc-radius-sm;
+    border: 1.5px solid $wc-border-light;
+    background: $wc-surface;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        background: $wc-primary-soft;
+    }
+    &.active {
+        border-color: $wc-primary;
+        background: linear-gradient(135deg, rgba($wc-primary, 0.06), rgba($wc-primary, 0.12));
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+    }
+}
+
+.wc-sash-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wc-sash-card-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: $wc-text-dim;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DIVIDER ROW (Left Panel — Mullion / Transom)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-divider-row {
+    display: flex;
+    gap: 8px;
+}
+
+.wc-divider-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    border-radius: $wc-radius-sm;
+    border: 1.5px solid $wc-border-light;
+    background: $wc-surface;
+    cursor: grab;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        background: $wc-primary-soft;
+        transform: translateY(-1px);
+        box-shadow: $wc-shadow-sm;
+    }
+    &:active {
+        cursor: grabbing;
+    }
+    &.wc-divider-disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+        border-color: $wc-border-light;
+        background: $wc-surface;
+        &:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.wc-divider-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wc-divider-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: $wc-text-dim;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PROFILE SYSTEM SELECT (Left Panel)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-profile-select {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: $wc-radius-sm;
+    border: 1.5px solid $wc-border-light;
+    background: $wc-surface;
+    color: $wc-text;
+    font-size: 11px;
+    font-family: $wc-sans;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+    }
+    &:focus {
+        outline: none;
+        border-color: $wc-primary;
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   OPENING TYPE GRID (Right Panel — Pane Context)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-opening-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.wc-opening-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    border-radius: $wc-radius-sm;
+    border: 1.5px solid $wc-border-light;
+    background: $wc-surface;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    color: $wc-text;
+    transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    i {
+        font-size: 16px;
+        color: $wc-text-dim;
+    }
+    &:hover {
+        border-color: rgba($wc-primary, 0.3);
+        background: $wc-primary-soft;
+        i { color: $wc-primary; }
+    }
+    &.active {
+        border-color: $wc-primary;
+        background: linear-gradient(135deg, rgba($wc-primary, 0.06), rgba($wc-primary, 0.12));
+        box-shadow: 0 0 0 2px rgba($wc-primary, 0.15);
+        i { color: $wc-primary; }
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   VALIDATION WARNINGS
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-validation-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.wc-validation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: $wc-radius-sm;
+    font-size: 11px;
+    line-height: 1.4;
+    i { flex-shrink: 0; margin-top: 1px; }
+}
+
+.wc-validation-warning {
+    background: rgba(245, 166, 35, 0.08);
+    border: 1px solid rgba(245, 166, 35, 0.2);
+    color: #8a6d2b;
+    i { color: #d4930d; }
+}
+
+.wc-validation-error {
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.15);
+    color: #991b1b;
+    i { color: #dc2626; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PANE CLICK HIT TARGETS
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-pane-hit {
+    cursor: pointer;
+    &:hover {
+        fill: rgba(79, 110, 247, 0.06) !important;
+    }
+}
+
+.wc-mullion-handle {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    &:hover {
+        opacity: 1 !important;
+        fill: rgba(79, 110, 247, 0.15) !important;
+    }
+}
+
+.wc-prop-hint {
+    font-size: 11px;
+    color: $wc-text-dim;
+    font-style: italic;
+    margin: 0;
+
+    &--override {
+        color: #1d6bf3;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   QUOTE BREAKDOWN (Bottom Strip)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-quote-strip {
+    background: $wc-panel;
+    border-top: 1px solid $wc-border;
+    box-shadow: 0 -1px 8px rgba(0,0,0,0.03);
+}
+
+.wc-quote-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: $wc-text-dim;
+    font-weight: 500;
+    transition: color 0.15s ease;
+    &:hover {
+        color: $wc-text;
+    }
+}
+
+.wc-quote-toggle-label {
+    strong {
+        color: $wc-primary;
+        font-family: $wc-mono;
+        margin-left: 8px;
+        font-weight: 700;
+    }
+}
+
+.wc-quote-body {
+    padding: 0 16px 10px;
+}
+
+.wc-quote-kpi-row,
+.wc-quote-kpi {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.wc-quote-kpi-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+}
+
+.wc-quote-kpi-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: $wc-text-dim;
+    letter-spacing: 0.04em;
+}
+
+.wc-quote-kpi-value {
+    font-size: 14px;
+    font-family: $wc-mono;
+    color: $wc-text;
+    font-weight: 500;
+}
+
+.wc-text-discount {
+    color: $wc-red;
+}
+
+.wc-quote-kpi-total {
+    .wc-quote-kpi-value {
+        color: $wc-primary;
+        font-size: 16px;
+        font-weight: 700;
+    }
+}
+
+.wc-quote-collapsed .wc-quote-body {
+    display: none;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DASHBOARD
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-dashboard {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.wc-dash-header {
+    margin-bottom: 24px;
+    h2 {
+        font-weight: 700;
+        font-size: 22px;
+    }
+}
+
+.wc-dash-loading {
+    text-align: center;
+    padding: 60px 0;
+    color: #999;
+}
+
+.wc-dash-kpi-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.wc-dash-kpi-card {
+    flex: 1;
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid $wc-border-light;
+    border-radius: $wc-radius;
+    padding: 22px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    box-shadow: $wc-shadow-sm;
+    &:hover {
+        box-shadow: $wc-shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+.wc-dash-kpi-primary {
+    border-top: 3px solid $wc-blue;
+}
+
+.wc-dash-kpi-revenue {
+    border-top: 3px solid $wc-green;
+}
+
+.wc-dash-kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.wc-dash-kpi-label {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+}
+
+.wc-dash-pipeline {
+    margin-bottom: 24px;
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+}
+
+.wc-dash-pipeline-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.wc-dash-state-card {
+    flex: 1;
+    min-width: 120px;
+    background: #fff;
+    border: 1px solid $wc-border-light;
+    border-radius: $wc-radius;
+    padding: 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    box-shadow: $wc-shadow-sm;
+    &:hover {
+        box-shadow: $wc-shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+.wc-dash-state-count {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.wc-dash-state-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.wc-dash-recent {
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+}
+
+.wc-dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid $wc-border-light;
+    border-radius: $wc-radius;
+    overflow: hidden;
+    box-shadow: $wc-shadow-sm;
+
+    th {
+        background: $wc-surface;
+        padding: 11px 14px;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: $wc-text-muted;
+        font-weight: 600;
+        text-align: left;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid $wc-border-light;
+    }
+
+    td {
+        padding: 11px 14px;
+        font-size: 13px;
+        border-bottom: 1px solid $wc-border-light;
+    }
+}
+
+.wc-dash-row-click {
+    cursor: pointer;
+    transition: background 0.15s ease;
+    &:hover {
+        background: $wc-primary-soft;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CANVAS WINDOW DESCRIPTION LABEL
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-desc-label {
+    fill: rgba(0, 0, 0, 0.35);
+    font-family: $wc-sans;
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   STATUS BAR — thin bottom bar
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 34px;
+    min-height: 34px;
+    background: $wc-surface-alt;
+    padding: 0 20px;
+    font-size: 11px;
+    color: $wc-text-dim;
+    font-family: $wc-sans;
+    border-top: 1px solid $wc-border-light;
+}
+
+.wc-status-left,
+.wc-status-center,
+.wc-status-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wc-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.wc-status-valid {
+    background: $wc-green;
+    box-shadow: 0 0 6px rgba($wc-green, 0.5);
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba($wc-green, 0.5); }
+    50% { box-shadow: 0 0 10px rgba($wc-green, 0.7); }
+}
+
+.wc-status-sep {
+    color: $wc-border;
+    margin: 0 5px;
+}
+
+.wc-status-bar strong {
+    color: $wc-text;
+    font-weight: 600;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SCROLLBAR STYLING (light theme panels)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-library-panel::-webkit-scrollbar,
+.wc-properties-panel::-webkit-scrollbar,
+.wc-library-items::-webkit-scrollbar {
+    width: 5px;
+}
+
+.wc-library-panel::-webkit-scrollbar-track,
+.wc-properties-panel::-webkit-scrollbar-track,
+.wc-library-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.wc-library-panel::-webkit-scrollbar-thumb,
+.wc-properties-panel::-webkit-scrollbar-thumb,
+.wc-library-items::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.08);
+    border-radius: 10px;
+    &:hover {
+        background: rgba(0,0,0,0.15);
+    }
+}
+
+/* ─── BOM Preview Modal ─── */
+.wc-bom-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    animation: wc-bom-fadeIn 0.2s ease;
+}
+
+@keyframes wc-bom-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.wc-bom-modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 920px;
+    max-width: 95vw;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+    animation: wc-bom-slideUp 0.25s ease;
+    overflow: hidden;
+}
+
+@keyframes wc-bom-slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.wc-bom-header {
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+
+    .wc-bom-header-sub {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 400;
+        margin-left: 8px;
+    }
+
+    .wc-bom-close {
+        background: none;
+        border: none;
+        font-size: 22px;
+        color: #6c757d;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        line-height: 1;
+        transition: all 0.15s;
+
+        &:hover {
+            background: #f1f3f5;
+            color: #1a1a2e;
+        }
+    }
+}
+
+.wc-bom-summary {
+    display: flex;
+    gap: 12px;
+    padding: 16px 28px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    .wc-bom-stat {
+        flex: 1;
+        background: #fff;
+        border-radius: 10px;
+        padding: 12px 16px;
+        text-align: center;
+        border: 1px solid #e9ecef;
+
+        .wc-bom-stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .wc-bom-stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+    }
+}
+
+.wc-bom-totals-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-bottom: 1px solid #e9ecef;
+    flex-wrap: wrap;
+}
+
+.wc-bom-cat-pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+        border-color: #adb5bd;
+        background: #f8f9fa;
+    }
+
+    &.active {
+        background: #1a1a2e;
+        color: #fff;
+        border-color: #1a1a2e;
+    }
+
+    .wc-bom-cat-count {
+        background: rgba(0, 0, 0, 0.08);
+        padding: 1px 7px;
+        border-radius: 10px;
+        font-size: 11px;
+    }
+
+    &.active .wc-bom-cat-count {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.wc-bom-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 28px;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+}
+
+.wc-bom-window-card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.wc-bom-window-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: #fafbfc;
+    border-bottom: 1px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+
+    &:hover {
+        background: #f1f3f5;
+    }
+
+    &.expanded {
+        border-bottom-color: #e9ecef;
+    }
+
+    .wc-bom-window-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1a1a2e;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .wc-bom-window-meta {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .wc-bom-chevron {
+        font-size: 14px;
+        color: #adb5bd;
+        transition: transform 0.2s;
+
+        &.rotated {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.wc-bom-window-body {
+    padding: 0;
+}
+
+.wc-bom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    thead th {
+        background: #f8f9fa;
+        padding: 8px 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #495057;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    tbody td {
+        padding: 9px 14px;
+        border-bottom: 1px solid #f1f3f5;
+        color: #212529;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover td {
+        background: #f8f9fa;
+    }
+}
+
+.wc-bom-cat-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+
+    &.cat-profile {
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+    &.cat-glass {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+    &.cat-seal {
+        background: #fff3e0;
+        color: #e65100;
+    }
+    &.cat-hardware {
+        background: #fce4ec;
+        color: #c62828;
+    }
+    &.cat-georgian {
+        background: #f3e5f5;
+        color: #6a1b9a;
+    }
+    &.cat-other {
+        background: #eceff1;
+        color: #546e7a;
+    }
+}
+
+.wc-bom-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+
+    i {
+        font-size: 36px;
+        margin-bottom: 12px;
+        display: block;
+        opacity: 0.4;
+    }
+
+    p {
+        margin: 0;
+        font-size: 14px;
+    }
+}
+
+.wc-bom-footer {
+    padding: 16px 28px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    background: #fafbfc;
+}
+
+.wc-bom-btn {
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+
+    &--secondary {
+        background: #fff;
+        color: #495057;
+        border-color: #dee2e6;
+
+        &:hover {
+            background: #f1f3f5;
+            border-color: #adb5bd;
+        }
+    }
+
+    &--primary {
+        background: #1a1a2e;
+        color: #fff;
+
+        &:hover {
+            background: #2d2d4a;
+        }
+
+        i {
+            margin-right: 6px;
+        }
+    }
+}
+
+/* ─── Type-Aware Hint Bar ─── */
+.wc-type-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: #eef3ff;
+    border: 1px solid #d1ddf7;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #4a6094;
+    line-height: 1.3;
+
+    i {
+        flex-shrink: 0;
+        font-size: 12px;
+        opacity: 0.7;
+    }
+}
+
+/* ─── Element Action Bar (bottom of canvas) ─── */
+/* Element action bar — now merged into .wc-canvas-toolbar (kept for reference) */
+.wc-element-action-bar {
+    display: none; // merged into canvas toolbar
+}
+
+.wc-eab-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding-right: 8px;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    i { font-size: 13px; opacity: 0.7; }
+}
+
+.wc-eab-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.wc-eab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 11.5px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    &:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.14);
+    }
+    i { font-size: 12px; }
+}
+
+.wc-eab-btn-danger {
+    color: #ff8f8f;
+    border-color: rgba(255, 100, 100, 0.2);
+    transition: all 0.15s ease;
+    &:hover {
+        color: #fff;
+        background: rgba(220, 53, 69, 0.35);
+        border-color: rgba(220, 53, 69, 0.5);
+    }
+}
+
+.wc-eab-btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    transition: all 0.15s ease;
+    &:hover {
+        color: rgba(255, 255, 255, 0.75);
+        background: rgba(255, 255, 255, 0.06);
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DESIGN TOOLBAR — Horizontal bar below topbar
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-design-toolbar {
+    display: flex;
+    align-items: center;
+    height: 42px;
+    min-height: 42px;
+    background: $wc-surface;
+    border-bottom: 1px solid $wc-border-light;
+    padding: 0 16px;
+    gap: 6px;
+
+    &.wc-dtb-disabled {
+        opacity: 0.5;
+    }
+}
+
+.wc-dtb-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.wc-dtb-group-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: $wc-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.wc-dtb-buttons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.wc-dtb-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 30px;
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid $wc-border-light;
+    border-radius: 6px;
+    color: $wc-text-dim;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+
+    svg { flex-shrink: 0; }
+
+    &:hover {
+        background: $wc-primary-soft;
+        color: $wc-primary;
+        border-color: rgba(79, 110, 247, 0.25);
+    }
+
+    &.active {
+        background: $wc-primary-soft;
+        color: $wc-primary;
+        border-color: rgba(79, 110, 247, 0.3);
+    }
+
+    &.wc-dtb-btn-disabled,
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+.wc-dtb-sash-icon {
+    display: flex;
+    align-items: center;
+}
+
+.wc-dtb-sep {
+    width: 1px;
+    height: 20px;
+    background: $wc-border-light;
+    margin: 0 8px;
+}
+
+.wc-dtb-empty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: $wc-text-muted;
+    font-style: italic;
+}
+
+/* ─── Opening Type Strip ─────────────────────────────── */
+.wc-dtb-group--opening {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar { height: 3px; }
+    &::-webkit-scrollbar-thumb { background: $wc-border-light; border-radius: 3px; }
+}
+
+.wc-dtb-ot-strip {
+    display: flex;
+    gap: 2px;
+    align-items: stretch;
+}
+
+.wc-dtb-ot-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 48px;
+    height: 34px;
+    padding: 0 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: $wc-text-dim;
+    cursor: pointer;
+    transition: all 0.14s ease;
+    flex-shrink: 0;
+
+    &.wc-dtb-ot-btn--icon-only {
+        min-width: 34px;
+        padding: 0 4px;
+    }
+
+    &:hover {
+        background: $wc-primary-soft;
+        color: $wc-primary;
+        border-color: rgba($wc-primary, 0.2);
+    }
+
+    &.active {
+        background: $wc-primary-soft;
+        color: $wc-primary;
+        border-color: rgba($wc-primary, 0.35);
+        box-shadow: inset 0 0 0 1px rgba($wc-primary, 0.15);
+    }
+
+    &.wc-dtb-ot-btn--no-pane {
+        opacity: 0.55;
+    }
+
+    &.wc-dtb-ot-btn--disabled {
+        opacity: 0.25;
+        cursor: not-allowed;
+        &:hover {
+            background: transparent;
+            color: $wc-text-dim;
+            border-color: transparent;
+            box-shadow: none;
+        }
+    }
+}
+
+.wc-dtb-ot-sep {
+    width: 1px;
+    height: 20px;
+    background: $wc-border-light;
+    margin: 0 4px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.wc-dtb-ot-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    svg { display: block; }
+}
+
+.wc-dtb-ot-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   NEW WINDOW WIZARD — Modal overlay
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-wizard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+.wc-wizard-modal {
+    background: $wc-surface;
+    border: 1px solid $wc-border-light;
+    border-radius: 12px;
+    // Fixed footprint regardless of how many types/series are in view —
+    // .wc-wizard-body scrolls internally instead of the modal growing or
+    // shrinking to fit its content (was max-width/max-height only, which
+    // let it resize and jump around when filtering).
+    width: 580px;
+    height: 640px;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.wc-wizard-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid $wc-border-light;
+
+    h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: $wc-text;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        flex-shrink: 0;
+
+        i { color: $wc-accent; }
+    }
+}
+
+.wc-wizard-close {
+    background: transparent;
+    border: none;
+    color: $wc-text-muted;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: $wc-text;
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+.wc-wizard-series-select {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid $wc-border-light;
+    color: $wc-text-muted;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    max-width: 180px;
+    flex-shrink: 0;
+
+    &:hover, &:focus {
+        color: $wc-text;
+        border-color: $wc-text-muted;
+    }
+}
+
+.wc-wizard-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.wc-wizard-kind-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid $wc-border-light;
+}
+
+.wc-wizard-kind-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: $wc-text-muted;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { color: $wc-text; }
+
+    &.active {
+        color: $wc-accent;
+        border-bottom-color: $wc-accent;
+    }
+}
+
+.wc-wizard-series-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $wc-text-muted;
+    margin: 14px 0 8px;
+
+    &:first-child { margin-top: 0; }
+}
+
+.wc-wizard-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.wc-wizard-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 8px;
+    background: $wc-panel;
+    border: 1px solid $wc-border-light;
+    border-radius: $wc-radius;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: $wc-accent;
+        background: rgba(79, 110, 247, 0.08);
+        transform: translateY(-1px);
+    }
+}
+
+// Also matches directly when this class is on an <img> (custom uploaded icon)
+// instead of a <div> wrapping the live-rendered SVG fallback or the Window
+// Type's own saved canvas template thumbnail (generated at a much larger,
+// non-square box — max-width/max-height keeps it centred and undistorted
+// instead of the auto-icon's exact-48px generic square).
+.wc-wizard-type-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg { display: block; max-width: 100%; max-height: 100%; }
+}
+
+.wc-wizard-type-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: $wc-text;
+    text-align: center;
+}
+
+.wc-wizard-back {
+    background: transparent;
+    border: none;
+    color: $wc-accent;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 0;
+    margin-bottom: 12px;
+
+    i { margin-right: 4px; }
+}
+
+.wc-wizard-selected-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(79, 110, 247, 0.08);
+    border: 1px solid rgba(79, 110, 247, 0.2);
+    border-radius: $wc-radius;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: $wc-accent;
+}
+
+.wc-wizard-type-icon-sm {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg { max-width: 100%; max-height: 100%; }
+}
+
+.wc-wizard-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.wc-wizard-row {
+    display: flex;
+    gap: 12px;
+
+    .wc-wizard-field { flex: 1; }
+}
+
+.wc-wizard-divider {
+    font-size: 11px;
+    font-weight: 600;
+    color: $wc-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border-top: 1px solid $wc-border-light;
+    padding-top: 12px;
+    margin-top: 2px;
+}
+
+.wc-wizard-note {
+    margin: 0;
+    font-size: 12px;
+    color: $wc-text-dim;
+
+    &--alert { color: $wc-danger-alt; font-weight: 600; }
+}
+
+.wc-wizard-summary {
+    border: 1px solid $wc-border-light;
+    border-radius: 8px;
+    background: $wc-panel;
+    padding: 10px 12px;
+}
+
+.wc-wizard-summary-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $wc-text-dim;
+}
+
+.wc-wizard-edit {
+    background: none;
+    border: 1px solid $wc-border-light;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: $wc-accent;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+
+    &:hover { border-color: $wc-accent; }
+}
+
+.wc-wizard-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin: 0;
+
+    dt { font-size: 10px; font-weight: 600; text-transform: uppercase; color: $wc-text-muted; }
+    dd { margin: 0; font-size: 13px; color: $wc-text; }
+}
+
+.wc-wizard-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+        font-size: 11px;
+        font-weight: 600;
+        color: $wc-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+
+    input, select {
+        background: $wc-panel;
+        border: 1px solid $wc-border-light;
+        border-radius: 4px;
+        padding: 8px 10px;
+        color: $wc-text;
+        font-size: 13px;
+
+        &:focus {
+            outline: none;
+            border-color: $wc-accent;
+        }
+    }
+}
+
+.wc-wizard-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid $wc-border-light;
+}
+
+.wc-wizard-cancel {
+    background: transparent;
+    border: 1px solid $wc-border-light;
+    color: $wc-text-muted;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover { color: $wc-text; border-color: $wc-text-muted; }
+}
+
+.wc-wizard-confirm {
+    background: $wc-accent;
+    border: none;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover { background: lighten($wc-accent, 5%); }
+
+    i { margin-right: 4px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SHARED PANEL STYLES — Header bar, resize handle, side-tabs
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Panel Header Bar (shared by left + right panels) ─── */
+.wc-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: $wc-surface-alt;
+    border-bottom: 1px solid $wc-border;
+    flex-shrink: 0;
+}
+
+.wc-panel-header-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: $wc-text;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    i {
+        margin-right: 6px;
+        color: $wc-text-dim;
+        font-size: 11px;
+    }
+}
+
+.wc-panel-header-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: $wc-text-dim;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.06);
+        color: $wc-text;
+    }
+}
+
+/* ─── Drag-to-Resize Handle ─── */
+.wc-resize-handle {
+    width: 5px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    background: transparent;
+    position: relative;
+    z-index: 5;
+    transition: background 0.15s ease;
+
+    &:hover,
+    &:active {
+        background: $wc-primary;
+        opacity: 0.4;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PROPERTIES PANEL WRAPPER — Left sidebar
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-props-wrapper {
+    display: flex;
+    position: relative;
+}
+
+.wc-props-wrapper .wc-props-panel-inner {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid $wc-border-light;
+}
+
+.wc-props-wrapper.wc-props-collapsed {
+    width: auto;
+    min-width: 0;
+}
+
+.wc-props-wrapper.wc-props-collapsed .wc-props-panel-inner {
+    display: none;
+}
+
+/* ─── Collapsed Side-Tab (left panel) ─── */
+.wc-props-side-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 36px;
+    padding: 10px 0;
+    background: $wc-panel;
+    border: 1px solid $wc-border;
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    color: $wc-text-dim;
+    font-size: 14px;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+
+    span {
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    &:hover {
+        background: $wc-surface;
+        color: $wc-text;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   LIVE BOM PANEL — Right sidebar (Grouped Table)
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* ─── BOM Panel Wrapper with Toggle ─── */
+
+.wc-bom-wrapper {
+    display: flex;
+    position: relative;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wc-bom-wrapper .wc-bom-panel-inner {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.wc-bom-wrapper.wc-bom-collapsed {
+    width: auto;
+    min-width: 0;
+}
+
+.wc-bom-wrapper.wc-bom-collapsed .wc-bom-panel-inner {
+    display: none;
+}
+
+/* ─── Collapsed Side-Tab (right/BOM panel) ─── */
+.wc-bom-side-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 36px;
+    padding: 10px 0;
+    background: $wc-panel;
+    border: 1px solid $wc-border;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    cursor: pointer;
+    color: $wc-text-dim;
+    font-size: 14px;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+
+    span {
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    &:hover {
+        background: $wc-surface;
+        color: $wc-text;
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+    }
+}
+
+.wc-bom-panel {
+    width: 100%;
+    background: $wc-panel;
+    border-left: 1px solid $wc-border;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
+    gap: 0;
+}
+
+/* ─── Summary Bar (live panel overrides) ─── */
+.wc-bom-panel .wc-bom-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: $wc-surface;
+    border-bottom: 1px solid $wc-border;
+}
+
+.wc-bom-summary-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wc-bom-summary-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: $wc-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.wc-bom-summary-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: $wc-text;
+    font-family: $wc-mono;
+}
+
+.wc-bom-summary-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.wc-bom-summary-stat {
+    font-size: 11px;
+    color: $wc-text-dim;
+    font-weight: 500;
+}
+
+/* ─── Grouped Table Container ─── */
+.wc-bom-grouped-table {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ─── Single BOM Table (live panel overrides) ─── */
+.wc-bom-panel .wc-bom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    th {
+        padding: 8px 10px;
+        text-align: left;
+        font-weight: 600;
+        color: $wc-text-dim;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 10px;
+        background: $wc-surface-alt;
+        border-bottom: 2px solid $wc-border;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 8px 10px;
+        color: $wc-text;
+    }
+
+    .wc-bom-num {
+        text-align: right;
+        white-space: nowrap;
+        font-family: $wc-mono;
+        font-size: 12px;
+
+        small {
+            font-size: 9px;
+            color: $wc-text-muted;
+            margin-left: 2px;
+        }
+    }
+
+    .wc-bom-name {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+
+    .wc-bom-line-total {
+        font-weight: 700;
+    }
+}
+
+/* ─── Category Band Row ─── */
+.wc-bom-cat-row {
+    td {
+        padding: 9px 10px;
+        background: $wc-surface;
+        border-top: 1px solid $wc-border;
+        border-bottom: 1px solid $wc-border-light;
+        font-weight: 600;
+        font-size: 13px;
+        color: $wc-text;
+    }
+
+    .wc-bom-badge {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+
+    .wc-bom-cat-label {
+        vertical-align: middle;
+        font-weight: 600;
+    }
+
+    .wc-bom-cat-count {
+        color: $wc-text-muted;
+        font-weight: 400;
+        font-size: 12px;
+        margin-left: 4px;
+    }
+
+    .wc-bom-cat-subtotal {
+        font-weight: 700;
+        color: $wc-text;
+        font-family: $wc-mono;
+        font-size: 13px;
+    }
+}
+
+/* ─── Item Rows ─── */
+.wc-bom-item-row {
+    td {
+        border-bottom: 1px solid $wc-border-light;
+        padding-left: 28px;
+    }
+
+    &:hover td {
+        background: $wc-surface;
+    }
+
+    .wc-bom-num {
+        padding-left: 10px;
+    }
+}
+
+/* ─── Total Footer Row ─── */
+.wc-bom-total-row {
+    td {
+        padding: 12px 10px;
+        background: $wc-surface-alt;
+        border-top: 2px solid $wc-border;
+        font-size: 14px;
+        font-weight: 700;
+        color: $wc-text;
+    }
+
+    .wc-bom-total-value {
+        font-family: $wc-mono;
+        font-size: 18px;
+        font-weight: 700;
+        color: $wc-primary;
+    }
+}
+
+/* ─── tfoot sticky ─── */
+.wc-bom-panel .wc-bom-table tfoot {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+}
+
+.wc-bom-panel .wc-bom-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: $wc-text-muted;
+    text-align: center;
+    gap: 12px;
+    padding: 40px 20px;
+}
+
+.wc-bom-empty-icon {
+    font-size: 32px;
+    opacity: 0.3;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   WINDOW FILMSTRIP — Bottom saved windows strip
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-filmstrip {
+    height: 68px;
+    min-height: 68px;
+    background: $wc-surface;
+    border-top: 1px solid $wc-border-light;
+    padding: 6px 16px;
+}
+
+.wc-filmstrip-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar { height: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $wc-border-light; border-radius: 2px; }
+}
+
+.wc-filmstrip-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 76px;
+    max-width: 76px;
+    height: 52px;
+    background: $wc-panel;
+    border: 1.5px solid $wc-border-light;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    color: $wc-text-dim;
+
+    &:hover {
+        border-color: rgba(79, 110, 247, 0.45);
+        background: $wc-primary-soft;
+    }
+
+    &.active {
+        border-color: $wc-accent;
+        background: rgba(79, 110, 247, 0.08);
+        box-shadow: 0 0 0 1px rgba(79, 110, 247, 0.25);
+    }
+}
+
+.wc-filmstrip-thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg { width: 24px; height: 24px; }
+}
+
+.wc-filmstrip-label {
+    font-size: 8px;
+    font-weight: 600;
+    color: $wc-text-muted;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 68px;
+}
+
+.wc-filmstrip-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    max-width: 52px;
+    height: 52px;
+    border: 1.5px dashed $wc-border;
+    border-radius: 6px;
+    cursor: pointer;
+    color: $wc-text-muted;
+    font-size: 16px;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+
+    &:hover {
+        border-color: $wc-accent;
+        color: $wc-accent;
+        background: $wc-primary-soft;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   TOPBAR: New Window button + Actions layout
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.wc-topbar-new-window {
+    background: rgba(79, 110, 247, 0.12) !important;
+    border-color: rgba(79, 110, 247, 0.25) !important;
+    color: $wc-accent !important;
+    font-weight: 600;
+
+    &:hover {
+        background: rgba(79, 110, 247, 0.2) !important;
+    }
+
+    i { margin-right: 4px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PROPERTIES PANEL: Pane section divider + hint box
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.wc-prop-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    margin: 4px 0;
+
+    span {
+        font-size: 10px;
+        font-weight: 700;
+        color: $wc-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+    }
+
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: $wc-border-light;
+    }
+}
+
+.wc-prop-hint-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: $wc-panel;
+    border: 1px dashed $wc-border-light;
+    border-radius: $wc-radius;
+    font-size: 11px;
+    color: $wc-text-muted;
+    font-style: italic;
+
+    i { font-size: 14px; opacity: 0.5; }
+}
+
+/* ─── Pane Selection & Properties Enhancements ────────────────────────── */
+
+.wc-prop-input--sm {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.wc-prop-row--2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.wc-prop-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.wc-prop-card--pane-header {
+    border-left: 3px solid $wc-primary;
+
+    .wc-prop-card-head {
+        margin-bottom: 8px;
+    }
+}
+
+.wc-prop-card--mullion-header {
+    border-left: 3px solid #6c757d;
+
+    .wc-prop-card-head {
+        margin-bottom: 8px;
+    }
+}
+
+.wc-colour-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    input[type="color"] {
+        width: 36px;
+        height: 28px;
+        padding: 2px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        cursor: pointer;
+        flex-shrink: 0;
+
+        &::-webkit-color-swatch-wrapper {
+            padding: 1px;
+        }
+        &::-webkit-color-swatch {
+            border: none;
+            border-radius: 2px;
+        }
+    }
+}
+
+.wc-prop-btn-sm {
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    border-radius: 3px;
+}
+
+.wc-prop-card--fabrication {
+    border-left: 3px solid $wc-warning;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI Assistant Panel — Slide-in dark chat panel
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.wc-ai-panel {
+    position: fixed;
+    top: 52px; // below topbar
+    right: 0;
+    width: 380px;
+    height: calc(100vh - 52px);
+    background: #0f172a;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 900;
+    font-family: $wc-sans;
+
+    &.open {
+        transform: translateX(0);
+    }
+}
+
+.wc-ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+}
+
+.wc-ai-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+    i {
+        color: #a78bfa;
+    }
+}
+
+.wc-ai-close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: $wc-radius-sm;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    &:focus-visible {
+        outline: 2px solid $wc-primary;
+        outline-offset: 2px;
+    }
+}
+
+.wc-ai-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.wc-ai-placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
+    text-align: center;
+    padding: 32px 16px;
+    line-height: 1.6;
+    em {
+        color: rgba(255, 255, 255, 0.6);
+        font-style: italic;
+    }
+}
+
+.wc-ai-msg {
+    max-width: 90%;
+    animation: wc-ai-fade-in 0.2s ease;
+}
+
+.wc-ai-msg-user {
+    align-self: flex-end;
+    .wc-ai-msg-content {
+        background: $wc-primary;
+        color: #fff;
+        border-radius: 12px 12px 2px 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+}
+
+.wc-ai-msg-assistant {
+    align-self: flex-start;
+    .wc-ai-msg-content {
+        background: rgba(255, 255, 255, 0.08);
+        color: #e2e8f0;
+        border-radius: 12px 12px 12px 2px;
+        padding: 10px 14px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+}
+
+.wc-ai-window-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.wc-ai-window-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $wc-radius-sm;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #e2e8f0;
+    strong {
+        color: $wc-primary;
+        font-weight: 600;
+    }
+}
+
+.wc-ai-input-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+}
+
+.wc-ai-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: $wc-radius-sm;
+    padding: 10px 12px;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-family: $wc-sans;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s ease;
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+    &:focus {
+        border-color: $wc-primary;
+    }
+}
+
+.wc-ai-send {
+    background: $wc-primary;
+    color: #fff;
+    border: none;
+    border-radius: $wc-radius-sm;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+    &:hover:not(:disabled) {
+        background: $wc-primary-hover;
+    }
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    &:focus-visible {
+        outline: 2px solid $wc-primary;
+        outline-offset: 2px;
+    }
+}
+
+@keyframes wc-ai-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─── SVG Preview Field (svg_preview_field.js) ──────────────────────────────
+// Renders wincraft.window.template.thumbnail_svg (or a related field
+// pointing at it, e.g. wincraft.window.type.template_thumbnail_svg) as an
+// actual image instead of raw markup text.
+.wc-svg-preview {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 180px;
+    border: 1px solid $wc-border;
+    border-radius: $wc-radius-sm;
+    background: $wc-surface;
+
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+.wc-svg-preview-sm {
+    width: 56px;
+    height: 42px;
+
+    .wc-svg-preview-empty { font-size: 9px; }
+}
+
+.wc-svg-preview-empty {
+    font-size: 12px;
+}
+
+/* ─── Window Configuration — client form layout (bordered tables) ─────── */
+.wc-cfgt-title {
+    margin: 12px 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: $wc-text;
+
+    &:first-child { margin-top: 0; }
+}
+
+.wc-cfgt-table {
+    display: grid;
+    gap: 1px;                    // cell borders: the grid background shows through
+    background: $wc-text-dim;
+    border: 1px solid $wc-text-dim;
+
+    &--view  { grid-template-columns: 1.15fr 1fr 1fr 1fr; }
+    &--five  { grid-template-columns: repeat(5, 1fr); }
+    // Glass and Trim and Frame share these columns so their cells line up.
+    &--trim  { grid-template-columns: 5fr 5fr 2.5fr; }
+}
+
+.wc-cfgt-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    min-height: 58px;
+    padding: 6px 8px 8px;
+    background: #fff;
+
+    .wc-cfg-select, .wc-cfg-input { height: 28px; width: 100%; }
+}
+
+.wc-cfgt-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: $wc-text;
+    line-height: 1.2;
+}
+
+.wc-cfgt-checks {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    height: 28px;
+}
+
+.wc-cfgt-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+    font-size: 12.5px;
+    cursor: pointer;
+}

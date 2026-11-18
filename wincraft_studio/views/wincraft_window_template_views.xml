@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_window_template_view_form" model="ir.ui.view">
+            <field name="name">wincraft.window.template.form</field>
+            <field name="model">wincraft.window.template</field>
+            <field name="arch" type="xml">
+                <form string="Window Template">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_windows"
+                                    class="oe_stat_button" icon="fa-window-maximize"
+                                    invisible="usage_count == 0">
+                                <field name="usage_count" widget="statinfo" string="Used"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group string="Identity">
+                                <field name="name"/>
+                                <field name="window_type"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                            <group string="Defaults">
+                                <field name="default_width"/>
+                                <field name="default_height"/>
+                                <field name="default_panels"/>
+                                <field name="opening_direction"/>
+                                <field name="frame_colour" widget="color"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Materials">
+                                <field name="frame_material_id"/>
+                                <field name="glass_type_id"/>
+                            </group>
+                            <group string="Inventory">
+                                <field name="product_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Thumbnail SVG" name="svg">
+                                <field name="thumbnail_svg" widget="svg_preview" nolabel="1"/>
+                                <field name="thumbnail_svg" widget="text"
+                                       placeholder="Paste SVG markup here or leave blank for auto-generation"/>
+                            </page>
+                            <page string="Description" name="desc">
+                                <field name="description" widget="text" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_window_template_view_list" model="ir.ui.view">
+            <field name="name">wincraft.window.template.list</field>
+            <field name="model">wincraft.window.template</field>
+            <field name="arch" type="xml">
+                <list string="Window Templates">
+                    <field name="name"/>
+                    <field name="window_type"/>
+                    <field name="default_width" string="W (mm)"/>
+                    <field name="default_height" string="H (mm)"/>
+                    <field name="frame_material_id"/>
+                    <field name="glass_type_id"/>
+                    <field name="usage_count" string="Used"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_window_template_action" model="ir.actions.act_window">
+            <field name="name">Window Templates</field>
+            <field name="res_model">wincraft.window.template</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Extend wincraft.window form: add header buttons + integration fields ── -->
+    <record id="view_wincraft_window_ext_form" model="ir.ui.view">
+        <field name="name">wincraft.window.ext.form</field>
+        <field name="model">wincraft.window</field>
+        <field name="inherit_id" ref="wincraft_studio.wincraft_window_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Action buttons in header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_generate_bom"
+                        string="Generate BOM"
+                        type="object"
+                        class="btn-primary"
+                        invisible="bom_id != False"
+                        groups="wincraft_studio.group_wincraft_admin,wincraft_studio.group_wincraft_sales"/>
+            </xpath>
+
+            <!-- Integration fields tab: add after last existing page -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Integration" name="ff_integration">
+                    <group>
+                        <group string="Product Linkage">
+                            <field name="inside_color_attr_val_id"
+                                   domain="[('attribute_id.name', 'ilike', 'Inside Color')]"
+                                   options="{'no_create': True}"/>
+                            <field name="outside_color_attr_val_id"
+                                   domain="[('attribute_id.name', 'ilike', 'Outside Color')]"
+                                   options="{'no_create': True}"/>
+                            <field name="default_spacer_config_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group string="Generated Records">
+                            <field name="bom_id" readonly="1" options="{'no_create': True}"/>
+                            <field name="bom_state" readonly="1"/>
+                            <field name="sale_order_line_id" readonly="1" options="{'no_create': True}"/>
+                            <field name="sale_order_id" readonly="1" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Production" name="production">
+                    <group>
+                        <group string="Manufacturing">
+                            <field name="barcode" readonly="1"/>
+                            <field name="production_id" readonly="1"/>
+                            <field name="production_state" readonly="1"
+                                   widget="badge"
+                                   decoration-info="production_state == 'confirmed'"
+                                   decoration-warning="production_state == 'progress'"
+                                   decoration-success="production_state == 'done'"/>
+                            <field name="current_station" readonly="1"/>
+                        </group>
+                        <group string="Actions">
+                            <button name="action_create_production"
+                                    string="Create Production Order"
+                                    type="object"
+                                    class="btn-primary"
+                                    invisible="production_id != False"
+                                    groups="wincraft_studio.group_wincraft_admin,wincraft_studio.group_wincraft_fabricator"/>
+                        </group>
+                    </group>
+                    <separator string="Station Log"/>
+                    <field name="station_log_ids" nolabel="1" readonly="1">
+                        <list decoration-warning="not checked_out">
+                            <field name="workcenter_id"/>
+                            <field name="operator_id"/>
+                            <field name="check_in"/>
+                            <field name="checked_out"/>
+                            <field name="duration_minutes" widget="float_time"/>
+                            <field name="result" widget="badge"
+                                   decoration-success="result == 'pass'"
+                                   decoration-danger="result == 'fail'"
+                                   decoration-warning="result == 'rework'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ── Extend wincraft.project form: add "Create Sale Order" button ── -->
+    <record id="view_wincraft_project_ext_form" model="ir.ui.view">
+        <field name="name">wincraft.project.ext.form</field>
+        <field name="model">wincraft.project</field>
+        <field name="inherit_id" ref="wincraft_studio.wincraft_project_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(wincraft_studio.action_wincraft_create_so_wizard)d"
+                        string="Create Sale Order"
+                        type="action"
+                        class="btn-primary"
+                        context="{'default_project_id': id}"
+                        invisible="sale_order_id != False"
+                        groups="wincraft_studio.group_wincraft_admin,wincraft_studio.group_wincraft_sales"/>
+                <button name="%(sale.action_quotations_with_onboarding)d"
+                        string="View Sale Order"
+                        type="action"
+                        class="btn-secondary"
+                        invisible="sale_order_id == False"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

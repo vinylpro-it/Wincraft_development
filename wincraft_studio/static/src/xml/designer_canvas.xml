@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Designer Canvas — SVG element with rulers, grid, windows, rubber-band
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.DesignerCanvas">
+        <div class="wc-canvas-container" t-ref="containerRef"
+             t-on-dragover="onDragOver"
+             t-on-drop="onDrop">
+
+            <!-- Floating toolbar removed — controls are in wc-canvas-footer below -->
+
+            <!-- Main SVG — full bleed, no rulers -->
+            <svg class="wc-canvas-svg" t-ref="svgRef"
+                 t-att-class="{ 'wc-panning': state.isPanning || state.spaceDown }"
+                 t-on-mousedown="onSvgMouseDown"
+                 t-on-mousemove="onSvgMouseMove"
+                 t-on-mouseup="onSvgMouseUp"
+                 t-on-wheel.prevent="onWheel"
+                 tabindex="0">
+
+                <defs>
+                    <!-- Dot grid pattern -->
+                    <pattern t-att-id="gridPatternId" patternUnits="userSpaceOnUse"
+                             t-att-width="gridPatternSize"
+                             t-att-height="gridPatternSize"
+                             t-att-x="state.viewX"
+                             t-att-y="state.viewY">
+                        <circle t-att-cx="gridPatternSize" t-att-cy="gridPatternSize"
+                                r="0.7" fill="rgba(0,0,0,0.08)"/>
+                    </pattern>
+                    <!-- Major dot grid (5x spacing, larger dots) -->
+                    <pattern t-att-id="gridPatternId + '-major'" patternUnits="userSpaceOnUse"
+                             t-att-width="gridPatternSize * 5"
+                             t-att-height="gridPatternSize * 5"
+                             t-att-x="state.viewX"
+                             t-att-y="state.viewY">
+                        <circle t-att-cx="gridPatternSize * 5" t-att-cy="gridPatternSize * 5"
+                                r="1.0" fill="rgba(0,0,0,0.12)"/>
+                    </pattern>
+                    <!-- Line grid (100 mm intervals) -->
+                    <pattern t-att-id="gridPatternId + '-lines'" patternUnits="userSpaceOnUse"
+                             t-att-width="lineGridSize"
+                             t-att-height="lineGridSize"
+                             t-att-x="state.viewX"
+                             t-att-y="state.viewY">
+                        <line x1="0" y1="0" t-att-x2="lineGridSize" y2="0"
+                              stroke="rgba(0,0,0,0.06)" stroke-width="0.5"/>
+                        <line x1="0" y1="0" x2="0" t-att-y2="lineGridSize"
+                              stroke="rgba(0,0,0,0.06)" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+
+                <!-- Canvas background -->
+                <rect width="100%" height="100%" fill="#e8eaef"/>
+                <!-- Dot grid -->
+                <rect width="100%" height="100%" t-att-fill="'url(#' + gridPatternId + ')'"/>
+                <!-- Major dot grid -->
+                <rect width="100%" height="100%" t-att-fill="'url(#' + gridPatternId + '-major)'"/>
+                <!-- Line grid overlay (100 mm) -->
+                <rect t-if="state.showGrid" width="100%" height="100%" t-att-fill="'url(#' + gridPatternId + '-lines)'"/>
+
+                <!-- Viewport group (pan + zoom) -->
+                <g t-att-transform="'translate(' + (state.viewX) + ',' + (state.viewY) + ')'">
+                    <t t-foreach="props.windows" t-as="win" t-key="win.id || win_index">
+                        <WindowObject
+                            window="win"
+                            scale="mmToPixel"
+                            spaceDown="state.spaceDown"
+                            selected="props.selectedIds.includes(win.id)"
+                            selectedPaneIndex="props.selectedElement and props.selectedElement.type === 'pane' ? props.selectedElement.index : undefined"
+                            selectedPaneIndices="selectedPaneIndicesArray"
+                            selectedFrameSegmentId="props.selectedElement and props.selectedElement.type === 'frame_segment' ? props.selectedElement.frameSegmentId : undefined"
+                            glazingConfigs="props.glazingConfigs"
+                            glassConfigs="props.glassConfigs"
+                            unitSystem="props.unitSystem"
+                            onSelect.bind="onWindowSelect"
+                            onDragStart.bind="onWindowDragMove"
+                            onResizeStart.bind="onWindowResizeMove"
+                            onPaneClick.bind="onPaneClick"
+                            onMullionDrag.bind="onMullionDrag"
+                            onDividerDrop.bind="onDividerDrop"
+                            onMullionDelete.bind="onMullionDelete"
+                            onDimEdit.bind="onDimEdit"
+                        />
+                    </t>
+                </g>
+
+                <!-- Rubber-band selection rectangle -->
+                <rect t-if="rubberBandRect"
+                      t-att-x="rubberBandRect.x"
+                      t-att-y="rubberBandRect.y"
+                      t-att-width="rubberBandRect.w"
+                      t-att-height="rubberBandRect.h"
+                      class="wc-rubber-band"/>
+            </svg>
+
+
+
+            <!-- Canvas Footer — controls bar pinned to bottom edge -->
+            <div class="wc-canvas-footer">
+                <!-- Left: Undo / Redo / Snap -->
+                <div class="wc-cf-group">
+                    <button class="wc-cf-btn" t-on-click="() => this.props.onUndo()"
+                            t-att-disabled="!props.canUndo" title="Undo (Ctrl+Z)">
+                        <i class="fa fa-undo"/>
+                    </button>
+                    <button class="wc-cf-btn" t-on-click="() => this.props.onRedo()"
+                            t-att-disabled="!props.canRedo" title="Redo (Ctrl+Y)">
+                        <i class="fa fa-repeat"/>
+                    </button>
+                    <span class="wc-cf-sep"/>
+                    <button class="wc-cf-btn" title="Toggle Snap to Grid"
+                            t-att-class="{ 'active': props.snapEnabled }"
+                            t-on-click="() => this.props.onToggleSnap()">
+                        <i class="fa fa-th"/>
+                    </button>
+                    <button class="wc-cf-btn" title="Toggle Line Grid (100 mm)"
+                            t-att-class="{ 'active': state.showGrid }"
+                            t-on-click="toggleGrid">
+                        <i class="fa fa-hashtag"/>
+                    </button>
+                </div>
+
+                <!-- Center: Zoom controls -->
+                <div class="wc-cf-group">
+                    <button class="wc-cf-btn" t-on-click="() => this.zoomOut()" title="Zoom Out (-)">
+                        <i class="fa fa-minus"/>
+                    </button>
+                    <div class="wc-zoom-control">
+                        <span class="wc-cf-zoom wc-zoom-label"
+                              t-on-click="toggleZoomPresets"
+                              title="Click for zoom presets"
+                              t-esc="zoomPct + '%'"/>
+                        <div t-if="state.showZoomPresets" class="wc-zoom-presets wc-zoom-presets-up">
+                            <t t-foreach="zoomPresets" t-as="pct" t-key="pct">
+                                <button class="wc-zoom-preset-btn"
+                                        t-att-class="{ 'active': zoomPct === pct }"
+                                        t-on-click="() => this.onZoomPresetClick(pct)">
+                                    <t t-esc="pct + '%'"/>
+                                </button>
+                            </t>
+                            <div class="wc-zoom-preset-custom">
+                                <input type="number" class="wc-zoom-input"
+                                       placeholder="Custom %"
+                                       min="10" max="400" step="5"
+                                       t-att-value="zoomPct"
+                                       t-on-blur="onZoomInputCommit"
+                                       t-on-keydown="onZoomInputKeydown"/>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="wc-cf-btn" t-on-click="() => this.zoomIn()" title="Zoom In (+)">
+                        <i class="fa fa-plus"/>
+                    </button>
+                    <span class="wc-cf-sep"/>
+                    <button class="wc-cf-btn" t-on-click="() => this.fitToView()" title="Fit to View (F)">
+                        <i class="fa fa-compress"/>
+                    </button>
+                    <button class="wc-cf-btn wc-cf-btn-3d"
+                            t-att-disabled="!selectedBayBowWindow"
+                            t-att-class="{ 'wc-cf-btn-active': selectedBayBowWindow }"
+                            t-on-click="() => this.open3DView()"
+                            t-att-title="selectedBayBowWindow ? 'Open 3D view (bay / bow)' : 'Select a bay or bow window to view in 3D'"
+                            data-iso-action="open-3d">
+                        <i class="fa fa-cube" title="Open 3D view"/>
+                        <span class="wc-cf-btn-label">3D</span>
+                    </button>
+                </div>
+
+                <!-- Right: Inline dim editor + element actions -->
+                <div class="wc-cf-group">
+                    <t t-if="state.dimEditor">
+                        <span class="wc-cf-sep"/>
+                        <div class="wc-cf-dim-editor">
+                            <span class="wc-cf-dim-label" t-esc="dimEditorLabel"/>
+                            <input t-ref="dimInput" t-att-type="dimEditorInputType" class="wc-cf-dim-input"
+                                   t-att-value="dimEditorDisplayValue"
+                                   t-on-blur="onDimEditorCommit"
+                                   t-on-keydown="onDimEditorKeydown"
+                                   t-att-min="dimEditorIsImperial ? undefined : 10"
+                                   t-att-max="dimEditorIsImperial ? undefined : 10000"
+                                   t-att-step="dimEditorIsImperial ? 0.25 : 1"/>
+                            <span class="wc-cf-dim-unit" t-esc="dimEditorUnitLabel"/>
+                            <button class="wc-cf-btn"
+                                    t-on-click="() => { this.state.dimEditor = null; }"
+                                    title="Cancel (Esc)">
+                                <i class="fa fa-times"/>
+                            </button>
+                        </div>
+                    </t>
+                    <t t-if="selectedElementInfo">
+                        <span class="wc-cf-sep"/>
+                        <span class="wc-cf-elem-label">
+                            <i t-if="selectedElementInfo.type === 'pane'" class="fa fa-square-o"/>
+                            <i t-if="selectedElementInfo.type === 'mullion'" class="fa fa-arrows-h"/>
+                            <t t-esc="selectedElementInfo.label"/>
+                        </span>
+                        <button t-if="selectedElementInfo.type === 'mullion'"
+                                class="wc-cf-btn wc-cf-btn-danger"
+                                t-on-click="() => this.onRemoveSelectedElement()"
+                                title="Remove this mullion">
+                            <i class="fa fa-trash-o"/>
+                        </button>
+                        <button t-if="selectedElementInfo.type === 'pane' and selectedElementInfo.canRemove"
+                                class="wc-cf-btn wc-cf-btn-danger"
+                                t-on-click="() => this.onRemoveSelectedElement()"
+                                title="Remove this pane">
+                            <i class="fa fa-trash-o"/>
+                        </button>
+                        <button t-if="selectedElementInfo.type === 'pane'"
+                                class="wc-cf-btn"
+                                t-on-click="() => this.onResetSelectedPane()"
+                                title="Reset pane to fixed">
+                            <i class="fa fa-refresh"/>
+                        </button>
+                        <button class="wc-cf-btn"
+                                t-on-click="() => this.onDeselectElement()"
+                                title="Deselect">
+                            <i class="fa fa-times"/>
+                        </button>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Element Action Bar merged into top toolbar -->
+        </div>
+    </t>
+
+</templates>

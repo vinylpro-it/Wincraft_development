@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Window Form View (standalone) ── -->
+        <record id="wincraft_window_view_form" model="ir.ui.view">
+            <field name="name">wincraft.window.form</field>
+            <field name="model">wincraft.window</field>
+            <field name="arch" type="xml">
+                <form string="Window Configuration">
+                    <header>
+                        <button name="%(wincraft_studio.action_wincraft_window_label_report)d"
+                                type="action" string="Print Label"
+                                class="btn-secondary" icon="fa-print"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Window name"/></h1>
+                        </div>
+                        <group>
+                            <group string="Identification">
+                                <field name="project_id"/>
+                                <field name="sequence"/>
+                                <field name="source_template_id" readonly="1" optional="hide"/>
+                            </group>
+                            <group string="Type &amp; Size">
+                                <field name="window_type"/>
+                                <field name="width_mm"/>
+                                <field name="height_mm"/>
+                                <field name="panels_horizontal"/>
+                                <field name="panels_vertical"/>
+                                <field name="panels" readonly="1"/>
+                                <field name="opening_direction"/>
+                                <field name="area_sqm" readonly="1"/>                                  <field name="united_inches" readonly="1"/>
+                              </group>
+                          </group>
+                          <group>
+                              <group string="Rough Opening">
+                                  <field name="ro_delta_w"/>
+                                  <field name="ro_delta_h"/>
+                                  <field name="rough_opening_w" readonly="1"/>
+                                  <field name="rough_opening_h" readonly="1"/>
+                              </group>
+                              <group string="Energy Rating">
+                                  <field name="energy_star_zone"/>
+                                  <field name="er_value"/>
+                                  <field name="u_factor"/>
+                                  <field name="shgc"/>                            </group>
+                        </group>
+                        <group>
+                            <group string="Materials">
+                                <field name="frame_material_id"/>
+                                <field name="glass_type_id"/>
+                                <field name="inside_paint_product_id"/>
+                                <field name="frame_colour" widget="color"/>
+                                <field name="outside_paint_product_id"/>
+                                <field name="frame_colour_outside" widget="color"/>
+                            </group>
+                            <group string="Pricing">
+                                <field name="margin_pct"/>
+                                <field name="unit_price" readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="fabricated"/>
+                                <field name="fabricated_date" readonly="1"
+                                       invisible="not fabricated"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Hardware &amp; Add-ons" name="hardware">
+                                <group>
+                                    <field name="hardware_ids" widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="addon_ids" widget="many2many_tags"/>
+                                </group>
+                            </page>
+                            <page string="Bay / Bow Geometry" name="bay_bow"
+                                  invisible="window_type not in ('bay', 'bow')">
+                                <group>
+                                    <group string="Layout">
+                                        <field name="bay_lite_count"/>
+                                        <field name="bay_angle"
+                                               invisible="window_type != 'bay'"/>
+                                        <field name="bay_angle_custom_deg"
+                                               invisible="window_type != 'bay' or bay_angle != 'custom'"/>
+                                        <field name="bay_centre_ratio"
+                                               invisible="window_type != 'bay' or bay_lite_count != 3"/>
+                                        <field name="mulling_post_width_mm"/>
+                                    </group>
+                                    <group string="Computed Geometry">
+                                        <field name="projection_depth_mm" readonly="1"/>
+                                        <field name="bay_lite_chord_mm" readonly="1"/>
+                                        <field name="bay_total_arc_mm" readonly="1"/>
+                                        <field name="bow_radius_mm" readonly="1"
+                                               invisible="window_type != 'bow'"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Head Board">
+                                        <field name="head_board_depth_mm"/>
+                                        <field name="head_board_thickness_mm"/>
+                                    </group>
+                                    <group string="Seat Board">
+                                        <field name="seat_board_depth_mm"/>
+                                        <field name="seat_board_thickness_mm"/>
+                                        <field name="seat_board_finish"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Insulation &amp; Support">
+                                        <field name="insulated_boards"/>
+                                        <field name="bay_support_system"/>
+                                    </group>
+                                </group>
+                                <div class="alert alert-info" role="alert"
+                                     invisible="projection_depth_mm &lt;= 200">
+                                    <strong>Structural note:</strong>
+                                    Projection exceeds 200 mm — cable support kit (or stronger)
+                                    is required per CSA A440. Above 350 mm, add knee braces.
+                                </div>
+                            </page>
+                            <page string="Canvas Position" name="canvas">
+                                <group>
+                                    <group>
+                                        <field name="canvas_x"/>
+                                        <field name="canvas_y"/>
+                                    </group>
+                                    <group>
+                                        <field name="canvas_w"/>
+                                        <field name="canvas_h"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" widget="text" nolabel="1"
+                                       placeholder="Any fabrication or site notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Window List View ── -->
+        <record id="wincraft_window_view_list" model="ir.ui.view">
+            <field name="name">wincraft.window.list</field>
+            <field name="model">wincraft.window</field>
+            <field name="arch" type="xml">
+                <list string="Windows"
+                      decoration-success="fabricated == True"
+                      decoration-muted="fabricated == False">
+                    <field name="sequence" widget="handle"/>
+                    <field name="project_id"/>
+                    <field name="name"/>
+                    <field name="window_type"/>
+                    <field name="width_mm" string="W (mm)"/>
+                    <field name="height_mm" string="H (mm)"/>
+                    <field name="panels_horizontal" string="Panels H" optional="show"/>
+                    <field name="panels_vertical" string="Panels V" optional="show"/>
+                    <field name="panels" optional="hide"/>
+                    <field name="frame_material_id"/>
+                    <field name="glass_type_id"/>
+                    <field name="area_sqm"/>
+                    <field name="united_inches" optional="show"/>
+                    <field name="rough_opening_w" string="RO W" optional="hide"/>
+                    <field name="rough_opening_h" string="RO H" optional="hide"/>
+                    <field name="energy_star_zone" optional="hide"/>
+                    <field name="unit_price"/>
+                    <field name="fabricated" widget="boolean_toggle"/>
+                    <field name="fabricated_date" optional="hide"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Window Search View ── -->
+        <record id="wincraft_window_view_search" model="ir.ui.view">
+            <field name="name">wincraft.window.search</field>
+            <field name="model">wincraft.window</field>
+            <field name="arch" type="xml">
+                <search string="Search Windows">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="window_type"/>
+                    <field name="frame_material_id"/>
+                    <separator/>
+                    <filter string="Pending Fabrication" name="filter_pending"
+                            domain="[('fabricated','=',False)]"/>
+                    <filter string="Fabricated" name="filter_fabricated"
+                            domain="[('fabricated','=',True)]"/>
+                    <group>
+                        <filter string="Project" name="group_project"
+                                context="{'group_by': 'project_id'}"/>
+                        <filter string="Window Type" name="group_type"
+                                context="{'group_by': 'window_type'}"/>
+                        <filter string="Material" name="group_material"
+                                context="{'group_by': 'frame_material_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Fabrication Work Queue Action ── -->
+        <record id="wincraft_window_action_fabrication" model="ir.actions.act_window">
+            <field name="name">Fabrication Work Queue</field>
+            <field name="res_model">wincraft.window</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('fabricated','=',False)]</field>
+            <field name="context">{'search_default_filter_pending': 1}</field>
+        </record>
+
+        <record id="wincraft_window_action_completed" model="ir.actions.act_window">
+            <field name="name">Completed Windows</field>
+            <field name="res_model">wincraft.window</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('fabricated','=',True)]</field>
+        </record>
+
+        <record id="wincraft_window_action_all" model="ir.actions.act_window">
+            <field name="name">All Windows</field>
+            <field name="res_model">wincraft.window</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

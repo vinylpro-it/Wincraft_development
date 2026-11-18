@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_glass_type_view_form" model="ir.ui.view">
+            <field name="name">wincraft.glass.type.form</field>
+            <field name="model">wincraft.glass.type</field>
+            <field name="arch" type="xml">
+                <form string="Glass Type">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_windows" type="object"
+                                    class="oe_stat_button" icon="fa-window-maximize">
+                                <field name="window_count" widget="statinfo" string="Windows"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="rate_per_sqm"/>
+                                <field name="glass_opacity" string="Canvas Opacity"/>
+                            </group>
+                            <group>
+                                <field name="u_value" string="U-Value (W/m²·K)"/>
+                                <field name="shgc" string="SHGC"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <field name="description" widget="text"
+                               placeholder="Glass specification, certifications..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_glass_type_view_list" model="ir.ui.view">
+            <field name="name">wincraft.glass.type.list</field>
+            <field name="model">wincraft.glass.type</field>
+            <field name="arch" type="xml">
+                <list string="Glass Types">
+                    <field name="name"/>
+                    <field name="rate_per_sqm" string="Rate/sqm"/>
+                    <field name="u_value" string="U-Value"/>
+                    <field name="shgc"/>
+                    <field name="window_count" string="Windows"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_glass_type_action" model="ir.actions.act_window">
+            <field name="name">Glass Types</field>
+            <field name="res_model">wincraft.glass.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

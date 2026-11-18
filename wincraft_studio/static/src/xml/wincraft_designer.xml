@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Designer — Root Action Template
+         Three-panel layout: Library | Canvas | Properties + Quote strip
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.WincraftDesignerAction">
+        <div class="wc-designer-root">
+            <!-- New 4-section config header (WS-17/WS-18) — topmost, above
+                 the brand/actions topbar. Sections 1-2 are wired up
+                 ("Window Configuration", "New Window"); the other 2 belong
+                 to not-yet-started tickets. "New Window" stays disabled
+                 until section 1's required fields are set — see
+                 canOpenNewWindowSection. -->
+            <DesignerConfigHeader
+                newWindowEnabled="canOpenNewWindowSection"
+                onOpenWindowConfiguration.bind="onOpenWindowConfigurationDialog"
+                onOpenNewWindow.bind="onOpenNewWindowWizard"
+            />
+
+            <DesignerTopbar
+                isSaving="state.isSaving"
+                isDirty="state.isDirty"
+                activeWindowIndex="activeWindowIndex"
+                windowCount="windowCount"
+                activeWindowName="selectedWindow and selectedWindow.name or ''"
+                onSave.bind="onSave"
+                onExit.bind="onExit"
+                onExportPDF.bind="onExportPDF"
+                onGetQuote.bind="onGetQuote"
+                onPrevWindow.bind="onPrevWindow"
+                onNextWindow.bind="onNextWindow"
+                onDeleteWindow.bind="onDeleteActiveWindow"
+                onSaveAsTemplate.bind="onOpenSaveTemplateDialog"
+                onGenerateBom.bind="onGenerateBom"
+            />
+
+            <!-- Horizontal Design Toolbar -->
+            <DesignToolbar
+                selectedWindow="selectedWindow"
+                selectedElement="state.selectedElement"
+                selectedPaneIds="state.selectedPaneIds"
+                onWindowUpdate.bind="onWindowUpdate"
+                onDividerDrop.bind="onDividerDrop"
+            />
+
+            <div class="wc-designer-body">
+                <!-- Left: Properties Panel with toggle -->
+                <div t-att-class="'wc-props-wrapper' + (state.showPropsPanel ? '' : ' wc-props-collapsed')">
+                    <!-- Collapsed: vertical side-tab -->
+                    <button t-if="!state.showPropsPanel" class="wc-props-side-tab"
+                            t-on-click="() => this.state.showPropsPanel = true"
+                            title="Show Properties">
+                        <i class="fa fa-sliders"/>
+                        <span>Properties</span>
+                    </button>
+                    <!-- Expanded: full panel with inline header -->
+                    <div class="wc-props-panel-inner" t-if="state.showPropsPanel"
+                         t-att-style="'width:' + state.propsPanelWidth + 'px;min-width:' + state.propsPanelWidth + 'px'">
+                        <div class="wc-panel-header">
+                            <span class="wc-panel-header-title"><i class="fa fa-sliders"/> Properties</span>
+                            <button class="wc-panel-header-close" t-on-click="() => this.state.showPropsPanel = false"
+                                    title="Close Properties Panel">
+                                <i class="fa fa-times"/>
+                            </button>
+                        </div>
+                        <PropertiesPanel
+                            selectedWindow="selectedWindow"
+                            selectedElement="state.selectedElement"
+                            selectedPaneIds="state.selectedPaneIds"
+                            materials="state.materials"
+                            colors="state.colors"
+                            glassTypes="state.glassTypes"
+                            glazingConfigs="state.glazingConfigs"
+                            hardware="state.hardware"
+                            casementHardware="state.casementHardware"
+                            addons="state.addons"
+                            addonCategories="state.addonCategories"
+                            paintProducts="state.paintProducts"
+                            rules="state.rules"
+                            profileTypes="state.profileTypes"
+                            pricingRules="state.pricingRules"
+                            productOptions="state.productOptions"
+                            cavityWidths="state.cavityWidths"
+                            gasFills="state.gasFills"
+                            spacerTypes="state.spacerTypes"
+                            glassTints="state.glassTints"
+                            openingTypeMaster="state.openingTypeMaster"
+                            unitSystem="state.unitSystem"
+                            onWindowUpdate.bind="onWindowUpdate"
+                            onSelectElement.bind="onSelectElement"
+                        />
+                    </div>
+                    <!-- Resize handle (right edge of props panel) -->
+                    <div t-if="state.showPropsPanel" class="wc-resize-handle"
+                         t-on-mousedown="(ev) => this.onResizeStart('props', ev)"/>
+                </div>
+
+                <!-- Centre: SVG Canvas (single window) -->
+                <DesignerCanvas
+                    windows="activeWindowForCanvas"
+                    projectId="state.projectId"
+                    selectedIds="state.selectedIds"
+                    selectedElement="state.selectedElement"
+                    selectedPaneIds="state.selectedPaneIds"
+                    snapEnabled="state.snapEnabled"
+                    canUndo="canUndo"
+                    canRedo="canRedo"
+                    history="history"
+                    onWindowsChange.bind="onWindowsChange"
+                    onSelectChange.bind="onSelectChange"
+                    onSaveStatus.bind="onSaveStatus"
+                    onUndo.bind="onUndo"
+                    onRedo.bind="onRedo"
+                    onToggleSnap.bind="toggleSnap"
+                    onAlign.bind="onAlign"
+                    onDistribute.bind="onDistribute"
+                    onSelectElement.bind="onSelectElement"
+                    onDividerDrop.bind="onDividerDrop"
+                    onMullionDelete.bind="onMullionDelete"
+                    onResetPane.bind="onResetPane"
+                    onWindowUpdate.bind="onWindowUpdate"
+                    onSectionDimEdit.bind="onSectionDimEdit"
+                    glazingConfigs="state.glazingConfigs"
+                    glassConfigs="state.glassConfigs"
+                    unitSystem="state.unitSystem"
+                />
+
+                <!-- Right: Live BOM Panel with toggle -->
+                <div t-att-class="'wc-bom-wrapper' + (state.showBomPanel ? '' : ' wc-bom-collapsed')">
+                    <!-- Resize handle (left edge of BOM panel) -->
+                    <div t-if="state.showBomPanel" class="wc-resize-handle"
+                         t-on-mousedown="(ev) => this.onResizeStart('bom', ev)"/>
+                    <!-- Collapsed: vertical side-tab -->
+                    <button t-if="!state.showBomPanel" class="wc-bom-side-tab"
+                            t-on-click="() => this.state.showBomPanel = true"
+                            title="Show BOM Panel">
+                        <i class="fa fa-list-alt"/>
+                        <span>BOM</span>
+                    </button>
+                    <!-- Expanded: full panel with inline header -->
+                    <div class="wc-bom-panel-inner" t-if="state.showBomPanel"
+                         t-att-style="'width:' + state.bomPanelWidth + 'px;min-width:' + state.bomPanelWidth + 'px'">
+                        <div class="wc-panel-header">
+                            <span class="wc-panel-header-title"><i class="fa fa-list-alt"/> Live BOM</span>
+                            <button class="wc-panel-header-close" t-on-click="() => this.state.showBomPanel = false"
+                                    title="Close BOM Panel">
+                                <i class="fa fa-times"/>
+                            </button>
+                        </div>
+                        <BomLivePanel
+                            selectedWindow="selectedWindow"
+                            materials="state.materials"
+                            glassTypes="state.glassTypes"
+                            glazingConfigs="state.glazingConfigs"
+                            glassConfigs="state.glassConfigs"
+                            hardware="state.hardware"
+                            casementHardware="state.casementHardware"
+                            profileTypes="state.profileTypes"
+                            paintProducts="state.paintProducts"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom: Window Filmstrip -->
+            <WindowFilmstrip
+                windows="state.windows"
+                activeWindowIndex="activeWindowIndex"
+                onSelectWindow.bind="onFilmstripSelect"
+                onNewWindow.bind="onOpenNewWindowWizard"
+                canAddWindow="canAddWindow and canOpenNewWindowSection"
+            />
+
+            <!-- Quote Strip: collapsible project price summary -->
+            <QuoteBreakdown
+                windows="state.windows"
+                installationCharge="state.project and state.project.installation_charge or 0"
+                oneTimeAddonTotal="oneTimeAddonTotal"
+                discountPct="state.project and state.project.discount_pct or 0"
+                gstPct="gstPct"
+            />
+
+            <!-- Status Bar -->
+            <StatusBar
+                windowCount="statusWindowCount"
+                totalArea="statusTotalArea"
+                projectName="statusProjectName"
+            />
+
+            <!-- New Window Wizard Modal -->
+            <NewWindowWizard
+                t-if="state.showNewWindowWizard"
+                initialConfig="newWindowConfigSeed"
+                catalogs="configCatalogProps"
+                rooms="state.rooms"
+                orderLine="state.windows.length + 1"
+                unitSystem="state.unitSystem"
+                onConfirm.bind="onNewWindowWizardConfirm"
+                onClose.bind="onCloseNewWindowWizard"
+            />
+
+            <!-- BOM Preview Modal -->
+            <BomPreview
+                t-if="state.showBomPreview and state.bomPreviewData"
+                data="state.bomPreviewData"
+                onConfirm.bind="onBomConfirm"
+                onClose.bind="onBomPreviewClose"
+            />
+        </div>
+    </t>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Designer Topbar — Tab-based navigation
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.DesignerTopbar">
+        <div class="wc-topbar">
+            <!-- Left: Brand + Back -->
+            <div class="wc-topbar-left">
+                <button class="wc-topbar-back" t-on-click="props.onExit" title="Back to Project">
+                    <i class="fa fa-arrow-left"/>
+                </button>
+                <span class="wc-topbar-brand">
+                    wincraft<b>studio</b>
+                </span>
+            </div>
+
+            <!-- Centre-left: Actions (New Window moved to the config header, WS-18) -->
+            <div class="wc-topbar-actions">
+                <button class="wc-topbar-tab" t-on-click="props.onExportPDF"
+                        title="Download Cut-List PDF">
+                    <i class="fa fa-file-pdf-o"/> Export PDF
+                </button>
+                <button class="wc-topbar-tab" t-on-click="props.onGenerateBom"
+                        title="Generate Manufacturing BOM">
+                    <i class="fa fa-cogs"/> Generate BOM
+                </button>
+            </div>
+
+            <!-- Centre-right: Window Navigator -->
+            <div class="wc-window-nav" t-if="props.windowCount > 0">
+                <button class="wc-nav-btn" t-on-click="props.onPrevWindow" title="Previous Window">
+                    <i class="fa fa-chevron-left"/>
+                </button>
+                <span class="wc-nav-label">
+                    <t t-esc="props.activeWindowName || ('Window ' + (props.activeWindowIndex + 1))"/>
+                </span>
+                <button class="wc-nav-btn" t-on-click="props.onNextWindow" title="Next Window">
+                    <i class="fa fa-chevron-right"/>
+                </button>
+                <button class="wc-nav-btn wc-nav-delete" t-on-click="props.onDeleteWindow" title="Delete Window">
+                    <i class="fa fa-trash-o"/>
+                </button>
+                <button class="wc-nav-btn wc-nav-save-tpl" t-on-click="props.onSaveAsTemplate" title="Save as Template">
+                    <i class="fa fa-bookmark"/>
+                </button>
+            </div>
+
+            <!-- Right: Save + Get Quote CTA -->
+            <div class="wc-topbar-right">
+                <button class="wc-topbar-btn wc-topbar-save"
+                        t-on-click="props.onSave"
+                        t-att-disabled="props.isSaving"
+                        title="Save Canvas">
+                    <i class="fa fa-save"/>
+                    <t t-esc="saveLabel"/>
+                </button>
+                <button class="wc-topbar-cta" t-on-click="props.onGetQuote"
+                        title="Get Quote">
+                    Get Quote
+                </button>
+            </div>
+        </div>
+    </t>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Designer Config Header — 4-section popup launcher (WS-17)
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.DesignerConfigHeader">
+        <div class="wc-config-header">
+            <t t-foreach="sections" t-as="section" t-key="section.key">
+                <button t-att-class="'wc-config-header-btn' + (section.enabled ? '' : ' wc-config-header-btn--disabled')"
+                        t-att-disabled="!section.enabled"
+                        t-att-title="!section.enabled and section.disabledHint or undefined"
+                        t-on-click="() => this.onSectionClick(section)"
+                        t-esc="section.label"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

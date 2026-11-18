@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Revenue Analysis: pivot + graph on wincraft.window ── -->
+        <record id="wincraft_window_view_pivot" model="ir.ui.view">
+            <field name="name">wincraft.window.pivot</field>
+            <field name="model">wincraft.window</field>
+            <field name="arch" type="xml">
+                <pivot string="Revenue Analysis">
+                    <field name="project_id" type="row"/>
+                    <field name="window_type" type="col"/>
+                    <field name="unit_price" type="measure"/>
+                    <field name="area_sqm" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="wincraft_window_view_graph" model="ir.ui.view">
+            <field name="name">wincraft.window.graph</field>
+            <field name="model">wincraft.window</field>
+            <field name="arch" type="xml">
+                <graph string="Product Mix" type="bar">
+                    <field name="window_type" type="row"/>
+                    <field name="unit_price" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="wincraft_window_action_revenue" model="ir.actions.act_window">
+            <field name="name">Revenue Analysis</field>
+            <field name="res_model">wincraft.window</field>
+            <field name="view_mode">pivot,graph,list</field>
+        </record>
+
+        <!-- ── Project Pipeline: graph on wincraft.project ── -->
+        <record id="wincraft_project_view_graph" model="ir.ui.view">
+            <field name="name">wincraft.project.graph</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <graph string="Project Pipeline" type="bar">
+                    <field name="state" type="row"/>
+                    <field name="total_price" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="wincraft_project_view_pivot" model="ir.ui.view">
+            <field name="name">wincraft.project.pivot</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <pivot string="Project Revenue">
+                    <field name="partner_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="total_price" type="measure"/>
+                    <field name="total_windows" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="wincraft_project_action_pipeline" model="ir.actions.act_window">
+            <field name="name">Project Pipeline</field>
+            <field name="res_model">wincraft.project</field>
+            <field name="view_mode">graph,pivot,list</field>
+        </record>
+
+    </data>
+</odoo>

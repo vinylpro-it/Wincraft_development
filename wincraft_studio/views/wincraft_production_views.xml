@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             MRP Production — extended views for WinCraft windows
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Production Order — Tree (list) ── -->
+        <record id="view_mrp_production_wincraft_tree" model="ir.ui.view">
+            <field name="name">mrp.production.wincraft.tree</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="wincraft_window_id" optional="show"/>
+                    <field name="wincraft_project_id" optional="show"/>
+                    <field name="window_barcode" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ── Production Order — Form extension ── -->
+        <record id="view_mrp_production_wincraft_form" model="ir.ui.view">
+            <field name="name">mrp.production.wincraft.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="wincraft_window_id"/>
+                    <field name="wincraft_project_id" readonly="1"/>
+                    <field name="window_barcode" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ── Production Kanban — scheduling board ── -->
+        <record id="view_mrp_production_wincraft_kanban" model="ir.ui.view">
+            <field name="name">mrp.production.wincraft.kanban</field>
+            <field name="model">mrp.production</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="wincraft_window_id"/>
+                    <field name="wincraft_project_id"/>
+                    <field name="window_barcode"/>
+                    <field name="state"/>
+                    <field name="date_start"/>
+                    <field name="qty_producing"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="o_kanban_content">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                                <div t-if="record.wincraft_window_id.value">
+                                    <span class="badge text-bg-info me-1">
+                                        <field name="window_barcode"/>
+                                    </span>
+                                    <field name="wincraft_window_id"/>
+                                </div>
+                                <div class="text-muted" t-if="record.wincraft_project_id.value">
+                                    <i class="fa fa-folder-o me-1"/>
+                                    <field name="wincraft_project_id"/>
+                                </div>
+                                <div class="mt-1">
+                                    <field name="product_id"/>
+                                </div>
+                                <div class="text-muted small" t-if="record.date_start.value">
+                                    <i class="fa fa-calendar me-1"/>
+                                    <field name="date_start"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- ── Production Calendar — scheduling view ── -->
+        <record id="view_mrp_production_wincraft_calendar" model="ir.ui.view">
+            <field name="name">mrp.production.wincraft.calendar</field>
+            <field name="model">mrp.production</field>
+            <field name="arch" type="xml">
+                <calendar string="Production Schedule"
+                          date_start="date_start"
+                          date_stop="date_finished"
+                          color="state"
+                          quick_create="0"
+                          event_open_popup="1">
+                    <field name="name"/>
+                    <field name="wincraft_window_id"/>
+                    <field name="wincraft_project_id"/>
+                    <field name="state"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- ── Production Search ── -->
+        <record id="view_mrp_production_wincraft_search" model="ir.ui.view">
+            <field name="name">mrp.production.wincraft.search</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="wincraft_window_id"/>
+                    <field name="wincraft_project_id"/>
+                    <field name="window_barcode"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ── Action: WinCraft Production Orders ── -->
+        <record id="action_wincraft_production" model="ir.actions.act_window">
+            <field name="name">Production Orders</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_mode">kanban,list,form,calendar</field>
+            <field name="domain">[('wincraft_window_id', '!=', False)]</field>
+            <field name="context">{'default_group_by': 'state'}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No WinCraft production orders yet.
+                </p>
+                <p>
+                    Manufacturing orders are created from window BOMs
+                    in the project designer.
+                </p>
+            </field>
+        </record>
+
+        <!-- Bind kanban as the first view -->
+        <record id="action_wincraft_production_view_kanban" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="action_wincraft_production"/>
+            <field name="sequence">1</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_mrp_production_wincraft_kanban"/>
+        </record>
+
+        <record id="action_wincraft_production_view_calendar" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="action_wincraft_production"/>
+            <field name="sequence">4</field>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_mrp_production_wincraft_calendar"/>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Station Log views
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Station Log — List ── -->
+        <record id="view_wincraft_station_log_tree" model="ir.ui.view">
+            <field name="name">wincraft.station.log.tree</field>
+            <field name="model">wincraft.station.log</field>
+            <field name="arch" type="xml">
+                <list string="Station Log" decoration-warning="not checked_out">
+                    <field name="window_id"/>
+                    <field name="workcenter_id"/>
+                    <field name="operator_id"/>
+                    <field name="check_in"/>
+                    <field name="checked_out"/>
+                    <field name="duration_minutes" widget="float_time"/>
+                    <field name="result" widget="badge"
+                           decoration-success="result == 'pass'"
+                           decoration-danger="result == 'fail'"
+                           decoration-warning="result == 'rework'"/>
+                    <field name="notes" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Station Log — Form ── -->
+        <record id="view_wincraft_station_log_form" model="ir.ui.view">
+            <field name="name">wincraft.station.log.form</field>
+            <field name="model">wincraft.station.log</field>
+            <field name="arch" type="xml">
+                <form string="Station Log Entry">
+                    <sheet>
+                        <group>
+                            <group string="Window">
+                                <field name="window_id"/>
+                                <field name="workcenter_id"/>
+                                <field name="operator_id"/>
+                            </group>
+                            <group string="Timing">
+                                <field name="check_in"/>
+                                <field name="checked_out"/>
+                                <field name="duration_minutes" readonly="1" widget="float_time"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Result">
+                                <field name="result" widget="radio"/>
+                            </group>
+                        </group>
+                        <separator string="Notes"/>
+                        <field name="notes" nolabel="1"
+                               placeholder="Station notes, defects, rework instructions..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Station Log — Search ── -->
+        <record id="view_wincraft_station_log_search" model="ir.ui.view">
+            <field name="name">wincraft.station.log.search</field>
+            <field name="model">wincraft.station.log</field>
+            <field name="arch" type="xml">
+                <search string="Station Log">
+                    <field name="window_id"/>
+                    <field name="workcenter_id"/>
+                    <field name="operator_id"/>
+                    <filter name="open" string="In Progress"
+                            domain="[('checked_out', '=', False)]"/>
+                    <filter name="completed" string="Completed"
+                            domain="[('checked_out', '!=', False)]"/>
+                    <separator/>
+                    <filter name="fail" string="Fail / Rework"
+                            domain="[('result', 'in', ['fail', 'rework'])]"/>
+                    <group>
+                        <filter name="group_station" string="Station"
+                                context="{'group_by': 'workcenter_id'}"/>
+                        <filter name="group_window" string="Window"
+                                context="{'group_by': 'window_id'}"/>
+                        <filter name="group_operator" string="Operator"
+                                context="{'group_by': 'operator_id'}"/>
+                        <filter name="group_result" string="Result"
+                                context="{'group_by': 'result'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: Station Log ── -->
+        <record id="action_wincraft_station_log" model="ir.actions.act_window">
+            <field name="name">Station Log</field>
+            <field name="res_model">wincraft.station.log</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No station log entries yet.
+                </p>
+                <p>
+                    Logs are created automatically when a window barcode is
+                    scanned at a work centre station.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

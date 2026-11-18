@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — WhatsApp / Mail Template for Quote Notification
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <record id="whatsapp_template_quote" model="mail.template">
+        <field name="name">WinCraft Quote Notification</field>
+        <field name="model_id" ref="wincraft_studio.model_wincraft_project"/>
+        <field name="subject">Quotation {{ object.ref }} — {{ object.name }}</field>
+        <field name="body_html"><![CDATA[
+Dear {{ object.partner_id.name }},
+
+Your quotation <strong>{{ object.ref }}</strong> for <strong>{{ object.name }}</strong> is ready.
+
+💰 Total: <strong>{{ object.currency_id.symbol }}{{ '{:,.0f}'.format(object.total_price) }}</strong>
+📅 Valid until: {{ object.due_date or 'No expiry' }}
+
+🔗 <a t-att-href="object._get_portal_url()">View online</a>
+
+Reply to confirm or request changes.
+
+— {{ object.company_id.name }}
+]]></field>
+        <field name="auto_delete" eval="False"/>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+    </record>
+
+</odoo>

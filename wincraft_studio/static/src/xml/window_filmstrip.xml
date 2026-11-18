@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.WindowFilmstrip">
+        <div class="wc-filmstrip">
+            <div class="wc-filmstrip-scroll">
+                <t t-foreach="props.windows" t-as="w" t-key="w.id">
+                    <div t-att-class="{ 'wc-filmstrip-card': true, 'active': isActive(w_index) }"
+                         t-on-click="() => this.onCardClick(w_index)"
+                         t-att-title="w.name || ('Window ' + (w_index + 1))">
+                        <div class="wc-filmstrip-thumb" t-out="getThumb(w)"/>
+                        <span class="wc-filmstrip-label" t-esc="w.name || ('W-' + String(w_index + 1).padStart(3, '0'))"/>
+                    </div>
+                </t>
+                <div t-if="props.canAddWindow !== false"
+                     class="wc-filmstrip-add" t-on-click="props.onNewWindow" title="Add new window">
+                    <i class="fa fa-plus"/>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_pricing_rule_view_form" model="ir.ui.view">
+            <field name="name">wincraft.pricing.rule.form</field>
+            <field name="model">wincraft.pricing.rule</field>
+            <field name="arch" type="xml">
+                <form string="Pricing Rule">
+                    <sheet>
+                        <group>
+                            <group string="Match Criteria">
+                                <field name="material_id"/>
+                                <field name="glass_type_id"/>
+                                <field name="is_fallback" readonly="1" widget="boolean_toggle"/>
+                            </group>
+                            <group string="Rates">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="pricing_method" widget="radio"/>
+                                <field name="base_rate" string="Base Rate (/sqm)"
+                                       invisible="pricing_method == 'united_inches'"/>
+                                <field name="fabrication_rate" string="Fabrication Rate (/sqm)"
+                                       invisible="pricing_method == 'united_inches'"/>
+                                <field name="margin_pct" string="Target Margin (%)"/>
+                            </group>
+                        </group>
+                        <group invisible="pricing_method != 'united_inches'">
+                            <field name="ui_tier_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="ui_min" string="Min UI"/>
+                                    <field name="ui_max" string="Max UI"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="price" string="Price"/>
+                                </list>
+                            </field>
+                        </group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_pricing_rule_view_list" model="ir.ui.view">
+            <field name="name">wincraft.pricing.rule.list</field>
+            <field name="model">wincraft.pricing.rule</field>
+            <field name="arch" type="xml">
+                <list string="Pricing Rules">
+                    <field name="name"/>
+                    <field name="material_id"/>
+                    <field name="glass_type_id"/>
+                    <field name="pricing_method"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="base_rate" string="Base (/sqm)"/>
+                    <field name="fabrication_rate" string="Fab (/sqm)"/>
+                    <field name="margin_pct" string="Margin %"/>
+                    <field name="is_fallback" string="Fallback" widget="boolean_toggle" readonly="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_pricing_rule_action" model="ir.actions.act_window">
+            <field name="name">Pricing Rules</field>
+            <field name="res_model">wincraft.pricing.rule</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add pricing rules to control how window unit prices are calculated.
+                </p>
+                <p>
+                    Create a rule with no material or glass to use as a fallback for all combinations.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

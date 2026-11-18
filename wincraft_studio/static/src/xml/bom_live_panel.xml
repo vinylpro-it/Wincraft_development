@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.BomLivePanel">
+        <div class="wc-bom-panel">
+            <t t-if="hasWindow">
+
+                <!-- Summary Bar -->
+                <div class="wc-bom-summary">
+                    <div class="wc-bom-summary-left">
+                        <span class="wc-bom-summary-label">Estimated Cost</span>
+                        <span class="wc-bom-summary-value" t-esc="fmt(bom.totalCost)"/>
+                    </div>
+                    <div class="wc-bom-summary-right">
+                        <span class="wc-bom-summary-stat"><t t-esc="bom.categories.length"/> categories</span>
+                        <span class="wc-bom-summary-stat"><t t-esc="bom.componentCount"/> components</span>
+                    </div>
+                </div>
+
+                <!-- Single Grouped Table -->
+                <div class="wc-bom-grouped-table">
+                    <table class="wc-bom-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th class="wc-bom-num">Qty</th>
+                                <th class="wc-bom-num">Rate</th>
+                                <th class="wc-bom-num">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="bom.categories" t-as="cat" t-key="cat.key">
+                                <!-- Category Band Row -->
+                                <tr class="wc-bom-cat-row">
+                                    <td colspan="3">
+                                        <span class="wc-bom-badge" t-att-style="'background-color:' + cat.color"/>
+                                        <span class="wc-bom-cat-label" t-esc="cat.label"/>
+                                        <span class="wc-bom-cat-count">(<t t-esc="cat.items.length"/>)</span>
+                                    </td>
+                                    <td class="wc-bom-num wc-bom-cat-subtotal" t-esc="fmt(categorySubtotal(cat))"/>
+                                </tr>
+                                <!-- Component Rows -->
+                                <t t-foreach="cat.items" t-as="item" t-key="item.name + '_' + item_index">
+                                    <tr class="wc-bom-item-row">
+                                        <td class="wc-bom-name" t-esc="item.name"/>
+                                        <td class="wc-bom-num">
+                                            <t t-esc="item.qty"/> <small t-esc="item.uom"/>
+                                        </td>
+                                        <td class="wc-bom-num" t-esc="fmt(item.unitCost)"/>
+                                        <td class="wc-bom-num wc-bom-line-total" t-esc="fmt(item.lineCost)"/>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                        <!-- Total Footer -->
+                        <tfoot>
+                            <tr class="wc-bom-total-row">
+                                <td colspan="3">Total</td>
+                                <td class="wc-bom-num wc-bom-total-value" t-esc="fmt(bom.totalCost)"/>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </t>
+
+            <div t-else="" class="wc-bom-empty">
+                <div class="wc-bom-empty-icon">
+                    <i class="fa fa-list-alt"/>
+                </div>
+                <p>Select a window to see live BOM</p>
+            </div>
+        </div>
+    </t>
+
+</templates>

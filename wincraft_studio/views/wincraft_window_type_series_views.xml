@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_window_type_series_view_form" model="ir.ui.view">
+            <field name="name">wincraft.window.type.series.form</field>
+            <field name="model">wincraft.window.type.series</field>
+            <field name="arch" type="xml">
+                <form string="Profile Type">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="e.g. Classic 70"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Material">
+                                <field name="material_type"/>
+                                <field name="material_id"/>
+                                <field name="available_depths" widget="json"/>
+                                <field name="default_depth_mm"/>
+                            </group>
+                            <group string="Properties">
+                                <field name="mullion_width_mm"/>
+                                <field name="max_sash_weight_kg"/>
+                                <field name="max_span_mm"/>
+                                <field name="u_value"/>
+                                <field name="rate_per_metre"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <group string="Colour Options">
+                            <field name="colour_options" widget="json"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="window_count"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_window_type_series_view_list" model="ir.ui.view">
+            <field name="name">wincraft.window.type.series.list</field>
+            <field name="model">wincraft.window.type.series</field>
+            <field name="arch" type="xml">
+                <list string="Profile Type" default_order="sequence">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="material_type"/>
+                    <field name="default_depth_mm"/>
+                    <field name="mullion_width_mm"/>
+                    <field name="max_sash_weight_kg"/>
+                    <field name="u_value"/>
+                    <field name="material_id"/>
+                    <field name="rate_per_metre"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="window_count"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_window_type_series_action" model="ir.actions.act_window">
+            <field name="name">Profile Types</field>
+            <field name="res_model">wincraft.window.type.series</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first profile type
+                </p>
+                <p>
+                    Profile types set the material family, available depths, mullion
+                    widths and thermal properties used for BOM and pricing, and group
+                    window types in the Choose Window Type wizard.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

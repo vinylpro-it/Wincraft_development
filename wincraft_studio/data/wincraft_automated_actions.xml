@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Cron: Fabrication Due-Date Reminder
+         Sends chatter notification 3 days before due_date for 'fabricating' projects.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="ir_cron_wincraft_fabrication_reminder" model="ir.cron">
+        <field name="name">WinCraft: Fabrication Due-Date Reminder</field>
+        <field name="model_id" ref="model_wincraft_project"/>
+        <field name="code">model._cron_send_fabrication_reminders()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Color Import Wizard — Form View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_color_import_wizard_form" model="ir.ui.view">
+        <field name="name">wincraft.color.import.wizard.form</field>
+        <field name="model">wincraft.color.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Colors">
+                <group>
+                    <field name="vendor" placeholder="e.g. Gentek, Kaycan, Stain"/>
+                </group>
+                <p class="text-muted">
+                    The next screen is Odoo's standard file import. Rows in
+                    your file with no Vendor column of their own will use the
+                    name typed above; a file that does have its own Vendor
+                    column overrides this per row.
+                </p>
+                <footer>
+                    <button name="action_open_import"
+                            string="Continue to Import"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Color Import Wizard — Action
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="action_wincraft_color_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Colors</field>
+        <field name="res_model">wincraft.color.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

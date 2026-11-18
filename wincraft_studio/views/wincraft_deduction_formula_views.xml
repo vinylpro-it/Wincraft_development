@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Deduction Formula — Form View
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="wincraft_deduction_formula_view_form" model="ir.ui.view">
+            <field name="name">wincraft.deduction.formula.form</field>
+            <field name="model">wincraft.deduction.formula</field>
+            <field name="arch" type="xml">
+                <form string="Deduction Formula">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Identity">
+                                <field name="opening_type"/>
+                                <field name="profile_type_id"/>
+                                <field name="has_sash" readonly="1"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Outer Frame" name="outer_frame">
+                                <group>
+                                    <group string="Dimensions">
+                                        <field name="frame_rebate_mm"/>
+                                        <field name="frame_mitre_allowance_mm"/>
+                                        <field name="frame_weld_allowance_mm"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Sash" name="sash" invisible="not has_sash">
+                                <group>
+                                    <group string="Clearances">
+                                        <field name="sash_clearance_mm"/>
+                                        <field name="sash_rebate_mm"/>
+                                    </group>
+                                    <group string="Allowances">
+                                        <field name="sash_mitre_allowance_mm"/>
+                                        <field name="sash_weld_allowance_mm"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Glass" name="glass">
+                                <group>
+                                    <group string="Glass Clearances">
+                                        <field name="glass_clearance_mm"/>
+                                    </group>
+                                    <group string="Glazing Bead">
+                                        <field name="glazing_bead_depth_mm"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Gasket &amp; Seal" name="gasket_seal">
+                                <group>
+                                    <group string="Gasket">
+                                        <field name="gasket_allowance_mm"/>
+                                    </group>
+                                    <group string="Weatherseal">
+                                        <field name="weatherseal_overlap_mm"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Reinforcement" name="reinforcement">
+                                <group>
+                                    <group>
+                                        <field name="reinforcement_required"/>
+                                        <field name="reinforcement_deduction_mm"
+                                               invisible="not reinforcement_required"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Products" name="products">
+                                <group>
+                                    <group string="Component Products">
+                                        <field name="sash_product_tmpl_id"/>
+                                        <field name="bead_product_tmpl_id"/>
+                                        <field name="gasket_product_tmpl_id"/>
+                                        <field name="reinforcement_product_tmpl_id"/>
+                                        <field name="weatherseal_product_tmpl_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Deduction Formula — List View
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="wincraft_deduction_formula_view_list" model="ir.ui.view">
+            <field name="name">wincraft.deduction.formula.list</field>
+            <field name="model">wincraft.deduction.formula</field>
+            <field name="arch" type="xml">
+                <list string="Deduction Formulas" default_order="opening_type">
+                    <field name="opening_type"/>
+                    <field name="profile_type_id"/>
+                    <field name="frame_rebate_mm"/>
+                    <field name="sash_clearance_mm"/>
+                    <field name="glass_clearance_mm"/>
+                    <field name="glazing_bead_depth_mm"/>
+                    <field name="reinforcement_required" widget="boolean_toggle"/>
+                    <field name="has_sash" string="Operable"/>
+                    <field name="active" widget="boolean_toggle" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Deduction Formula — Action
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="wincraft_deduction_formula_action" model="ir.actions.act_window">
+            <field name="name">Deduction Formulas</field>
+            <field name="res_model">wincraft.deduction.formula</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first deduction formula
+                </p>
+                <p>
+                    Deduction formulas define the frame rebate, sash clearance,
+                    glass clearance, and other dimensional deductions
+                    applied when generating a BOM cut-list for each
+                    opening type and profile type combination.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

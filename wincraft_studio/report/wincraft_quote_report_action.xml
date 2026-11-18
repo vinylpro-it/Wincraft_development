@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Report action: Quotation PDF -->
+    <record id="action_wincraft_quote_report" model="ir.actions.report">
+        <field name="name">WinCraft Quotation</field>
+        <field name="model">wincraft.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wincraft_studio.report_wincraft_quote</field>
+        <field name="report_file">wincraft_studio.report_wincraft_quote</field>
+        <field name="print_report_name">'Quote_%s' % object.ref</field>
+        <field name="binding_model_id" ref="model_wincraft_project"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

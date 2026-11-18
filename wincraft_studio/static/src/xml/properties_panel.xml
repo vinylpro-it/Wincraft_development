@@ -1,0 +1,1197 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         Properties Panel â€” right sidebar for editing selected window
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+    <t t-name="wincraft_studio.PropertiesPanel">
+        <div class="wc-properties-panel">
+            <t t-if="hasSelection">
+
+                <!-- Validation banner (always visible above tabs) -->
+                <t t-if="frameValidations.length > 0">
+                    <div class="wc-validation-card">
+                        <t t-foreach="frameValidations" t-as="v" t-key="v.field + '_' + v_index">
+                            <div t-att-class="'wc-validation-item wc-validation-' + v.severity">
+                                <i t-att-class="v.severity === 'error' ? 'fa fa-exclamation-circle' : 'fa fa-exclamation-triangle'"/>
+                                <span t-esc="v.message"/>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+
+                <!-- Tab strip -->
+                <div class="wc-pp-tabs">
+                    <button t-att-class="{ 'wc-pp-tab': true, 'active': state.activeTab === 'frame' }"
+                            t-on-click="() => this.state.activeTab = 'frame'">
+                        <i class="fa fa-square-o"/>
+                        Frame
+                    </button>
+                    <button t-att-class="{ 'wc-pp-tab': true, 'active': state.activeTab === 'pane' }"
+                            t-on-click="() => this.state.activeTab = 'pane'">
+                        <i class="fa fa-th-large"/>
+                        Pane
+                    </button>
+                </div>
+
+                <!-- â•â•â• FRAME TAB â•â•â• -->
+                <div class="wc-pp-tab-body" t-if="state.activeTab === 'frame'">
+
+                    <div class="wc-tbl-section-head">Dimensions</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Width</span>
+                        <input class="wc-tbl-input"
+                               t-att-type="this.dimInputType"
+                               t-att-value="this.displayDim(this.window.width_mm || 600)"
+                               t-att-step="props.unitSystem === 'imperial' ? 0.25 : 10"
+                               t-on-blur="(ev) => this.onIntFieldBlur(ev, 'width_mm')"/>
+                        <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Height</span>
+                        <input class="wc-tbl-input"
+                               t-att-type="this.dimInputType"
+                               t-att-value="this.displayDim(this.window.height_mm || 900)"
+                               t-att-step="props.unitSystem === 'imperial' ? 0.25 : 10"
+                               t-on-blur="(ev) => this.onIntFieldBlur(ev, 'height_mm')"/>
+                        <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                    </div>
+
+                    <!-- Rough Opening -->
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Rough Opening</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Δ Width</span>
+                        <input class="wc-tbl-input wc-tbl-input--sm"
+                               t-att-type="this.dimInputType"
+                               t-att-value="this.displayDim(this.window.ro_delta_w ?? 13)"
+                               t-att-step="props.unitSystem === 'imperial' ? 0.125 : 1"
+                               min="0"
+                               t-on-blur="(ev) => this.onIntFieldBlur(ev, 'ro_delta_w')"/>
+                        <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Δ Height</span>
+                        <input class="wc-tbl-input wc-tbl-input--sm"
+                               t-att-type="this.dimInputType"
+                               t-att-value="this.displayDim(this.window.ro_delta_h ?? 13)"
+                               t-att-step="props.unitSystem === 'imperial' ? 0.125 : 1"
+                               min="0"
+                               t-on-blur="(ev) => this.onIntFieldBlur(ev, 'ro_delta_h')"/>
+                        <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                    </div>
+                    <div class="wc-tbl-row wc-tbl-row--readonly">
+                        <span class="wc-tbl-label">RO Size</span>
+                        <span class="wc-tbl-value">
+                            <t t-esc="this.displayDim(this.window.rough_opening_w || (this.window.width_mm || 0) + 2 * (this.window.ro_delta_w ?? 13))"/>
+                            ×
+                            <t t-esc="this.displayDim(this.window.rough_opening_h || (this.window.height_mm || 0) + 2 * (this.window.ro_delta_h ?? 13))"/>
+                            <t t-esc="' ' + this.dimUnit"/>
+                        </span>
+                    </div>
+
+                    <!-- United Inches -->
+                    <div class="wc-tbl-row wc-tbl-row--readonly">
+                        <span class="wc-tbl-label">United Inches</span>
+                        <span class="wc-tbl-value">
+                            <t t-esc="((this.window.width_mm || 0) / 25.4 + (this.window.height_mm || 0) / 25.4).toFixed(1)"/> UI
+                        </span>
+                    </div>
+
+                    <!-- Energy Star -->
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Energy Rating</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Zone</span>
+                        <select class="wc-tbl-select"
+                                t-on-change="(ev) => this.onSelectChange(ev, 'energy_star_zone')">
+                            <option value="none" t-att-selected="(this.window.energy_star_zone || 'none') === 'none'">Not Rated</option>
+                            <option value="zone_a" t-att-selected="this.window.energy_star_zone === 'zone_a'">Zone A</option>
+                            <option value="zone_b" t-att-selected="this.window.energy_star_zone === 'zone_b'">Zone B</option>
+                            <option value="zone_c" t-att-selected="this.window.energy_star_zone === 'zone_c'">Zone C</option>
+                            <option value="zone_d" t-att-selected="this.window.energy_star_zone === 'zone_d'">Zone D</option>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">ER Value</span>
+                        <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                               t-att-value="this.window.er_value || ''"
+                               step="0.1" min="0"
+                               placeholder="—"
+                               t-on-blur="(ev) => this.onFloatFieldBlur(ev, 'er_value')"/>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">U-Factor</span>
+                        <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                               t-att-value="this.window.u_factor || ''"
+                               step="0.01" min="0"
+                               placeholder="W/m²·K"
+                               t-on-blur="(ev) => this.onFloatFieldBlur(ev, 'u_factor')"/>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">SHGC</span>
+                        <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                               t-att-value="this.window.shgc || ''"
+                               step="0.01" min="0" max="1"
+                               placeholder="0–1"
+                               t-on-blur="(ev) => this.onFloatFieldBlur(ev, 'shgc')"/>
+                    </div>
+
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt">Frame</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Shape</span>
+                        <select class="wc-tbl-select"
+                                t-on-change="(ev) => this.onFieldChange('frame_shape', ev.target.value)">
+                            <t t-foreach="filteredFrameShapes" t-as="fs" t-key="fs.key">
+                                <option t-att-value="fs.key"
+                                        t-att-selected="(this.window.frame_shape || 'rectangular') === fs.key">
+                                    <t t-esc="fs.label"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <!-- ── Bay / Bow Lite Layout ── -->
+                    <t t-if="this.window.window_type === 'bay' or this.window.window_type === 'bow'">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Bay / Bow Lites</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Lite Count</span>
+                            <div class="wc-pill-row wc-pill-row--compact">
+                                <button class="wc-pill wc-pill--sm"
+                                        t-on-click="() => this.onBayLiteCountChange(-1)"
+                                        title="Remove a lite">−</button>
+                                <span class="wc-tbl-value" style="min-width:24px;text-align:center;">
+                                    <t t-esc="bayBowLiteCount"/>
+                                </span>
+                                <button class="wc-pill wc-pill--sm"
+                                        t-on-click="() => this.onBayLiteCountChange(1)"
+                                        title="Add a lite">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Bay Angle (bay only — splay between centre and each flanker) -->
+                        <div class="wc-tbl-row" t-if="this.window.window_type === 'bay'">
+                            <span class="wc-tbl-label">Bay Angle</span>
+                            <div class="wc-pill-row wc-pill-row--compact">
+                                <t t-foreach="bayAngleOptions" t-as="ba" t-key="ba.key">
+                                    <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': (this.window.bay_angle || '45') === ba.key }"
+                                            t-on-click="() => this.onBayAngleClick(ba.key)">
+                                        <t t-esc="ba.label"/>
+                                    </button>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="wc-tbl-row" t-if="this.window.window_type === 'bay' and this.window.bay_angle === 'custom'">
+                            <span class="wc-tbl-label">Custom Angle</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.bay_angle_custom_deg || 45"
+                                   step="1" min="15" max="120"
+                                   t-on-blur="(ev) => this.onBayAngleCustomBlur(ev)"/>
+                            <span class="wc-tbl-unit">°</span>
+                        </div>
+
+                        <!-- Bow Angle (bow only — arc angle each lite spans relative to its neighbour) -->
+                        <div class="wc-tbl-row" t-if="this.window.window_type === 'bow'">
+                            <span class="wc-tbl-label">Bow Angle</span>
+                            <div class="wc-pill-row wc-pill-row--compact">
+                                <t t-foreach="bowAngleOptions" t-as="ba" t-key="ba.key">
+                                    <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': (this.window.bow_angle_deg || '10') === ba.key }"
+                                            t-on-click="() => this.onBowAngleClick(ba.key)">
+                                        <t t-esc="ba.label"/>
+                                    </button>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="wc-tbl-row" t-if="this.window.window_type === 'bow' and this.window.bow_angle_deg === 'custom'">
+                            <span class="wc-tbl-label">Custom Angle</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.bow_angle_custom_deg || 10"
+                                   step="1" min="3" max="30"
+                                   t-on-blur="(ev) => this.onBowAngleCustomBlur(ev)"/>
+                            <span class="wc-tbl-unit">° / lite</span>
+                        </div>
+
+                        <!-- Centre Lite Ratio — only meaningful for a 3-lite bay -->
+                        <div class="wc-tbl-row" t-if="this.window.window_type === 'bay' and bayBowLiteCount === 3">
+                            <span class="wc-tbl-label">Centre Ratio</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.bay_centre_ratio || 0.5"
+                                   step="0.05" min="0.20" max="0.85"
+                                   t-on-blur="(ev) => this.onFloatFieldBlur(ev, 'bay_centre_ratio')"/>
+                        </div>
+
+                        <div class="wc-tbl-row wc-tbl-row--readonly">
+                            <span class="wc-tbl-label">Lite Widths</span>
+                            <span class="wc-tbl-value" style="font-family:'DM Mono',monospace;font-size:11px;">
+                                <t t-esc="bayBowChordsLabel"/>
+                            </span>
+                        </div>
+                        <div class="wc-tbl-row" t-if="this.window.bay_lite_widths and this.window.bay_lite_widths.length">
+                            <span class="wc-tbl-label">Custom</span>
+                            <button class="wc-pill wc-pill--sm"
+                                    t-on-click="() => this.onBayLiteWidthsReset()"
+                                    title="Reset to equal / centre-ratio split">Reset to Default</button>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--hint" style="font-size:10.5px;color:var(--wc-text-dim,#888);padding-top:0;">
+                            <span>Click a lite on the canvas, then edit its Width in the Pane tab.</span>
+                        </div>
+
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Mulling Post</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.mulling_post_width_mm ?? 70"
+                                   step="5" min="0"
+                                   t-on-blur="(ev) => this.onIntFieldBlur(ev, 'mulling_post_width_mm')"/>
+                            <span class="wc-tbl-unit">mm</span>
+                        </div>
+
+                        <!-- Computed Geometry — readonly, recomputed server-side on every write -->
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Computed Geometry</div>
+                        <div class="wc-tbl-row wc-tbl-row--readonly">
+                            <span class="wc-tbl-label">Projection</span>
+                            <span class="wc-tbl-value"><t t-esc="Math.round(this.window.projection_depth_mm || 0)"/> mm</span>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--readonly">
+                            <span class="wc-tbl-label">Lite Chord</span>
+                            <span class="wc-tbl-value"><t t-esc="Math.round(this.window.bay_lite_chord_mm || 0)"/> mm</span>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--readonly">
+                            <span class="wc-tbl-label">Total Arc</span>
+                            <span class="wc-tbl-value"><t t-esc="Math.round(this.window.bay_total_arc_mm || 0)"/> mm</span>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--readonly" t-if="this.window.window_type === 'bow'">
+                            <span class="wc-tbl-label">Bow Radius</span>
+                            <span class="wc-tbl-value"><t t-esc="Math.round(this.window.bow_radius_mm || 0)"/> mm</span>
+                        </div>
+                        <div class="wc-validation-card" t-if="(this.window.projection_depth_mm || 0) > 200">
+                            <div class="wc-validation-item wc-validation-warning">
+                                <i class="fa fa-exclamation-triangle"/>
+                                <span>Projection exceeds 200mm — cable support kit (or stronger) required per CSA A440. Above 350mm, add knee braces.</span>
+                            </div>
+                        </div>
+
+                        <!-- Head Board -->
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Head Board</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Depth</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.head_board_depth_mm ?? 300"
+                                   step="10" min="0"
+                                   t-on-blur="(ev) => this.onIntFieldBlur(ev, 'head_board_depth_mm')"/>
+                            <span class="wc-tbl-unit">mm</span>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Thickness</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.head_board_thickness_mm ?? 19"
+                                   step="1" min="0"
+                                   t-on-blur="(ev) => this.onIntFieldBlur(ev, 'head_board_thickness_mm')"/>
+                            <span class="wc-tbl-unit">mm</span>
+                        </div>
+
+                        <!-- Seat Board -->
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Seat Board</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Depth</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.seat_board_depth_mm ?? 300"
+                                   step="10" min="0"
+                                   t-on-blur="(ev) => this.onIntFieldBlur(ev, 'seat_board_depth_mm')"/>
+                            <span class="wc-tbl-unit">mm</span>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Thickness</span>
+                            <input type="number" class="wc-tbl-input wc-tbl-input--sm"
+                                   t-att-value="this.window.seat_board_thickness_mm ?? 19"
+                                   step="1" min="0"
+                                   t-on-blur="(ev) => this.onIntFieldBlur(ev, 'seat_board_thickness_mm')"/>
+                            <span class="wc-tbl-unit">mm</span>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Finish</span>
+                            <select class="wc-tbl-select"
+                                    t-on-change="(ev) => this.onSelectChange(ev, 'seat_board_finish')">
+                                <option value="oak_veneer" t-att-selected="(this.window.seat_board_finish || 'oak_veneer') === 'oak_veneer'">Oak Veneer</option>
+                                <option value="maple_veneer" t-att-selected="this.window.seat_board_finish === 'maple_veneer'">Maple Veneer</option>
+                                <option value="white_melamine" t-att-selected="this.window.seat_board_finish === 'white_melamine'">White Melamine</option>
+                                <option value="paint_grade" t-att-selected="this.window.seat_board_finish === 'paint_grade'">Paint Grade</option>
+                                <option value="none" t-att-selected="this.window.seat_board_finish === 'none'">None / Site-Finished</option>
+                            </select>
+                        </div>
+
+                        <!-- Insulation &amp; Support -->
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt wc-tbl-section-sm">Insulation &amp; Support</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Insulated Boards</span>
+                            <label class="wc-tbl-check-label">
+                                <input type="checkbox"
+                                       t-att-checked="this.window.insulated_boards"
+                                       t-on-change="(ev) => this.onFieldChange('insulated_boards', ev.target.checked)"/>
+                                <i t-att-class="this.window.insulated_boards ? 'fa fa-check-circle text-success' : 'fa fa-circle-o text-muted'"/>
+                            </label>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Support System</span>
+                            <select class="wc-tbl-select"
+                                    t-on-change="(ev) => this.onSelectChange(ev, 'bay_support_system')">
+                                <option value="none" t-att-selected="this.window.bay_support_system === 'none'">None (≤200mm)</option>
+                                <option value="cable" t-att-selected="(this.window.bay_support_system || 'cable') === 'cable'">Cable Support Kit</option>
+                                <option value="knee_brace" t-att-selected="this.window.bay_support_system === 'knee_brace'">Knee Braces</option>
+                                <option value="cable_and_knee" t-att-selected="this.window.bay_support_system === 'cable_and_knee'">Cable + Knee Brace</option>
+                                <option value="hip_roof" t-att-selected="this.window.bay_support_system === 'hip_roof'">Hip Roof / Cap</option>
+                                <option value="skirt" t-att-selected="this.window.bay_support_system === 'skirt'">Skirt Below Seat</option>
+                                <option value="full" t-att-selected="this.window.bay_support_system === 'full'">Hip Roof + Skirt + Cables</option>
+                            </select>
+                        </div>
+                    </t>
+
+                    <!-- ── Convert an existing window to Bay / Bow ── -->
+                    <t t-if="this.window.window_type !== 'bay' and this.window.window_type !== 'bow'">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Bay / Bow</div>
+                        <div class="wc-tbl-row">
+                            <button class="wc-pill wc-pill--sm wc-pill--wide"
+                                    t-on-click="() => this.onConvertToBayBow('bay')">
+                                <i class="fa fa-th-large"/> Convert to Bay Window
+                            </button>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <button class="wc-pill wc-pill--sm wc-pill--wide"
+                                    t-on-click="() => this.onConvertToBayBow('bow')">
+                                <i class="fa fa-th-large"/> Convert to Bow Window
+                            </button>
+                        </div>
+                    </t>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Material</span>
+                        <select class="wc-tbl-select"
+                                t-on-change="(ev) => this.onMaterialClick(+ev.target.value || 0)">
+                            <option value="">â€” Select â€”</option>
+                            <t t-foreach="props.materials" t-as="mat" t-key="mat.id">
+                                <option t-att-value="mat.id"
+                                        t-att-selected="selectedMaterialId === mat.id">
+                                    <t t-esc="mat.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row" t-if="props.profileTypes and props.profileTypes.length">
+                        <span class="wc-tbl-label">Profile</span>
+                        <select class="wc-tbl-select" t-on-change="onProfileTypeChange">
+                            <option value="">â€” Select â€”</option>
+                            <t t-foreach="props.profileTypes" t-as="ps" t-key="ps.id">
+                                <option t-att-value="ps.id"
+                                        t-att-selected="selectedProfileTypeId === ps.id">
+                                    <t t-esc="ps.display_name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Depth</span>
+                        <div class="wc-pill-row wc-pill-row--compact">
+                            <t t-foreach="availableProfileDepths" t-as="pd" t-key="pd.key">
+                                <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': selectedProfileDepth === pd.key }"
+                                        t-on-click="() => this.onProfileDepthClick(pd.key)">
+                                    <t t-esc="pd.label"/>
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt">Paint / Colour</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Inside Paint</span>
+                        <select class="wc-tbl-select"
+                                t-on-change="(ev) => this.onPaintProductChange('inside', ev.target.value)">
+                            <option value="">— No Paint (raw frame) —</option>
+                            <t t-foreach="props.paintProducts or []" t-as="pp" t-key="pp.id">
+                                <option t-att-value="pp.id"
+                                        t-att-selected="selectedInsidePaintProductId === pp.id">
+                                    <t t-esc="pp.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row wc-tbl-row--colour">
+                        <span class="wc-tbl-label">Inside Swatch</span>
+                        <div class="wc-tbl-colour-ctrl">
+                            <!-- Dynamic swatches from Odoo product.attribute values -->
+                            <div class="wc-swatch-mini-row">
+                                <t t-foreach="odooFrameColours" t-as="fc" t-key="fc.hex + (fc.id or '')">
+                                    <div t-att-class="{ 'wc-swatch-mini': true, 'active': currentFrameColour === fc.hex }"
+                                         t-att-style="'background-color:' + fc.hex"
+                                         t-att-title="fc.label"
+                                         t-on-click="() => this.onFrameColourClick(fc.hex)"/>
+                                </t>
+                            </div>
+                            <input type="color" class="wc-tbl-colour-pick"
+                                   t-att-value="currentFrameColour"
+                                   t-on-change="(ev) => this.onFieldChange('frame_colour', ev.target.value)"
+                                   title="Custom colour override — does not change the inventory paint product used on the BOM"/>
+                        </div>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Outside Paint</span>
+                        <select class="wc-tbl-select"
+                                t-on-change="(ev) => this.onPaintProductChange('outside', ev.target.value)">
+                            <option value="">— No Paint (raw frame) —</option>
+                            <t t-foreach="props.paintProducts or []" t-as="pp" t-key="pp.id">
+                                <option t-att-value="pp.id"
+                                        t-att-selected="selectedOutsidePaintProductId === pp.id">
+                                    <t t-esc="pp.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row wc-tbl-row--colour">
+                        <span class="wc-tbl-label">Outside Swatch</span>
+                        <div class="wc-tbl-colour-ctrl">
+                            <div class="wc-swatch-mini-row">
+                                <t t-foreach="odooFrameColours" t-as="fc" t-key="'out_' + fc.hex + (fc.id or '')">
+                                    <div t-att-class="{ 'wc-swatch-mini': true, 'active': currentFrameColourOutside === fc.hex }"
+                                         t-att-style="'background-color:' + fc.hex"
+                                         t-att-title="fc.label"
+                                         t-on-click="() => this.onFrameColourOutsideClick(fc.hex)"/>
+                                </t>
+                            </div>
+                            <input type="color" class="wc-tbl-colour-pick"
+                                   t-att-value="currentFrameColourOutside"
+                                   t-on-change="(ev) => this.onFieldChange('frame_colour_outside', ev.target.value)"
+                                   title="Custom colour override — does not change the inventory paint product used on the BOM"/>
+                        </div>
+                    </div>
+
+                    <!-- Vendor Colour (WS-15 catalog, scoped addition 2026-09-23) —
+                         Company then Color, cascading. Additive alongside the
+                         swatches/paint pickers above, not a replacement for
+                         them — see docs/sprints/SPRINT_2.md WS-17 scope. -->
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt">Vendor Colour</div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Inside Company</span>
+                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                t-on-change="(ev) => this.onVendorColourCompanyChange('inside', ev.target.value)">
+                            <option value="">— Select —</option>
+                            <t t-foreach="vendorColourCompanies" t-as="v" t-key="v">
+                                <option t-att-value="v" t-att-selected="vendorColourCompanyInside === v">
+                                    <t t-esc="v"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row" t-if="vendorColourCompanyInside">
+                        <span class="wc-tbl-label">Inside Color</span>
+                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                t-on-change="(ev) => this.onVendorColourPick('inside', ev.target.value)">
+                            <option value="">— Select —</option>
+                            <t t-foreach="vendorColourOptionsInside" t-as="vc" t-key="vc.id">
+                                <option t-att-value="vc.id"
+                                        t-att-selected="this.window and this.window.inside_vendor_color_id and this.window.inside_vendor_color_id[0] === vc.id">
+                                    <t t-esc="vc.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Outside Company</span>
+                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                t-on-change="(ev) => this.onVendorColourCompanyChange('outside', ev.target.value)">
+                            <option value="">— Select —</option>
+                            <t t-foreach="vendorColourCompanies" t-as="v" t-key="'out_' + v">
+                                <option t-att-value="v" t-att-selected="vendorColourCompanyOutside === v">
+                                    <t t-esc="v"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="wc-tbl-row" t-if="vendorColourCompanyOutside">
+                        <span class="wc-tbl-label">Outside Color</span>
+                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                t-on-change="(ev) => this.onVendorColourPick('outside', ev.target.value)">
+                            <option value="">— Select —</option>
+                            <t t-foreach="vendorColourOptionsOutside" t-as="vc" t-key="'out_' + vc.id">
+                                <option t-att-value="vc.id"
+                                        t-att-selected="this.window and this.window.outside_vendor_color_id and this.window.outside_vendor_color_id[0] === vc.id">
+                                    <t t-esc="vc.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Frame Product Attributes (from frame config) -->
+                    <t t-if="activeFrameConfig">
+                        <t t-foreach="frameAttributes" t-as="attr" t-key="attr.attr_id">
+                            <div class="wc-tbl-row" t-if="attr.values.length > 1">
+                                <span class="wc-tbl-label" t-esc="attr.name"/>
+                                <select class="wc-tbl-select wc-tbl-select--sm"
+                                        t-on-change="(ev) => this.onFrameAttrChange(attr.attr_id, isNaN(+ev.target.value) ? ev.target.value : +ev.target.value)">
+                                    <t t-foreach="attr.values" t-as="val" t-key="val.id">
+                                        <option t-att-value="val.id"
+                                                t-att-selected="String(attr.selectedValueId) === String(val.id)">
+                                            <t t-esc="val.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </t>
+                    </t>
+                    <!-- Legacy fallback: global Inside/Outside color dropdowns -->
+                    <t t-if="!activeFrameConfig and odooInsideColors.length">
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Inside Color</span>
+                            <select class="wc-tbl-select wc-tbl-select--sm"
+                                    t-on-change="(ev) => this.onFieldChange('inside_color_attr_val_id', +ev.target.value || false)">
+                                <option value="">— Select —</option>
+                                <t t-foreach="odooInsideColors" t-as="cv" t-key="cv.id">
+                                    <option t-att-value="cv.id"
+                                            t-att-selected="this.window and this.window.inside_color_attr_val_id and this.window.inside_color_attr_val_id[0] === cv.id">
+                                        <t t-esc="cv.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </t>
+                    <t t-if="!activeFrameConfig and odooOutsideColors.length">
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Outside Color</span>
+                            <select class="wc-tbl-select wc-tbl-select--sm"
+                                    t-on-change="(ev) => this.onFieldChange('outside_color_attr_val_id', +ev.target.value || false)">
+                                <option value="">— Select —</option>
+                                <t t-foreach="odooOutsideColors" t-as="cv" t-key="'out_' + cv.id">
+                                    <option t-att-value="cv.id"
+                                            t-att-selected="this.window and this.window.outside_color_attr_val_id and this.window.outside_color_attr_val_id[0] === cv.id">
+                                        <t t-esc="cv.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </t>
+
+                    <t t-if="showGeorgianBars">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Georgian Bars</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Pattern</span>
+                            <select class="wc-tbl-select" t-on-change="(ev) => this.onGeorgianPatternChange(ev)">
+                                <t t-foreach="filteredGeorgianPatterns" t-as="gp" t-key="gp.key">
+                                    <option t-att-value="gp.key"
+                                            t-att-selected="currentGeorgianConfig.pattern === gp.key">
+                                        <t t-esc="gp.label"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <t t-if="currentGeorgianConfig.pattern and currentGeorgianConfig.pattern !== 'none'">
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">H Bars</span>
+                                <input type="number" class="wc-tbl-input wc-tbl-input--sm" min="0" max="20"
+                                       t-att-value="currentGeorgianConfig.horizontalBars or 1"
+                                       t-on-change="(ev) => this.onGeorgianBarCountChange(ev, 'horizontalBars')"/>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">V Bars</span>
+                                <input type="number" class="wc-tbl-input wc-tbl-input--sm" min="0" max="20"
+                                       t-att-value="currentGeorgianConfig.verticalBars or 1"
+                                       t-on-change="(ev) => this.onGeorgianBarCountChange(ev, 'verticalBars')"/>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Bar Width</span>
+                                <input type="number" class="wc-tbl-input wc-tbl-input--sm" min="6" max="50"
+                                       t-att-value="currentGeorgianConfig.barWidthMm or 18"
+                                       t-on-change="(ev) => this.onGeorgianBarCountChange(ev, 'barWidthMm')"/>
+                                <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Bar Colour</span>
+                                <input type="color" class="wc-tbl-colour-pick"
+                                       t-att-value="currentGeorgianConfig.colour or currentFrameColour"
+                                       t-on-change="onGeorgianColourChange"/>
+                            </div>
+                        </t>
+                    </t>
+
+                    <div class="wc-tbl-section-head wc-tbl-section-head--mt">Notes</div>
+                    <div class="wc-tbl-row wc-tbl-row--col">
+                        <textarea class="wc-tbl-textarea" rows="2"
+                                  t-att-value="this.window.notes || ''"
+                                  placeholder="Fabrication notesâ€¦"
+                                  t-on-blur="(ev) => this.onTextareaBlur(ev, 'notes')"/>
+                    </div>
+
+                    <div class="wc-tbl-row">
+                        <span class="wc-tbl-label">Fabricated</span>
+                        <label class="wc-tbl-check-label">
+                            <input type="checkbox"
+                                   t-att-checked="this.window.fabricated"
+                                   t-on-change="(ev) => this.onFieldChange('fabricated', ev.target.checked)"/>
+                            <i t-att-class="this.window.fabricated ? 'fa fa-check-circle text-success' : 'fa fa-circle-o text-muted'"/>
+                            <span t-if="this.window.fabricated_date" class="wc-tbl-hint" t-esc="this.window.fabricated_date"/>
+                        </label>
+                    </div>
+
+                    <!-- ── Window-level Add-ons ── -->
+                    <t t-if="windowAddonCategories.length > 0">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Add-ons</div>
+                        <t t-foreach="windowAddonCategories" t-as="cat" t-key="cat.id">
+                            <t t-set="catAddons" t-value="addonsByCategory[cat.code] or []"/>
+                            <t t-if="catAddons.length > 0">
+                                <div class="wc-tbl-row wc-tbl-row--col" style="gap:2px;">
+                                    <span class="wc-tbl-label" style="margin-bottom:2px;">
+                                        <i t-att-class="cat.icon" style="margin-right:4px;"/>
+                                        <t t-esc="cat.name"/>
+                                    </span>
+                                    <t t-foreach="catAddons" t-as="ad" t-key="ad.id">
+                                        <label class="wc-tbl-check-label" style="font-size:11px;">
+                                            <input type="checkbox"
+                                                   t-att-checked="windowAddonIds.includes(ad.id)"
+                                                   t-on-change="(ev) => this.onWindowAddonToggle(ad.id, ev.target.checked)"/>
+                                            <span><t t-esc="ad.name"/>
+                                                <t t-if="ad.price"> — <t t-esc="formatPrice(ad.price)"/></t>
+                                            </span>
+                                        </label>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                    </t>
+
+                    <!-- ── Window-level Options (trim/casing/extension) — group -> item picker ── -->
+                    <t t-if="optionGroups.length > 0">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Options</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Group</span>
+                            <select class="wc-tbl-select"
+                                    t-att-value="selectedOptionGroup"
+                                    t-on-change="(ev) => this.onOptionGroupChange(ev.target.value)">
+                                <t t-foreach="optionGroups" t-as="grp" t-key="grp or '_blank'">
+                                    <option t-att-value="grp" t-esc="grp || '(none)'"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Option</span>
+                            <select class="wc-tbl-select"
+                                    t-att-value="selectedWindowOptionId or ''"
+                                    t-on-change="(ev) => this.onWindowOptionChange(ev.target.value ? +ev.target.value : null)">
+                                <option value="">—</option>
+                                <t t-foreach="optionsInSelectedGroup" t-as="opt" t-key="opt.id">
+                                    <option t-att-value="opt.id">
+                                        <t t-esc="opt.name"/>
+                                        <t t-if="opt.price"> — <t t-esc="formatPrice(opt.price)"/></t>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </t>
+
+                </div>
+
+                <!-- â•â•â• PANE TAB â•â•â• -->
+                <div class="wc-pp-tab-body" t-if="state.activeTab === 'pane'">
+
+                    <!-- No element selected -->
+                    <t t-if="contextType === 'frame'">
+                        <div class="wc-pp-tab-empty">
+                            <i class="fa fa-hand-o-up"/>
+                            <span>Click a pane, mullion, or frame rail on the canvas</span>
+                        </div>
+                    </t>
+
+                    <!-- â”€ PANE CONTEXT â”€ -->
+                    <t t-if="contextType === 'pane' and activePaneConfig">
+                        <t t-if="paneValidations.length > 0">
+                            <div class="wc-validation-card">
+                                <t t-foreach="paneValidations" t-as="v" t-key="v.field + '_' + v_index">
+                                    <div t-att-class="'wc-validation-item wc-validation-' + v.severity">
+                                        <i t-att-class="v.severity === 'error' ? 'fa fa-exclamation-circle' : 'fa fa-exclamation-triangle'"/>
+                                        <span t-esc="v.message"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+
+                        <div class="wc-tbl-section-head">Panel Info</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Label</span>
+                            <input class="wc-tbl-input" type="text"
+                                   t-att-value="selectedPaneLabel"
+                                   t-on-blur="(ev) => this.onPaneConfigChange('label', ev.target.value || null)"/>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Width</span>
+                            <t t-if="isBayBowLiteSelected">
+                                <input class="wc-tbl-input"
+                                       t-att-type="this.dimInputType"
+                                       t-att-value="this.displayDim(selectedPaneDimensions.width)"
+                                       t-att-step="props.unitSystem === 'imperial' ? 0.25 : 10"
+                                       min="50"
+                                       t-on-blur="(ev) => this.onBayLiteWidthBlur(ev)"/>
+                                <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                            </t>
+                            <t t-else="">
+                                <span class="wc-tbl-value"><t t-esc="this.displayDim(selectedPaneDimensions.width)"/> <t t-esc="this.dimUnit"/></span>
+                            </t>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Height</span>
+                            <span class="wc-tbl-value"><t t-esc="this.displayDim(selectedPaneDimensions.height)"/> <t t-esc="this.dimUnit"/></span>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Area</span>
+                            <span class="wc-tbl-value"><t t-esc="this.displayAreaStr(selectedPaneArea)"/></span>
+                        </div>
+
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Panel Type</div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Type</span>
+                            <select class="wc-tbl-select"
+                                    t-on-change="(ev) => this.onPaneConfigChange('openingType', ev.target.value)">
+                                <t t-foreach="filteredOpeningTypes" t-as="ot" t-key="ot.key">
+                                    <option t-att-value="ot.key"
+                                            t-att-selected="activePaneConfig.openingType === ot.key">
+                                        <t t-esc="ot.label"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic pill fields (hingeSide, foldDirection, pivotPosition) -->
+                        <t t-foreach="openingPillFields" t-as="pf" t-key="pf.field">
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="pf.label"/>
+                                <div class="wc-pill-row wc-pill-row--compact">
+                                    <t t-foreach="pf.options" t-as="opt" t-key="opt">
+                                        <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': activePaneConfig[pf.field] === opt }"
+                                                t-on-click="() => this.onPaneConfigChange(pf.field, opt)">
+                                            <t t-esc="opt.charAt(0).toUpperCase() + opt.slice(1)"/>
+                                        </button>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Dynamic hardware role dropdowns (handle, lock, operator, etc.) -->
+                        <t t-foreach="openingHardwareRoles" t-as="hr" t-key="hr.role">
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="hr.label"/>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('hardwareSelection', { role: hr.role, id: +ev.target.value || null })">
+                                    <option value="">— None —</option>
+                                    <t t-foreach="hardwareByRole[hr.role] or []" t-as="hw" t-key="hw.id">
+                                        <option t-att-value="hw.id"
+                                                t-att-selected="(activePaneConfig.hardwareSelections or {})[hr.role] === hw.id">
+                                            <t t-esc="hw.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </t>
+
+                        <!-- ── Glass Section (unified inline builder) ── -->
+                        <t t-key="'glass_' + paneKey">
+                        <div class="wc-tbl-section-head wc-tbl-section-head--mt">Glass</div>
+
+                        <!-- Glazing Type pills -->
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Glazing</span>
+                            <div class="wc-pill-row wc-pill-row--compact">
+                                <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': (activePaneConfig.glazingType or 'double') === 'single' }"
+                                        t-on-click="() => this.onPaneConfigChange('glazingType', 'single')">Single</button>
+                                <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': (activePaneConfig.glazingType or 'double') === 'double' }"
+                                        t-on-click="() => this.onPaneConfigChange('glazingType', 'double')">Double</button>
+                                <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': (activePaneConfig.glazingType or 'double') === 'triple' }"
+                                        t-on-click="() => this.onPaneConfigChange('glazingType', 'triple')">Triple</button>
+                            </div>
+                        </div>
+
+                        <!-- Glass 1 (Outer) — spec + OT + MIL -->
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label" t-esc="isMultiGlazing ? 'Outer Glass' : 'Glass'"/>
+                            <select class="wc-tbl-select"
+                                    t-on-change="(ev) => this.onPaneConfigChange('glass1Key', ev.target.value || null)">
+                                <option value="" t-att-selected="!activePaneConfig.glass1Key">&#8212; Select &#8212;</option>
+                                <t t-foreach="glassConfigOptionsFor(1)" t-as="gc" t-key="gc.glass_key">
+                                    <option t-att-value="gc.glass_key" t-att-selected="activePaneConfig.glass1Key === gc.glass_key">
+                                        <t t-esc="gc.label"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <t t-if="activeGlass1Config">
+                            <t t-foreach="glassAttributesFor(1)" t-as="attr" t-key="attr.attr_id">
+                                <div class="wc-tbl-row" t-if="attr.values.length > 1">
+                                    <span class="wc-tbl-label" t-esc="attr.name"/>
+                                    <select class="wc-tbl-select wc-tbl-select--sm"
+                                            t-on-change="(ev) => this.onGlassAttrChange(1, attr.attr_id, isNaN(+ev.target.value) ? ev.target.value : +ev.target.value)">
+                                        <t t-foreach="attr.values" t-as="val" t-key="val.id">
+                                            <option t-att-value="val.id"
+                                                    t-att-selected="String(attr.selectedValueId) === String(val.id)">
+                                                <t t-esc="val.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </t>
+                        </t>
+
+                        <!-- Cavity 1 + Gas 1 + Spacer (double/triple) -->
+                        <t t-if="isMultiGlazing">
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="isTripleGlazing ? 'Cavity 1' : 'Cavity'"/>
+                                <select class="wc-tbl-select wc-tbl-select--sm"
+                                        t-on-change="(ev) => this.onPaneConfigChange('cavityWidth', +ev.target.value)">
+                                    <t t-foreach="cavityWidthOptions" t-as="cw" t-key="cw.id">
+                                        <option t-att-value="cw.width_mm" t-att-selected="activePaneConfig.cavityWidth === cw.width_mm">
+                                            <t t-esc="cw.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="isTripleGlazing ? 'Gas Fill 1' : 'Gas Fill'"/>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('gasFill', ev.target.value)">
+                                    <t t-foreach="gasFillOptions" t-as="gf" t-key="gf.id">
+                                        <option t-att-value="gf.code" t-att-selected="(activePaneConfig.gasFill or 'air') === gf.code">
+                                            <t t-esc="gf.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="isTripleGlazing ? 'Spacer 1' : 'Spacer'"/>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('spacerType', ev.target.value)">
+                                    <t t-foreach="spacerTypeOptions" t-as="st" t-key="st.id">
+                                        <option t-att-value="st.code" t-att-selected="(activePaneConfig.spacerType or 'warm_edge') === st.code">
+                                            <t t-esc="st.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <!-- Glass 2 (Middle for triple / Inner for double) — spec + OT + MIL -->
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label" t-esc="isTripleGlazing ? 'Middle Glass' : 'Inner Glass'"/>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('glass2Key', ev.target.value || null)">
+                                    <option value="" t-att-selected="!activePaneConfig.glass2Key">&#8212; Select &#8212;</option>
+                                    <t t-foreach="glassConfigOptionsFor(2)" t-as="gc" t-key="gc.glass_key">
+                                        <option t-att-value="gc.glass_key" t-att-selected="activePaneConfig.glass2Key === gc.glass_key">
+                                            <t t-esc="gc.label"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <t t-if="activeGlass2Config">
+                                <t t-foreach="glassAttributesFor(2)" t-as="attr" t-key="attr.attr_id">
+                                    <div class="wc-tbl-row" t-if="attr.values.length > 1">
+                                        <span class="wc-tbl-label" t-esc="attr.name"/>
+                                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                                t-on-change="(ev) => this.onGlassAttrChange(2, attr.attr_id, isNaN(+ev.target.value) ? ev.target.value : +ev.target.value)">
+                                            <t t-foreach="attr.values" t-as="val" t-key="val.id">
+                                                <option t-att-value="val.id"
+                                                        t-att-selected="String(attr.selectedValueId) === String(val.id)">
+                                                    <t t-esc="val.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+
+                        <!-- Cavity 2 + Gas 2 + Spacer 2 + Glass 3 (triple only) -->
+                        <t t-if="isTripleGlazing">
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Cavity 2</span>
+                                <select class="wc-tbl-select wc-tbl-select--sm"
+                                        t-on-change="(ev) => this.onPaneConfigChange('cavityWidth2', +ev.target.value)">
+                                    <t t-foreach="cavityWidthOptions" t-as="cw" t-key="cw.id">
+                                        <option t-att-value="cw.width_mm" t-att-selected="activePaneConfig.cavityWidth2 === cw.width_mm">
+                                            <t t-esc="cw.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Gas Fill 2</span>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('gasFill2', ev.target.value)">
+                                    <t t-foreach="gasFillOptions" t-as="gf" t-key="gf.id">
+                                        <option t-att-value="gf.code" t-att-selected="(activePaneConfig.gasFill2 or 'air') === gf.code">
+                                            <t t-esc="gf.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Spacer 2</span>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('spacerType2', ev.target.value)">
+                                    <t t-foreach="spacerTypeOptions" t-as="st" t-key="st.id">
+                                        <option t-att-value="st.code" t-att-selected="(activePaneConfig.spacerType2 or 'warm_edge') === st.code">
+                                            <t t-esc="st.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <!-- Glass 3 (Inner) — spec + OT + MIL -->
+                            <div class="wc-tbl-row">
+                                <span class="wc-tbl-label">Inner Glass</span>
+                                <select class="wc-tbl-select"
+                                        t-on-change="(ev) => this.onPaneConfigChange('glass3Key', ev.target.value || null)">
+                                    <option value="" t-att-selected="!activePaneConfig.glass3Key">&#8212; Select &#8212;</option>
+                                    <t t-foreach="glassConfigOptionsFor(3)" t-as="gc" t-key="gc.glass_key">
+                                        <option t-att-value="gc.glass_key" t-att-selected="activePaneConfig.glass3Key === gc.glass_key">
+                                            <t t-esc="gc.label"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <t t-if="activeGlass3Config">
+                                <t t-foreach="glassAttributesFor(3)" t-as="attr" t-key="attr.attr_id">
+                                    <div class="wc-tbl-row" t-if="attr.values.length > 1">
+                                        <span class="wc-tbl-label" t-esc="attr.name"/>
+                                        <select class="wc-tbl-select wc-tbl-select--sm"
+                                                t-on-change="(ev) => this.onGlassAttrChange(3, attr.attr_id, isNaN(+ev.target.value) ? ev.target.value : +ev.target.value)">
+                                            <t t-foreach="attr.values" t-as="val" t-key="val.id">
+                                                <option t-att-value="val.id"
+                                                        t-att-selected="String(attr.selectedValueId) === String(val.id)">
+                                                    <t t-esc="val.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+
+                        <!-- Summary row -->
+                        <div class="wc-glazing-summary">
+                            <div class="wc-glazing-summary-row">
+                                <span class="wc-tbl-label">Stack</span>
+                                <span class="wc-tbl-value wc-text-sm" t-esc="glazingShortCode"/>
+                            </div>
+                            <div class="wc-glazing-summary-row">
+                                <span class="wc-tbl-label">Thickness</span>
+                                <span class="wc-tbl-value"><t t-esc="computedGlassThickness"/> <t t-esc="this.dimUnit"/></span>
+                            </div>
+                        </div>
+
+                        <!-- Tint swatches -->
+                        <div class="wc-tbl-row wc-tbl-row--colour">
+                            <span class="wc-tbl-label">Tint</span>
+                            <div class="wc-swatch-mini-row">
+                                <t t-foreach="glassTints" t-as="tint" t-key="tint.key">
+                                    <div t-att-class="{ 'wc-swatch-mini': true, 'active': activePaneConfig.glassTint === tint.key }"
+                                         t-att-style="'background-color:' + tint.hex"
+                                         t-att-title="tint.label"
+                                         t-on-click="() => this.onPaneConfigChange('glassTint', tint.key)"/>
+                                </t>
+                            </div>
+                        </div>
+                        </t><!-- /t-key glass_paneKey -->
+
+                        <!-- ── Accessories Section (per-pane add-ons) ── -->
+                        <t t-if="paneAddonCategories.length > 0">
+                            <div class="wc-tbl-section-head wc-tbl-section-head--mt">Accessories</div>
+                            <t t-foreach="paneAddonCategories" t-as="cat" t-key="cat.id">
+                                <t t-set="catAddons" t-value="addonsByCategory[cat.code] or []"/>
+                                <t t-if="catAddons.length > 0">
+                                    <div class="wc-tbl-row">
+                                        <span class="wc-tbl-label">
+                                            <i t-att-class="cat.icon" style="margin-right:4px;"/>
+                                            <t t-esc="cat.name"/>
+                                        </span>
+                                        <select class="wc-tbl-select"
+                                                t-on-change="(ev) => this.onPaneConfigChange('addonSelection', { categoryCode: cat.code, addonId: +ev.target.value || null })">
+                                            <option value="">— None —</option>
+                                            <t t-foreach="catAddons" t-as="ad" t-key="ad.id">
+                                                <option t-att-value="ad.id"
+                                                        t-att-selected="(activePaneConfig.addonSelections or {})[cat.code] and (activePaneConfig.addonSelections or {})[cat.code].addon_id === ad.id">
+                                                    <t t-esc="ad.name"/>
+                                                    <t t-if="ad.price"> — <t t-esc="formatPrice(ad.price)"/></t>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+
+                    <!-- â”€ MULLION CONTEXT â”€ -->
+                    <t t-if="contextType === 'mullion' and selectedMullionInfo">
+                        <div class="wc-tbl-section-head">
+                            <t t-esc="selectedMullionInfo.direction === 'vertical' ? 'Vertical Mullion' : 'Horizontal Transom'"/>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Position</span>
+                            <input class="wc-tbl-input wc-tbl-input--sm" type="number"
+                                   t-att-value="selectedMullionInfo.position"
+                                   min="50" step="1"
+                                   t-on-blur="onMullionPositionBlur"
+                                   t-on-keydown="(ev) => ev.key === 'Enter' and ev.target.blur()"/>
+                            <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Thickness</span>
+                            <input class="wc-tbl-input wc-tbl-input--sm" type="number"
+                                   t-att-value="selectedMullionInfo.thickness_mm or mullionDefaultThickness"
+                                   t-att-placeholder="mullionDefaultThickness + ' (auto)'"
+                                   min="4" max="60" step="1"
+                                   t-on-blur="(ev) => this.onMullionConfigChange('thickness_mm', ev.target.value ? +ev.target.value : null)"/>
+                            <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--colour">
+                            <span class="wc-tbl-label">Colour</span>
+                            <div class="wc-tbl-colour-ctrl">
+                                <input type="color" class="wc-tbl-colour-pick"
+                                       t-att-value="selectedMullionInfo.colour or currentFrameColour"
+                                       t-on-change="onMullionColourChange"/>
+                                <button class="wc-prop-btn-sm" t-if="selectedMullionInfo.colour"
+                                        t-on-click="() => this.onMullionConfigChange('colour', null)"
+                                        title="Reset to frame colour">
+                                    <i class="fa fa-undo"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- â”€ FRAME SEGMENT CONTEXT â”€ -->
+                    <t t-if="contextType === 'frame_segment' and activeFrameSegment">
+                        <div class="wc-tbl-section-head">
+                            <t t-esc="activeFrameSegment.id"/> Â· <t t-esc="activeFrameSegment.label"/>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Length</span>
+                            <span class="wc-tbl-value"><t t-esc="this.displayDim(activeFrameSegment.lengthMm)"/> <t t-esc="this.dimUnit"/></span>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Width</span>
+                            <input class="wc-tbl-input wc-tbl-input--sm" type="number" min="20" max="200"
+                                   t-att-value="activeFrameSegment.widthMm"
+                                   t-att-placeholder="activeFrameSegment.defaultWidthMm"
+                                   t-on-blur="(ev) => this.onFrameSegmentConfigChange('width_mm', ev.target.value ? +ev.target.value : null)"/>
+                            <span class="wc-tbl-unit" t-esc="this.dimUnit"/>
+                        </div>
+                        <div class="wc-tbl-row wc-tbl-row--colour">
+                            <span class="wc-tbl-label">Colour</span>
+                            <div class="wc-tbl-colour-ctrl">
+                                <input type="color" class="wc-tbl-colour-pick"
+                                       t-att-value="activeFrameSegment.colour or currentFrameColour"
+                                       t-on-change="(ev) => this.onFrameSegmentConfigChange('colour', ev.target.value || null)"/>
+                                <button class="wc-prop-btn-sm" t-if="activeFrameSegment.colour"
+                                        t-on-click="() => this.onFrameSegmentConfigChange('colour', null)"
+                                        title="Inherit from frame colour">
+                                    <i class="fa fa-undo"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="wc-tbl-row">
+                            <span class="wc-tbl-label">Material</span>
+                            <select class="wc-tbl-select"
+                                    t-on-change="(ev) => this.onFrameSegmentConfigChange('material', ev.target.value || null)">
+                                <option value="">Inherit from frame</option>
+                                <t t-foreach="props.materials" t-as="mat" t-key="mat.id">
+                                    <option t-att-value="mat.name"
+                                            t-att-selected="activeFrameSegment.material === mat.name">
+                                        <t t-esc="mat.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </t>
+
+                </div>
+
+                <span class="wc-prop-saving" t-if="state.isSaving">
+                    <i class="fa fa-spinner fa-spin"/> Savingâ€¦
+                </span>
+
+            </t>
+
+            <div t-else="" class="wc-prop-empty">
+                <div class="wc-prop-empty-icon"><i class="fa fa-window-restore"/></div>
+                <p>Select a window on the canvas to edit properties</p>
+            </div>
+        </div>
+    </t>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Quote Breakdown — collapsible overlay above status bar
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.QuoteBreakdown">
+        <div t-att-class="{ 'wc-quote-strip': true, 'wc-quote-collapsed': state.collapsed }">
+            <div class="wc-quote-toggle" t-on-click="toggleCollapse">
+                <i t-att-class="state.collapsed ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                <span class="wc-quote-toggle-label">
+                    Quote Summary
+                    <strong t-esc="fmt(totals.total)"/>
+                </span>
+            </div>
+
+            <div class="wc-quote-body" t-if="!state.collapsed">
+                <div class="wc-quote-kpi">
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Windows</span>
+                        <span class="wc-quote-kpi-value" t-esc="windowCount"/>
+                    </div>
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Total Area</span>
+                        <span class="wc-quote-kpi-value"><t t-esc="totalArea"/> m²</span>
+                    </div>
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Subtotal</span>
+                        <span class="wc-quote-kpi-value" t-esc="fmt(totals.subtotal)"/>
+                    </div>
+                    <div class="wc-quote-kpi-item" t-if="totals.oneTimeAddonTotal">
+                        <span class="wc-quote-kpi-label">One-Time Add-ons</span>
+                        <span class="wc-quote-kpi-value" t-esc="fmt(totals.oneTimeAddonTotal)"/>
+                    </div>
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Installation</span>
+                        <span class="wc-quote-kpi-value" t-esc="fmt(props.installationCharge)"/>
+                    </div>
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Discount</span>
+                        <span class="wc-quote-kpi-value wc-text-discount">- <t t-esc="fmt(totals.discount)"/></span>
+                    </div>
+                    <div class="wc-quote-kpi-item">
+                        <span class="wc-quote-kpi-label">Tax (<t t-esc="props.gstPct"/>%)</span>
+                        <span class="wc-quote-kpi-value" t-esc="fmt(totals.gst)"/>
+                    </div>
+                    <div class="wc-quote-kpi-item wc-quote-kpi-total">
+                        <span class="wc-quote-kpi-label">Grand Total</span>
+                        <span class="wc-quote-kpi-value" t-esc="fmt(totals.total)"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Status Bar — thin footer bar
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.StatusBar">
+        <div class="wc-status-bar">
+            <div class="wc-status-left">
+                <span class="wc-status-dot wc-status-valid"/>
+                <span>Valid configuration</span>
+            </div>
+            <div class="wc-status-center">
+                <span>Windows: <strong t-esc="props.windowCount"/></span>
+                <span class="wc-status-sep">|</span>
+                <span>Total area: <strong><t t-esc="props.totalArea"/> m²</strong></span>
+            </div>
+            <div class="wc-status-right">
+                <span t-if="props.projectName">
+                    Project: <strong t-esc="props.projectName"/>
+                </span>
+            </div>
+        </div>
+    </t>
+
+</templates>
+

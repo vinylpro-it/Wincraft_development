@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Starter values for the Window Configuration catalogs. noupdate: admins
+         can edit/extend them from Configuration → Window Configuration. -->
+    <data noupdate="1">
+        <record id="wincraft_view_from_inside" model="wincraft.view_from">
+            <field name="name">Inside</field><field name="sequence">10</field>
+        </record>
+        <record id="wincraft_view_from_outside" model="wincraft.view_from">
+            <field name="name">Outside</field><field name="sequence">20</field>
+        </record>
+        <record id="wincraft_rubber_colour_black" model="wincraft.rubber_colour">
+            <field name="name">Black</field><field name="sequence">10</field>
+        </record>
+        <record id="wincraft_rubber_colour_white" model="wincraft.rubber_colour">
+            <field name="name">White</field><field name="sequence">20</field>
+        </record>
+        <record id="wincraft_handle_cover_colour_white" model="wincraft.handle_cover_colour">
+            <field name="name">White</field><field name="code">1</field><field name="sequence">10</field>
+        </record>
+        <record id="wincraft_handle_cover_colour_black" model="wincraft.handle_cover_colour">
+            <field name="name">Black</field><field name="code">2</field><field name="sequence">20</field>
+        </record>
+        <record id="wincraft_handle_cover_colour_brown" model="wincraft.handle_cover_colour">
+            <field name="name">Brown</field><field name="code">3</field><field name="sequence">30</field>
+        </record>
+    </data>
+</odoo>

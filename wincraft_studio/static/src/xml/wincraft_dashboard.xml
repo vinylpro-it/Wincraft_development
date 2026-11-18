@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Dashboard — KPI cards and recent projects
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.WincraftDashboard">
+        <div class="wc-dashboard">
+            <div class="wc-dash-header">
+                <h2>WinCraft Studio Dashboard</h2>
+            </div>
+
+            <div t-if="!state.loaded" class="wc-dash-loading">
+                <i class="fa fa-spinner fa-spin fa-2x"/>
+                <p>Loading dashboard…</p>
+            </div>
+
+            <t t-if="state.loaded">
+                <!-- Top KPI row -->
+                <div class="wc-dash-kpi-row">
+                    <div class="wc-dash-kpi-card wc-dash-kpi-primary"
+                         t-on-click="() => this.openProjects()">
+                        <div class="wc-dash-kpi-value" t-esc="state.totalProjects"/>
+                        <div class="wc-dash-kpi-label">Total Projects</div>
+                    </div>
+                    <div class="wc-dash-kpi-card"
+                         t-on-click="() => this.openWindows()">
+                        <div class="wc-dash-kpi-value" t-esc="state.totalWindows"/>
+                        <div class="wc-dash-kpi-label">Total Windows</div>
+                    </div>
+                    <div class="wc-dash-kpi-card wc-dash-kpi-revenue">
+                        <div class="wc-dash-kpi-value" t-esc="fmt(state.totalRevenue)"/>
+                        <div class="wc-dash-kpi-label">Revenue</div>
+                    </div>
+                    <div class="wc-dash-kpi-card">
+                        <div class="wc-dash-kpi-value" t-esc="fmt(state.avgWindowPrice)"/>
+                        <div class="wc-dash-kpi-label">Avg Window Price</div>
+                    </div>
+                </div>
+
+                <!-- Pipeline state cards -->
+                <div class="wc-dash-pipeline">
+                    <h3>Pipeline</h3>
+                    <div class="wc-dash-pipeline-row">
+                        <t t-foreach="stateCards" t-as="card" t-key="card.key">
+                            <div class="wc-dash-state-card"
+                                 t-att-style="'border-top: 3px solid ' + card.color"
+                                 t-on-click="() => this.openProjects(card.key)">
+                                <div class="wc-dash-state-count" t-esc="card.count"/>
+                                <div class="wc-dash-state-label" t-esc="card.label"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Recent projects table -->
+                <div class="wc-dash-recent">
+                    <h3>Recent Projects</h3>
+                    <table class="wc-dash-table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Name</th>
+                                <th>Customer</th>
+                                <th>State</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.recentProjects" t-as="proj" t-key="proj.id">
+                                <tr t-on-click="() => this.openProject(proj.id)" class="wc-dash-row-click">
+                                    <td t-esc="proj.ref"/>
+                                    <td t-esc="proj.name"/>
+                                    <td t-esc="proj.partner_id &amp;&amp; proj.partner_id[1]"/>
+                                    <td>
+                                        <span class="badge" t-esc="proj.state"/>
+                                    </td>
+                                    <td t-esc="fmt(proj.total_price || 0)"/>
+                                </tr>
+                            </t>
+                            <tr t-if="!state.recentProjects.length">
+                                <td colspan="5" class="text-center text-muted">No projects yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

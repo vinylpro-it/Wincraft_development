@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Inventory — Views
+             Sprint 8: Material requirements + stock integration
+             ============================================================ -->
+
+        <!-- ── Material Requirement — List ── -->
+        <record id="view_wincraft_material_requirement_list" model="ir.ui.view">
+            <field name="name">wincraft.material.requirement.list</field>
+            <field name="model">wincraft.material.requirement</field>
+            <field name="arch" type="xml">
+                <list decoration-danger="state == 'short'"
+                      decoration-success="state == 'ok'">
+                    <field name="project_id"/>
+                    <field name="product_id"/>
+                    <field name="product_uom_id" string="UoM"/>
+                    <field name="qty_required"/>
+                    <field name="qty_available"/>
+                    <field name="qty_shortage"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'ok'"
+                           decoration-danger="state == 'short'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Material Requirement — Search ── -->
+        <record id="view_wincraft_material_requirement_search" model="ir.ui.view">
+            <field name="name">wincraft.material.requirement.search</field>
+            <field name="model">wincraft.material.requirement</field>
+            <field name="arch" type="xml">
+                <search string="Material Requirements">
+                    <field name="project_id"/>
+                    <field name="product_id"/>
+                    <filter name="shortage" string="Shortages Only"
+                            domain="[('state', '=', 'short')]"/>
+                    <group>
+                        <filter name="group_project" string="Project"
+                                context="{'group_by': 'project_id'}"/>
+                        <filter name="group_status" string="Status"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: Material Requirements ── -->
+        <record id="action_wincraft_material_requirement" model="ir.actions.act_window">
+            <field name="name">Material Requirements</field>
+            <field name="res_model">wincraft.material.requirement</field>
+            <field name="view_mode">list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No material requirements computed yet.
+                </p>
+                <p>Use "Check Stock" on a project to compute requirements from BOMs.</p>
+            </field>
+        </record>
+
+        <!-- ── Project form: add inventory buttons (inherit) ── -->
+        <record id="view_wincraft_project_form_inventory" model="ir.ui.view">
+            <field name="name">wincraft.project.form.inventory</field>
+            <field name="model">wincraft.project</field>
+            <field name="inherit_id" ref="wincraft_studio.wincraft_project_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object"
+                            name="action_check_stock" icon="fa-cubes"
+                            string="Check Stock"
+                            invisible="state in ('draft', 'designing')"/>
+                    <button class="oe_stat_button" type="object"
+                            name="action_view_pickings" icon="fa-exchange">
+                        <field name="picking_count" widget="statinfo" string="Transfers"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

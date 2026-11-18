@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.SaveTemplateDialog">
+        <Dialog title="'Save as Template'" size="'sm'">
+            <div class="wc-wizard-form">
+                <div class="wc-wizard-field">
+                    <label>Template Name</label>
+                    <input type="text" t-att-value="state.name" t-on-input="onNameChange" autofocus="autofocus"/>
+                </div>
+                <div class="wc-wizard-field">
+                    <label>Category</label>
+                    <select t-on-change="onCategoryChange">
+                        <t t-foreach="categoryOptions" t-as="c" t-key="c.key">
+                            <option t-att-value="c.key" t-att-selected="c.key === state.category" t-esc="c.label"/>
+                        </t>
+                    </select>
+                </div>
+                <div class="wc-wizard-field" t-if="windowTypeOptions.length">
+                    <label>Also set as Default Canvas Template for</label>
+                    <select t-on-change="onLinkedWindowTypeChange">
+                        <option value="" t-att-selected="!state.linkedWindowTypeId">— None —</option>
+                        <t t-foreach="windowTypeOptions" t-as="wt" t-key="wt.id">
+                            <option t-att-value="wt.id" t-att-selected="String(wt.id) === state.linkedWindowTypeId" t-esc="wt.name"/>
+                        </t>
+                    </select>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary" t-on-click="() => props.close()">Cancel</button>
+                <button class="btn btn-primary" t-on-click="onConfirmClick">Save Template</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

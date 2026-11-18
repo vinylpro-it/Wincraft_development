@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Material Form ── -->
+        <record id="wincraft_material_view_form" model="ir.ui.view">
+            <field name="name">wincraft.material.form</field>
+            <field name="model">wincraft.material</field>
+            <field name="arch" type="xml">
+                <form string="Frame Material">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_windows" type="object"
+                                    class="oe_stat_button" icon="fa-window-maximize">
+                                <field name="window_count" widget="statinfo" string="Windows"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="rate_per_sqm"/>
+                                <field name="colour_code" widget="color"/>
+                            </group>
+                            <group>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <field name="description" widget="text"
+                               placeholder="Material description, specifications..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Material List ── -->
+        <record id="wincraft_material_view_list" model="ir.ui.view">
+            <field name="name">wincraft.material.list</field>
+            <field name="model">wincraft.material</field>
+            <field name="arch" type="xml">
+                <list string="Frame Materials">
+                    <field name="name"/>
+                    <field name="rate_per_sqm" string="Rate/sqm"/>
+                    <field name="colour_code" widget="color"/>
+                    <field name="window_count" string="Windows"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_material_action" model="ir.actions.act_window">
+            <field name="name">Frame Materials</field>
+            <field name="res_model">wincraft.material</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+        </record>
+
+    </data>
+</odoo>

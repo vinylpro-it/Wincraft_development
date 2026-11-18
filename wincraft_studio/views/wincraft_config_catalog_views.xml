@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Window Configuration catalogs (client redesign) — name / code /
+             description lookups behind the Window Configuration form. -->
+
+        <record id="wincraft_view_from_view_form" model="ir.ui.view">
+            <field name="name">wincraft.view_from.form</field>
+            <field name="model">wincraft.view_from</field>
+            <field name="arch" type="xml">
+                <form string="View From">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_view_from_view_list" model="ir.ui.view">
+            <field name="name">wincraft.view_from.list</field>
+            <field name="model">wincraft.view_from</field>
+            <field name="arch" type="xml">
+                <list string="View From Options" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_view_from_action" model="ir.actions.act_window">
+            <field name="name">View From Options</field>
+            <field name="res_model">wincraft.view_from</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No view from options yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_window_size_view_form" model="ir.ui.view">
+            <field name="name">wincraft.window_size.form</field>
+            <field name="model">wincraft.window_size</field>
+            <field name="arch" type="xml">
+                <form string="Window Size">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_window_size_view_list" model="ir.ui.view">
+            <field name="name">wincraft.window_size.list</field>
+            <field name="model">wincraft.window_size</field>
+            <field name="arch" type="xml">
+                <list string="Window Sizes" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_window_size_action" model="ir.actions.act_window">
+            <field name="name">Window Sizes</field>
+            <field name="res_model">wincraft.window_size</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No window sizes yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_rubber_colour_view_form" model="ir.ui.view">
+            <field name="name">wincraft.rubber_colour.form</field>
+            <field name="model">wincraft.rubber_colour</field>
+            <field name="arch" type="xml">
+                <form string="Rubber Colour">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_rubber_colour_view_list" model="ir.ui.view">
+            <field name="name">wincraft.rubber_colour.list</field>
+            <field name="model">wincraft.rubber_colour</field>
+            <field name="arch" type="xml">
+                <list string="Rubber Colours" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_rubber_colour_action" model="ir.actions.act_window">
+            <field name="name">Rubber Colours</field>
+            <field name="res_model">wincraft.rubber_colour</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No rubber colours yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_spacer_view_form" model="ir.ui.view">
+            <field name="name">wincraft.spacer.form</field>
+            <field name="model">wincraft.spacer</field>
+            <field name="arch" type="xml">
+                <form string="Spacer">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_spacer_view_list" model="ir.ui.view">
+            <field name="name">wincraft.spacer.list</field>
+            <field name="model">wincraft.spacer</field>
+            <field name="arch" type="xml">
+                <list string="Spacers" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_spacer_action" model="ir.actions.act_window">
+            <field name="name">Spacers</field>
+            <field name="res_model">wincraft.spacer</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No spacers yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_handle_cover_colour_view_form" model="ir.ui.view">
+            <field name="name">wincraft.handle_cover_colour.form</field>
+            <field name="model">wincraft.handle_cover_colour</field>
+            <field name="arch" type="xml">
+                <form string="Handle &amp; Cover Colour">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_handle_cover_colour_view_list" model="ir.ui.view">
+            <field name="name">wincraft.handle_cover_colour.list</field>
+            <field name="model">wincraft.handle_cover_colour</field>
+            <field name="arch" type="xml">
+                <list string="Handle &amp; Cover Colours" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_handle_cover_colour_action" model="ir.actions.act_window">
+            <field name="name">Handle &amp; Cover Colours</field>
+            <field name="res_model">wincraft.handle_cover_colour</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No handle &amp; cover colours yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_bar_colour_view_form" model="ir.ui.view">
+            <field name="name">wincraft.screen_bar_colour.form</field>
+            <field name="model">wincraft.screen_bar_colour</field>
+            <field name="arch" type="xml">
+                <form string="Screen Bar Colour">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_bar_colour_view_list" model="ir.ui.view">
+            <field name="name">wincraft.screen_bar_colour.list</field>
+            <field name="model">wincraft.screen_bar_colour</field>
+            <field name="arch" type="xml">
+                <list string="Screen Bar Colours" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_bar_colour_action" model="ir.actions.act_window">
+            <field name="name">Screen Bar Colours</field>
+            <field name="res_model">wincraft.screen_bar_colour</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No screen bar colours yet.</p>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_mesh_colour_view_form" model="ir.ui.view">
+            <field name="name">wincraft.screen_mesh_colour.form</field>
+            <field name="model">wincraft.screen_mesh_colour</field>
+            <field name="arch" type="xml">
+                <form string="Screen Mesh Colour">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="description"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_mesh_colour_view_list" model="ir.ui.view">
+            <field name="name">wincraft.screen_mesh_colour.list</field>
+            <field name="model">wincraft.screen_mesh_colour</field>
+            <field name="arch" type="xml">
+                <list string="Screen Mesh Colours" default_order="sequence, name">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_screen_mesh_colour_action" model="ir.actions.act_window">
+            <field name="name">Screen Mesh Colours</field>
+            <field name="res_model">wincraft.screen_mesh_colour</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No screen mesh colours yet.</p>
+            </field>
+        </record>
+
+        <menuitem id="wincraft_menu_config_window_config"
+                  name="Window Configuration"
+                  parent="wincraft_menu_config"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_view_from"
+                  name="View From Options"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_view_from_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_window_size"
+                  name="Window Sizes"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_window_size_action"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_rubber_colour"
+                  name="Rubber Colours"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_rubber_colour_action"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_spacer"
+                  name="Spacers"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_spacer_action"
+                  sequence="50"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_handle_cover_colour"
+                  name="Handle &amp; Cover Colours"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_handle_cover_colour_action"
+                  sequence="60"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_screen_bar_colour"
+                  name="Screen Bar Colours"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_screen_bar_colour_action"
+                  sequence="70"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_screen_mesh_colour"
+                  name="Screen Mesh Colours"
+                  parent="wincraft_menu_config_window_config"
+                  action="wincraft_screen_mesh_colour_action"
+                  sequence="80"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+    </data>
+</odoo>

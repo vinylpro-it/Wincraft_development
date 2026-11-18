@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Profile Optimiser — Form View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_profile_optimiser_form" model="ir.ui.view">
+        <field name="name">wincraft.profile.optimiser.form</field>
+        <field name="model">wincraft.profile.optimiser</field>
+        <field name="arch" type="xml">
+            <form string="Profile Optimiser">
+                <header>
+                    <button name="action_populate_cuts" type="object"
+                            string="Auto-Populate Cuts" class="btn-secondary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_compute" type="object"
+                            string="Compute Optimal Cuts" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_reset" type="object"
+                            string="Reset" class="btn-secondary"
+                            invisible="state != 'computed'"
+                            confirm="This will clear results. Continue?"/>
+                    <button name="%(wincraft_studio.action_wincraft_profile_order_report)d"
+                            type="action" string="Print Profile Order"
+                            class="btn-secondary" icon="fa-print"
+                            invisible="state != 'computed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,computed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="material_id" domain="[('active','=',True)]"/>
+                        </group>
+                        <group>
+                            <field name="standard_length"/>
+                            <field name="blade_kerf"/>
+                        </group>
+                    </group>
+
+                    <!-- Results summary -->
+                    <group invisible="state != 'computed'">
+                        <group>
+                            <field name="total_bars"/>
+                            <field name="total_waste_mm"/>
+                            <field name="waste_pct" widget="progressbar"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Cut Requirements" name="cuts">
+                            <field name="cut_line_ids">
+                                <list editable="bottom">
+                                    <field name="window_id"/>
+                                    <field name="description"/>
+                                    <field name="length_mm"/>
+                                    <field name="qty"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cutting Pattern" name="bars"
+                              invisible="state != 'computed'">
+                            <field name="bar_ids">
+                                <list>
+                                    <field name="sequence" string="Bar #"/>
+                                    <field name="used_mm"/>
+                                    <field name="waste_mm"/>
+                                    <field name="utilisation_pct" widget="progressbar"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Profile Optimiser — List View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_profile_optimiser_list" model="ir.ui.view">
+        <field name="name">wincraft.profile.optimiser.list</field>
+        <field name="model">wincraft.profile.optimiser</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="material_id"/>
+                <field name="standard_length"/>
+                <field name="total_bars"/>
+                <field name="waste_pct" widget="progressbar"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Profile Optimiser — Action
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="action_wincraft_profile_optimiser" model="ir.actions.act_window">
+        <field name="name">Profile Optimiser</field>
+        <field name="res_model">wincraft.profile.optimiser</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Profile Optimiser Bar — Form (popup)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_profile_optimiser_bar_form" model="ir.ui.view">
+        <field name="name">wincraft.profile.optimiser.bar.form</field>
+        <field name="model">wincraft.profile.optimiser.bar</field>
+        <field name="arch" type="xml">
+            <form string="Bar Detail">
+                <group>
+                    <field name="sequence"/>
+                    <field name="used_mm"/>
+                    <field name="waste_mm"/>
+                    <field name="utilisation_pct" widget="progressbar"/>
+                </group>
+                <field name="cut_ids">
+                    <list>
+                        <field name="sequence"/>
+                        <field name="description"/>
+                        <field name="length_mm"/>
+                    </list>
+                </field>
+            </form>
+        </field>
+    </record>
+
+</odoo>

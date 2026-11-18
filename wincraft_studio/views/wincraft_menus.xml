@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Studio — Menu Structure
+             ============================================================ -->
+
+        <!-- Top-level app menu -->
+        <menuitem id="wincraft_menu_root"
+                  name="WinCraft Studio"
+                  web_icon="wincraft_studio,static/description/icon.png"
+                  sequence="80"
+                  groups="wincraft_studio.group_wincraft_viewer,wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Dashboard ── -->
+        <menuitem id="wincraft_menu_dashboard"
+                  name="Dashboard"
+                  parent="wincraft_menu_root"
+                  action="wincraft_dashboard_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Projects ── -->
+        <menuitem id="wincraft_menu_projects"
+                  name="Projects"
+                  parent="wincraft_menu_root"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_my_projects"
+                  name="My Projects"
+                  parent="wincraft_menu_projects"
+                  action="wincraft_project_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_sales"/>
+
+        <menuitem id="wincraft_menu_all_projects"
+                  name="All Projects"
+                  parent="wincraft_menu_projects"
+                  action="wincraft_project_action_all"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_quick_quote"
+                  name="Quick Quote"
+                  parent="wincraft_menu_projects"
+                  action="action_quick_quote_wizard"
+                  sequence="5"
+                  groups="wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Quotations (moved under Projects, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_quotations"
+                  name="Quotations"
+                  parent="wincraft_menu_projects"
+                  action="wincraft_project_action_quoted"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Fabrication (moved under Projects, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_fabrication"
+                  name="Fabrication"
+                  parent="wincraft_menu_projects"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_work_queue"
+                  name="Work Queue"
+                  parent="wincraft_menu_fabrication"
+                  action="wincraft_window_action_fabrication"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_completed"
+                  name="Completed"
+                  parent="wincraft_menu_fabrication"
+                  action="wincraft_window_action_completed"
+                  sequence="20"/>
+
+        <!-- ── Cut List ── -->
+        <menuitem id="wincraft_menu_cutlist"
+                  name="Cut List"
+                  parent="wincraft_menu_fabrication"
+                  sequence="25"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_cutlist_all"
+                  name="All Cut List"
+                  parent="wincraft_menu_cutlist"
+                  action="action_wincraft_cutlist_line"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_cutlist_frame"
+                  name="Frame Cut List"
+                  parent="wincraft_menu_cutlist"
+                  action="action_wincraft_cutlist_line_frame"
+                  sequence="20"/>
+
+        <menuitem id="wincraft_menu_cutlist_glass"
+                  name="Glass Cut List"
+                  parent="wincraft_menu_cutlist"
+                  action="action_wincraft_cutlist_line_glass"
+                  sequence="30"/>
+
+        <!-- ── Cutlists (BOM-driven manufacturing cutlists, Phase 1) ── -->
+        <menuitem id="wincraft_menu_cutlist_mgmt"
+                  name="Cutlists"
+                  parent="wincraft_menu_fabrication"
+                  sequence="27"/>
+
+        <menuitem id="wincraft_menu_cutlist_mgmt_profile"
+                  name="Profile Cutlists"
+                  parent="wincraft_menu_cutlist_mgmt"
+                  action="action_wincraft_cutlist_profile_line"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_cutlist_mgmt_glass"
+                  name="Glass Cutlists"
+                  parent="wincraft_menu_cutlist_mgmt"
+                  action="action_wincraft_cutlist_glass_line"
+                  sequence="20"/>
+
+        <menuitem id="wincraft_menu_cutlist_mgmt_generate"
+                  name="Generate Cutlists"
+                  parent="wincraft_menu_cutlist_mgmt"
+                  action="action_wincraft_cutlist_generate_wizard"
+                  sequence="30"/>
+
+        <menuitem id="wincraft_menu_profile_optimiser"
+                  name="Profile Optimiser"
+                  parent="wincraft_menu_fabrication"
+                  action="action_wincraft_profile_optimiser"
+                  sequence="30"/>
+
+        <menuitem id="wincraft_menu_production_orders"
+                  name="Production Orders"
+                  parent="wincraft_menu_fabrication"
+                  action="action_wincraft_production"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_station_log"
+                  name="Station Log"
+                  parent="wincraft_menu_fabrication"
+                  action="action_wincraft_station_log"
+                  sequence="50"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Reports ── -->
+        <menuitem id="wincraft_menu_reports"
+                  name="Reports"
+                  parent="wincraft_menu_root"
+                  sequence="60"
+                  groups="wincraft_studio.group_wincraft_sales,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_revenue"
+                  name="Revenue Analysis"
+                  parent="wincraft_menu_reports"
+                  action="wincraft_window_action_revenue"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_pipeline"
+                  name="Project Pipeline"
+                  parent="wincraft_menu_reports"
+                  action="wincraft_project_action_pipeline"
+                  sequence="20"/>
+
+        <menuitem id="wincraft_menu_analytics"
+                  name="Project Analytics"
+                  parent="wincraft_menu_reports"
+                  action="action_wincraft_analysis"
+                  sequence="30"/>
+
+        <!-- ── Dealer (grouped, user request 2026-09-18 — Dealer Network,
+             Dealer Commissions and Branches were three separate top-level
+             menus; Delivery & Install moved in here too) ── -->
+        <menuitem id="wincraft_menu_dealer_group"
+                  name="Dealer"
+                  parent="wincraft_menu_root"
+                  sequence="70"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_dealers"
+                  name="Dealer Network"
+                  parent="wincraft_menu_dealer_group"
+                  action="action_wincraft_dealer"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_dealer_commissions"
+                  name="Dealer Commissions"
+                  parent="wincraft_menu_dealer_group"
+                  action="action_wincraft_dealer_commission"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_branches"
+                  name="Branches"
+                  parent="wincraft_menu_dealer_group"
+                  action="action_wincraft_branch"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Delivery & Installation (moved under Dealer, user request
+             2026-09-18) ── -->
+        <menuitem id="wincraft_menu_delivery"
+                  name="Delivery &amp; Install"
+                  parent="wincraft_menu_dealer_group"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_deliveries"
+                  name="Deliveries"
+                  parent="wincraft_menu_delivery"
+                  action="action_wincraft_delivery"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_loading_manifest"
+                  name="Loading Manifest"
+                  parent="wincraft_menu_delivery"
+                  action="action_wincraft_loading_manifest"
+                  sequence="20"/>
+
+        <menuitem id="wincraft_menu_installations"
+                  name="Installations"
+                  parent="wincraft_menu_delivery"
+                  action="action_wincraft_installation"
+                  sequence="30"/>
+
+        <!-- ── Inventory ── -->
+        <menuitem id="wincraft_menu_inventory"
+                  name="Inventory"
+                  parent="wincraft_menu_root"
+                  sequence="80"
+                  groups="wincraft_studio.group_wincraft_fabricator,wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_material_requirements"
+                  name="Material Requirements"
+                  parent="wincraft_menu_inventory"
+                  action="action_wincraft_material_requirement"
+                  sequence="10"/>
+
+        <menuitem id="wincraft_menu_paint_products"
+                  name="Paint Products"
+                  parent="wincraft_menu_inventory"
+                  action="action_wincraft_paint_product"
+                  sequence="20"/>
+
+        <!-- ── Configuration (all master data + settings) ──
+             WS-24: grouped into 7 submenus (was a single 31-item flat
+             flyout) — see docs/sprints/SPRINT_2.md for the grouping
+             rationale and canvas-usage audit behind it. -->
+        <menuitem id="wincraft_menu_config"
+                  name="Configuration"
+                  parent="wincraft_menu_root"
+                  sequence="100"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- Configuration now only holds Setup — the catalog groups below
+             (Frame & Profile, Glass & Glazing, Hardware & Add-ons, Colors,
+             Window Types, Pricing & Rules) were promoted to top-level app
+             menus, user request 2026-09-18. -->
+        <menuitem id="wincraft_menu_product_setup_wizard"
+                  name="Product Setup Wizard"
+                  parent="wincraft_menu_config"
+                  action="action_wincraft_product_setup_wizard"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_settings"
+                  name="Settings"
+                  parent="wincraft_menu_config"
+                  action="base_setup.action_general_configuration"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Frame & Profile (promoted to top-level, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_config_frame"
+                  name="Frame &amp; Profile"
+                  parent="wincraft_menu_root"
+                  sequence="82"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_materials"
+                  name="Frame Materials"
+                  parent="wincraft_menu_config_frame"
+                  action="wincraft_material_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_frame_config"
+                  name="Frame Product Mappings"
+                  parent="wincraft_menu_config_frame"
+                  action="action_wincraft_frame_config"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- WS-17: Brickmould type catalog, no home until this ticket. -->
+        <menuitem id="wincraft_menu_brickmould"
+                  name="Brickmould Types"
+                  parent="wincraft_menu_config_frame"
+                  action="wincraft_brickmould_action"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_rooms"
+                  name="Rooms"
+                  parent="wincraft_menu_config_frame"
+                  action="wincraft_room_action"
+                  sequence="50"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Glass & Glazing (promoted to top-level, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_config_glass"
+                  name="Glass &amp; Glazing"
+                  parent="wincraft_menu_root"
+                  sequence="84"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_glass_lites"
+                  name="Glass Options"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_glass_lite_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_glass_types"
+                  name="Glass Types"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_glass_type_action"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_glass_tints"
+                  name="Glass Tints"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_glass_tint_action"
+                  sequence="50"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_cavity_widths"
+                  name="Cavity Widths"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_cavity_width_action"
+                  sequence="60"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_gas_fills"
+                  name="Gas Fills"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_gas_fill_action"
+                  sequence="70"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_spacer_types"
+                  name="Spacer Types"
+                  parent="wincraft_menu_config_glass"
+                  action="wincraft_spacer_type_action"
+                  sequence="80"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Hardware & Add-ons (promoted to top-level, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_config_hardware"
+                  name="Hardware &amp; Add-ons"
+                  parent="wincraft_menu_root"
+                  sequence="86"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_hardware"
+                  name="Hardware Items"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_hardware_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_addon_categories"
+                  name="Add-on Categories"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_addon_category_action"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_addons"
+                  name="Add-on Items"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_addon_action"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_casement_hardware"
+                  name="Casement Hardware"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_casement_hardware_action"
+                  sequence="15"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_grill"
+                  name="Grill / Grille"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_addon_action_grill"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_option"
+                  name="Options"
+                  parent="wincraft_menu_config_hardware"
+                  action="wincraft_addon_action_option"
+                  sequence="50"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Colors (WS-15, promoted to top-level 2026-09-18; collapsed
+             from 5 menu items — Color Vendors, Colors, and 3 per-vendor
+             filtered views — down to this single one 2026-09-23, when the
+             vendor model was removed in favor of a free-text vendor column;
+             see wincraft_color.py's docstring. Regrouped as a 2-item parent
+             menu the same day, when "Import Colors" — a one-field vendor
+             prompt in front of the native Import screen, see
+             wincraft_color_import_wizard.py — was pulled back out of a
+             second top-level item into here, mirroring the "Cutlists"
+             group's plain-list-menus-plus-a-wizard shape below.) ── -->
+        <menuitem id="wincraft_menu_colors_group"
+                  name="Colors"
+                  parent="wincraft_menu_root"
+                  sequence="88"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_colors"
+                  name="All Colors"
+                  parent="wincraft_menu_colors_group"
+                  action="wincraft_color_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_colors_import"
+                  name="Import Colors"
+                  parent="wincraft_menu_colors_group"
+                  action="action_wincraft_color_import_wizard"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <!-- ── Window Types (promoted to top-level, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_config_window_types"
+                  name="Window Types"
+                  parent="wincraft_menu_root"
+                  sequence="90"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_opening_types"
+                  name="Opening Types"
+                  parent="wincraft_menu_config_window_types"
+                  action="wincraft_opening_type_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_window_type_kinds"
+                  name="Window Type Kinds"
+                  parent="wincraft_menu_config_window_types"
+                  action="wincraft_window_type_kind_action"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_window_type_series"
+                  name="Profile Types"
+                  parent="wincraft_menu_config_window_types"
+                  action="wincraft_window_type_series_action"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_window_types"
+                  name="Window Types"
+                  parent="wincraft_menu_config_window_types"
+                  action="wincraft_window_type_action"
+                  sequence="40"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_templates"
+                  name="Window Templates"
+                  parent="wincraft_menu_config_window_types"
+                  action="wincraft_window_template_action"
+                  sequence="50"/>
+
+        <!-- ── Pricing & Rules (promoted to top-level, user request 2026-09-18) ── -->
+        <menuitem id="wincraft_menu_config_pricing"
+                  name="Pricing &amp; Rules"
+                  parent="wincraft_menu_root"
+                  sequence="92"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_deduction_formulas"
+                  name="Deduction Formulas"
+                  parent="wincraft_menu_config_pricing"
+                  action="wincraft_deduction_formula_action"
+                  sequence="10"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_pricing"
+                  name="Pricing Rules"
+                  parent="wincraft_menu_config_pricing"
+                  action="wincraft_pricing_rule_action"
+                  sequence="20"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+        <menuitem id="wincraft_menu_rules"
+                  name="Design Rules"
+                  parent="wincraft_menu_config_pricing"
+                  action="wincraft_rule_action"
+                  sequence="30"
+                  groups="wincraft_studio.group_wincraft_admin"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Configurator Panel — left sidebar with click-to-configure sections
+         System Type grid, Sash Layout pills, Opening Direction, Frame Material
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.ComponentLibraryPanel">
+        <div class="wc-library-panel">
+            <!-- Section A: System Type -->
+            <div class="wc-cfg-card">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-th-large wc-cfg-card-icon"/>
+                    <span>System Type</span>
+                </div>
+                <div class="wc-type-grid">
+                    <t t-foreach="filteredWindowTypes" t-as="wt" t-key="wt.key">
+                        <div t-att-class="{ 'wc-type-card': true, 'active': selectedType === wt.key }"
+                             t-on-click="() => this.onTypeClick(wt.key)"
+                             t-att-title="wt.label">
+                            <div class="wc-type-card-icon" t-out="getTypeIcon(wt.key)"/>
+                            <span class="wc-type-card-label" t-esc="wt.label"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Section B: Sash Layout -->
+            <div class="wc-cfg-card">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-columns wc-cfg-card-icon"/>
+                    <span>Sash Layout</span>
+                </div>
+                <div class="wc-sash-grid">
+                    <t t-foreach="filteredSashLayouts" t-as="sl" t-key="sl.key">
+                        <div t-att-class="{ 'wc-sash-card': true, 'active': selectedSashKey === sl.key }"
+                             t-on-click="() => this.onSashClick(sl)">
+                            <div class="wc-sash-card-icon" t-out="getSashIcon(sl)"/>
+                            <span class="wc-sash-card-label" t-esc="sl.label"/>
+                        </div>
+                    </t>
+                </div>
+                <div class="wc-type-hint" t-if="props.selectedWindow and filteredSashLayouts.length &lt; 6">
+                    <i class="fa fa-info-circle"/> Layouts for <t t-esc="typeHint"/> windows
+                </div>
+            </div>
+
+            <!-- Section C: Opening Direction -->
+            <div class="wc-cfg-card" t-if="filteredOpeningDirections.length > 1">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-exchange wc-cfg-card-icon"/>
+                    <span>Opening Direction</span>
+                </div>
+                <div class="wc-pill-row">
+                    <t t-foreach="filteredOpeningDirections" t-as="od" t-key="od.key">
+                        <button t-att-class="{ 'wc-pill': true, 'active': selectedDirection === od.key }"
+                                t-on-click="() => this.onDirectionClick(od.key)">
+                            <t t-esc="od.label"/>
+                        </button>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Section D0: Profile Type -->
+            <div class="wc-cfg-card" t-if="props.profileTypes and props.profileTypes.length">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-industry wc-cfg-card-icon"/>
+                    <span>Profile Type</span>
+                </div>
+                <select class="wc-profile-select"
+                        t-on-change="onProfileTypeChange"
+                        t-att-disabled="!props.selectedWindow">
+                    <option value="">— Select System —</option>
+                    <t t-foreach="props.profileTypes" t-as="ps" t-key="ps.id">
+                        <option t-att-value="ps.id"
+                                t-att-selected="selectedProfileTypeId === ps.id">
+                            <t t-esc="ps.display_name"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+
+            <!-- Section D: Frame Material -->
+            <div class="wc-cfg-card">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-cube wc-cfg-card-icon"/>
+                    <span>Frame Material</span>
+                </div>
+                <div class="wc-pill-row wc-pill-row--stack">
+                    <t t-foreach="props.materials" t-as="mat" t-key="mat.id">
+                        <button t-att-class="{ 'wc-pill wc-pill--wide': true, 'active': selectedMaterialId === mat.id }"
+                                t-on-click="() => this.onMaterialClick(mat.id)">
+                            <t t-esc="mat.name"/>
+                        </button>
+                    </t>
+                    <span t-if="!props.materials.length" class="wc-config-hint">No materials found</span>
+                </div>
+            </div>
+
+            <!-- Section E: Profile Depth -->
+            <div class="wc-cfg-card">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-arrows-v wc-cfg-card-icon"/>
+                    <span>Profile Depth</span>
+                </div>
+                <div class="wc-pill-row">
+                    <t t-foreach="availableProfileDepths" t-as="pd" t-key="pd.key">
+                        <button t-att-class="{ 'wc-pill': true, 'active': selectedProfileDepth === pd.key }"
+                                t-on-click="() => this.onProfileDepthClick(pd.key)">
+                            <t t-esc="pd.label"/>
+                        </button>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Section F: Dividers (Split / Merge panels) -->
+            <div class="wc-cfg-card" t-if="props.selectedWindow and showDividers">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-columns wc-cfg-card-icon"/>
+                    <span>Split &amp; Merge</span>
+                </div>
+                <div class="wc-divider-row">
+                    <div t-att-class="{ 'wc-divider-item': true, 'wc-divider-disabled': !canAddMullion }"
+                         t-att-draggable="canAddMullion ? 'true' : 'false'"
+                         t-on-dragstart="canAddMullion and ((ev) => this.onDividerDragStart(ev, 'vertical'))"
+                         t-on-click="canAddMullion and (() => this.addDivider('vertical'))"
+                         t-att-title="canAddMullion ? 'Split selected panel vertically (add mullion)' : 'Panel too small to split'">
+                        <div class="wc-divider-icon wc-divider-icon--vertical">
+                            <svg width="32" height="32" viewBox="0 0 32 32">
+                                <rect x="2" y="2" width="28" height="28" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="16" y1="2" x2="16" y2="30" stroke="#4f6ef7" stroke-width="2" stroke-dasharray="3 2"/>
+                            </svg>
+                        </div>
+                        <span class="wc-divider-label">Split ↔</span>
+                    </div>
+                    <div t-att-class="{ 'wc-divider-item': true, 'wc-divider-disabled': !canAddTransom }"
+                         t-att-draggable="canAddTransom ? 'true' : 'false'"
+                         t-on-dragstart="canAddTransom and ((ev) => this.onDividerDragStart(ev, 'horizontal'))"
+                         t-on-click="canAddTransom and (() => this.addDivider('horizontal'))"
+                         t-att-title="canAddTransom ? 'Split selected panel horizontally (add transom)' : 'Panel too small to split'">
+                        <div class="wc-divider-icon wc-divider-icon--horizontal">
+                            <svg width="32" height="32" viewBox="0 0 32 32">
+                                <rect x="2" y="2" width="28" height="28" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="2" y1="16" x2="30" y2="16" stroke="#4f6ef7" stroke-width="2" stroke-dasharray="3 2"/>
+                            </svg>
+                        </div>
+                        <span class="wc-divider-label">Split ↕</span>
+                    </div>
+                    <div t-att-class="{ 'wc-divider-item': true, 'wc-divider-disabled': !canMerge }"
+                         t-on-click="canMerge and (() => this.mergePanels())"
+                         t-att-title="canMerge ? 'Merge selected panel with its sibling' : 'Select a panel to merge'">
+                        <div class="wc-divider-icon wc-divider-icon--merge">
+                            <svg width="32" height="32" viewBox="0 0 32 32">
+                                <rect x="2" y="2" width="28" height="28" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="10" y1="16" x2="22" y2="16" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                                <polyline points="13,12 10,16 13,20" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                                <polyline points="19,12 22,16 19,20" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <span class="wc-divider-label">Merge</span>
+                    </div>
+                </div>
+                <div class="wc-type-hint" t-if="!props.selectedElement or props.selectedElement.type !== 'pane'">
+                    <i class="fa fa-info-circle"/> Select a panel to split or merge
+                </div>
+            </div>
+
+            <!-- Section G: Template Browser -->
+            <div class="wc-cfg-card" t-if="props.templates and props.templates.length">
+                <div class="wc-cfg-card-head">
+                    <i class="fa fa-bookmark wc-cfg-card-icon"/>
+                    <span>Templates</span>
+                </div>
+                <!-- Category filter tabs -->
+                <div class="wc-pill-row" style="flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+                    <t t-foreach="templateCategories" t-as="cat" t-key="cat.key">
+                        <button t-att-class="{ 'wc-pill wc-pill--sm': true, 'active': state.templateCategory === cat.key }"
+                                t-on-click="() => this.onTemplateCategoryClick(cat.key)">
+                            <t t-esc="cat.label"/>
+                        </button>
+                    </t>
+                </div>
+                <!-- Search -->
+                <input type="text" class="wc-dim-input" style="width:100%;margin-bottom:6px;"
+                       placeholder="Search templates..."
+                       t-on-input="onTemplateSearchInput"
+                       t-att-value="state.templateSearch"/>
+                <!-- Template grid -->
+                <div class="wc-type-grid" style="max-height:200px;overflow-y:auto;">
+                    <t t-foreach="filteredTemplates" t-as="tmpl" t-key="tmpl.id">
+                        <div class="wc-type-card"
+                             t-on-click="() => this.onTemplateClick(tmpl)"
+                             t-att-title="tmpl.name + ' (' + tmpl.default_width + '×' + tmpl.default_height + ')'">
+                            <div class="wc-type-card-icon" t-if="tmpl.thumbnail_svg" t-out="markup(tmpl.thumbnail_svg)"/>
+                            <div class="wc-type-card-icon" t-else="">
+                                <t t-out="getTypeIcon(tmpl.window_type)"/>
+                            </div>
+                            <span class="wc-type-card-label" style="font-size:9px;" t-esc="tmpl.name"/>
+                        </div>
+                    </t>
+                    <span t-if="!filteredTemplates.length" class="wc-config-hint">No templates match</span>
+                </div>
+            </div>
+
+            <div class="wc-config-hint-box" t-if="!props.selectedWindow">
+                <i class="fa fa-lightbulb-o"/>
+                <span>Select a <b>System Type</b> to add a new window to the canvas</span>
+            </div>
+        </div>
+    </t>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Window Object — SVG group for a single window on the canvas
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.WindowObject">
+        <g t-att-transform="'translate(' + px.x + ',' + px.y + ')'"
+           t-on-mousedown="onMouseDown"
+           class="wc-window-obj"
+           t-att-class="{ 'wc-window-selected': props.selected }">
+
+            <!-- Divider drop zone (invisible overlay that accepts drag-drop) -->
+            <rect x="0" y="0"
+                  t-att-width="px.w" t-att-height="px.h"
+                  fill="transparent"
+                  t-on-dragover="onDividerDragOver"
+                  t-on-drop="onDividerDrop"/>
+
+            <!-- Window SVG content -->
+            <g t-out="svgMarkup"/>
+
+            <!-- Selection border removed — properties panel handles editing -->
+
+            <!-- Labels handled inside SVG from getWindowSVG() -->
+
+            <!-- Pane click overlay targets (always rendered for direct pane selection) -->
+            <t t-foreach="paneHitTargets" t-as="pt" t-key="pt.index">
+                <!-- A lone pane in a shaped frame (circle/triangle/octagon/...) gets a
+                     shape-fitted hit/hover polygon instead of its bounding rect, so the
+                     hover tint never spills into the frame corners outside the glass. -->
+                <polygon t-if="pt.points" t-att-points="pt.points"
+                         fill="transparent" cursor="pointer"
+                         class="wc-pane-hit"
+                         t-on-mousedown="(ev) => this.onPaneMouseDown(ev, pt.index, pt.panelId)"/>
+                <rect t-else=""
+                      t-att-x="pt.x" t-att-y="pt.y"
+                      t-att-width="pt.w" t-att-height="pt.h"
+                      fill="transparent" cursor="pointer"
+                      class="wc-pane-hit"
+                      t-on-mousedown="(ev) => this.onPaneMouseDown(ev, pt.index, pt.panelId)"/>
+            </t>
+
+            <!-- Frame segment click targets (transparent hit areas — visual highlight rendered in SVG) -->
+            <t t-foreach="frameSegmentHitTargets" t-as="fs" t-key="fs.id">
+                <rect t-att-x="fs.x" t-att-y="fs.y"
+                      t-att-width="fs.w" t-att-height="fs.h"
+                      fill="transparent" stroke="none"
+                      cursor="pointer"
+                      class="wc-frame-hit"
+                      t-on-mousedown="(ev) => this.onFrameSegmentClick(ev, fs)">
+                    <title t-esc="fs.id + ' · ' + fs.label"/>
+                </rect>
+            </t>
+
+            <!-- Bay/Bow 3D iso interactive control buttons (transparent hit-targets
+                 layered above frame/pane overlays so clicks aren't intercepted). -->
+            <t t-foreach="isoControls" t-as="ic" t-key="ic.action">
+                <rect t-att-x="ic.x" t-att-y="ic.y"
+                      t-att-width="ic.w" t-att-height="ic.h"
+                      fill="transparent" stroke="none"
+                      cursor="pointer"
+                      class="wc-iso-hit"
+                      t-att-data-iso-action="ic.action"
+                      t-on-mousedown="(ev) => { ev.stopPropagation(); ev.preventDefault(); this._handleIsoAction(ic.action); }"
+                      t-on-click="(ev) => { ev.stopPropagation(); ev.preventDefault(); this._handleIsoAction(ic.action); }">
+                    <title t-esc="ic.tip"/>
+                </rect>
+            </t>
+
+            <!-- Mullion / bay-bow-lite drag handles (only when selected) -->
+            <t t-if="props.selected">
+                <t t-foreach="mullionHandles" t-as="mh"
+                   t-key="mh.bayBoundary !== undefined ? 'b' + mh.bayBoundary : 'm' + mh.index">
+                    <rect t-att-x="mh.x" t-att-y="mh.y"
+                          t-att-width="mh.w" t-att-height="mh.h"
+                          fill="rgba(79,110,247,0.08)"
+                          t-att-cursor="mh.cursor"
+                          class="wc-mullion-handle"
+                          t-on-mousedown="(ev) => this.onMullionMouseDown(ev, mh)"
+                          t-on-dblclick="(ev) => this.onMullionDblClick(ev, mh)"
+                          t-on-contextmenu="(ev) => this.onMullionContextMenu(ev, mh)">
+                        <title t-esc="mh.bayBoundary !== undefined ? 'Drag to resize adjacent lites' : 'Drag to move · Double-click to remove'"/>
+                    </rect>
+                </t>
+            </t>
+
+            <!-- Resize handles removed — use Properties Panel to adjust dimensions -->
+        </g>
+    </t>
+
+</templates>

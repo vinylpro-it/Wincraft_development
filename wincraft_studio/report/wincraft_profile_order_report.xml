@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Profile Order Sheet Report
+         Prints a material-requisition-style report for ordering aluminium
+         profile bars based on the optimiser result.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <template id="report_wincraft_profile_order" name="Profile Order Sheet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+
+                    <div class="page" style="font-family:Arial,sans-serif;">
+                        <h2 class="text-center" style="color:#2c2c2a;">
+                            Profile Order Sheet
+                        </h2>
+                        <p class="text-center text-muted">
+                            <t t-esc="o.name"/>
+                        </p>
+
+                        <!-- Summary header -->
+                        <table class="table table-sm mt-3"
+                               style="width:auto;margin:0 auto;">
+                            <tr>
+                                <td class="fw-bold">Project</td>
+                                <td><t t-esc="o.project_id.name"/> (<t t-esc="o.project_id.ref"/>)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Material</td>
+                                <td><t t-esc="o.material_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Standard Bar</td>
+                                <td><t t-esc="o.standard_length"/> mm</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Blade Kerf</td>
+                                <td><t t-esc="o.blade_kerf"/> mm</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Total Bars Required</td>
+                                <td><t t-esc="o.total_bars"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Total Waste</td>
+                                <td><t t-esc="o.total_waste_mm"/> mm
+                                    (<t t-esc="'%.1f' % o.waste_pct"/>%)</td>
+                            </tr>
+                        </table>
+
+                        <!-- Cut requirements -->
+                        <h4 class="mt-4">Cut Requirements</h4>
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Window</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Length (mm)</th>
+                                    <th class="text-end">Qty</th>
+                                    <th class="text-end">Total (mm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.cut_line_ids" t-as="cut">
+                                    <tr>
+                                        <td><t t-esc="cut.window_id.name or '-'"/></td>
+                                        <td><t t-esc="cut.description or ''"/></td>
+                                        <td class="text-end"><t t-esc="cut.length_mm"/></td>
+                                        <td class="text-end"><t t-esc="cut.qty"/></td>
+                                        <td class="text-end"><t t-esc="cut.length_mm * cut.qty"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Cutting pattern -->
+                        <h4 class="mt-4">Cutting Pattern</h4>
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Bar #</th>
+                                    <th class="text-end">Used (mm)</th>
+                                    <th class="text-end">Waste (mm)</th>
+                                    <th class="text-end">Utilisation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.bar_ids" t-as="bar">
+                                    <tr>
+                                        <td><t t-esc="bar.sequence"/></td>
+                                        <td class="text-end"><t t-esc="bar.used_mm"/></td>
+                                        <td class="text-end"><t t-esc="bar.waste_mm"/></td>
+                                        <td class="text-end"><t t-esc="'%.1f' % bar.utilisation_pct"/>%</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

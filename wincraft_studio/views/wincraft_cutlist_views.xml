@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Cut-List Line — on-screen, filterable, Excel-exportable list
+             of per-window cut/fit requirements, split by category so a
+             Frame list can go to the profile shop and a Glass list can
+             go to the glass vendor independently.
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <record id="view_wincraft_cutlist_line_list" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.line.list</field>
+            <field name="model">wincraft.cutlist.line</field>
+            <field name="arch" type="xml">
+                <list string="Cut List" create="0" edit="0" delete="0" export_xlsx="1">
+                    <field name="ref" optional="show"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="window_type" optional="hide"/>
+                    <field name="category" widget="badge"
+                           decoration-info="category == 'frame'"
+                           decoration-success="category == 'glass'"/>
+                    <field name="component"/>
+                    <field name="material"/>
+                    <field name="dim1_mm" string="Width (mm)"/>
+                    <field name="dim2_mm" string="Height (mm)"/>
+                    <field name="quantity"/>
+                    <field name="area_sqm" optional="show"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="fabricator_id" optional="hide"/>
+                    <field name="branch_id" optional="hide"/>
+                    <field name="due_date" optional="hide"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'delivered'"
+                           decoration-info="state == 'fabricating'"
+                           decoration-muted="state in ('draft','designing')"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_wincraft_cutlist_line_search" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.line.search</field>
+            <field name="model">wincraft.cutlist.line</field>
+            <field name="arch" type="xml">
+                <search string="Cut List">
+                    <field name="ref"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="material"/>
+                    <field name="partner_id"/>
+                    <field name="fabricator_id"/>
+                    <filter name="filter_frame" string="Frame" domain="[('category','=','frame')]"/>
+                    <filter name="filter_glass" string="Glass" domain="[('category','=','glass')]"/>
+                    <separator/>
+                    <filter name="filter_ready_for_fabrication" string="Accepted Onward"
+                            domain="[('state','in',['accepted','fabricating','delivered'])]"/>
+                    <filter name="filter_accepted" string="Accepted" domain="[('state','=','accepted')]"/>
+                    <filter name="filter_fabricating" string="Fabricating" domain="[('state','=','fabricating')]"/>
+                    <filter name="filter_delivered" string="Delivered" domain="[('state','=','delivered')]"/>
+                    <separator/>
+                    <filter name="filter_not_fabricated" string="Not Yet Fabricated" domain="[('fabricated','=',False)]"/>
+                    <group>
+                        <filter name="group_category" string="Category" context="{'group_by': 'category'}"/>
+                        <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                        <filter name="group_window_type" string="Window Type" context="{'group_by': 'window_type'}"/>
+                        <filter name="group_material" string="Material / Item" context="{'group_by': 'material'}"/>
+                        <filter name="group_fabricator" string="Fabricator" context="{'group_by': 'fabricator_id'}"/>
+                        <filter name="group_branch" string="Branch" context="{'group_by': 'branch_id'}"/>
+                        <filter name="group_state" string="Project Status" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: All Cut List Lines ── -->
+        <record id="action_wincraft_cutlist_line" model="ir.actions.act_window">
+            <field name="name">Cut List</field>
+            <field name="res_model">wincraft.cutlist.line</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_wincraft_cutlist_line_search"/>
+            <field name="context">{'search_default_filter_ready_for_fabrication': 1, 'group_by': ['category']}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No cut-list lines yet.
+                </p>
+                <p>
+                    Cut-list lines are generated automatically from each project's windows
+                    once a project reaches Accepted / Fabricating / Delivered.
+                </p>
+            </field>
+        </record>
+
+        <!-- ── Action: Frame Cut List ── -->
+        <record id="action_wincraft_cutlist_line_frame" model="ir.actions.act_window">
+            <field name="name">Frame Cut List</field>
+            <field name="res_model">wincraft.cutlist.line</field>
+            <field name="view_mode">list</field>
+            <field name="domain">[('category', '=', 'frame')]</field>
+            <field name="search_view_id" ref="view_wincraft_cutlist_line_search"/>
+            <field name="context">{'search_default_filter_ready_for_fabrication': 1}</field>
+        </record>
+
+        <!-- ── Action: Glass Cut List ── -->
+        <record id="action_wincraft_cutlist_line_glass" model="ir.actions.act_window">
+            <field name="name">Glass Cut List</field>
+            <field name="res_model">wincraft.cutlist.line</field>
+            <field name="view_mode">list</field>
+            <field name="domain">[('category', '=', 'glass')]</field>
+            <field name="search_view_id" ref="view_wincraft_cutlist_line_search"/>
+            <field name="context">{'search_default_filter_ready_for_fabrication': 1}</field>
+        </record>
+
+    </data>
+</odoo>

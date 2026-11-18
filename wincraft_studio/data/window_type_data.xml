@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="window_type_casement" model="wincraft.window.type">
+            <field name="name">Casement</field>
+            <field name="key">casement</field>
+            <field name="sequence">1</field>
+            <field name="frame_shapes">rectangular,arched</field>
+            <field name="sash_layouts">1x1,2x1,3x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning'), ref('opening_type_hopper'), ref('opening_type_tiltturn'), ref('opening_type_pivot')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right,fixed</field>
+        </record>
+
+        <record id="window_type_sliding" model="wincraft.window.type">
+            <field name="name">Sliding</field>
+            <field name="key">sliding</field>
+            <field name="sequence">2</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1,3x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_sliding'), ref('opening_type_single_hung'), ref('opening_type_double_hung'), ref('opening_type_lift_slide')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_fixed" model="wincraft.window.type">
+            <field name="name">Fixed / Picture</field>
+            <field name="key">fixed</field>
+            <field name="sequence">3</field>
+            <field name="frame_shapes">rectangular,arched,gothic,circle,half_circle,triangle,trapezoid,rake,octagon</field>
+            <field name="sash_layouts">1x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_bifold" model="wincraft.window.type">
+            <field name="name">Bi-Fold</field>
+            <field name="key">bifold</field>
+            <field name="sequence">4</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1,3x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_bifold')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right</field>
+        </record>
+
+        <record id="window_type_awning" model="wincraft.window.type">
+            <field name="name">Awning</field>
+            <field name="key">awning</field>
+            <field name="sequence">5</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">1x1,1x2</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_awning'), ref('opening_type_hopper')])]"/>
+            <field name="hinge_sides">top</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_arched" model="wincraft.window.type">
+            <field name="name">Arched / Shaped</field>
+            <field name="key">arched</field>
+            <field name="sequence">6</field>
+            <field name="kind_id" ref="window_type_kind_shape"/>
+            <field name="frame_shapes">arched,gothic,circle,half_circle,triangle,trapezoid,rake,octagon</field>
+            <field name="sash_layouts">1x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,sunburst,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_bay" model="wincraft.window.type">
+            <field name="name">Bay Window</field>
+            <field name="key">bay</field>
+            <field name="sequence">7</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1,3x1,4x1,5x1,6x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning'), ref('opening_type_hopper'), ref('opening_type_tiltturn')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right,fixed</field>
+        </record>
+
+        <record id="window_type_bow" model="wincraft.window.type">
+            <field name="name">Bow Window</field>
+            <field name="key">bow</field>
+            <field name="sequence">8</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">3x1,4x1,5x1,6x1,7x1,8x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right,fixed</field>
+        </record>
+
+        <record id="window_type_tilt_turn" model="wincraft.window.type">
+            <field name="name">Tilt &amp; Turn</field>
+            <field name="key">tilt_turn</field>
+            <field name="sequence">9</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">1x1,2x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_tiltturn'), ref('opening_type_casement_l'), ref('opening_type_casement_r')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">tilt_turn</field>
+        </record>
+
+        <record id="window_type_single_hung" model="wincraft.window.type">
+            <field name="name">Single Hung</field>
+            <field name="key">single_hung</field>
+            <field name="sequence">10</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">1x2</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,marginal,prairie</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_double_hung" model="wincraft.window.type">
+            <field name="name">Double Hung</field>
+            <field name="key">double_hung</field>
+            <field name="sequence">11</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">1x2</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,marginal,prairie</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_single_slider" model="wincraft.window.type">
+            <field name="name">Single Slider</field>
+            <field name="key">single_slider</field>
+            <field name="sequence">12</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_double_slider" model="wincraft.window.type">
+            <field name="name">Double Slider</field>
+            <field name="key">double_slider</field>
+            <field name="sequence">13</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1,3x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_end_vent_slider" model="wincraft.window.type">
+            <field name="name">End Vent Slider</field>
+            <field name="key">end_vent_slider</field>
+            <field name="sequence">14</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">3x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+            <field name="hinge_sides"></field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">fixed</field>
+        </record>
+
+        <record id="window_type_fixed_casement" model="wincraft.window.type">
+            <field name="name">Fixed Casement</field>
+            <field name="key">fixed_casement</field>
+            <field name="sequence">15</field>
+            <field name="frame_shapes">rectangular</field>
+            <field name="sash_layouts">2x1,3x1,1x1</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning'), ref('opening_type_hopper'), ref('opening_type_tiltturn')])]"/>
+            <field name="hinge_sides">left,right</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right,fixed</field>
+        </record>
+
+        <record id="window_type_custom" model="wincraft.window.type">
+            <field name="name">Custom</field>
+            <field name="key">custom</field>
+            <field name="sequence">16</field>
+            <field name="frame_shapes">rectangular,arched,gothic,circle,half_circle,triangle,trapezoid,rake,octagon</field>
+            <field name="sash_layouts">1x1,2x1,3x1,1x2,2x2,3x2</field>
+            <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_fixed'), ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning'), ref('opening_type_hopper'), ref('opening_type_tiltturn'), ref('opening_type_sliding'), ref('opening_type_bifold'), ref('opening_type_louvre'), ref('opening_type_single_hung'), ref('opening_type_double_hung'), ref('opening_type_pivot'), ref('opening_type_lift_slide')])]"/>
+            <field name="hinge_sides">left,right,top</field>
+            <field name="georgian_patterns">none,grid,diamond,sunburst,prairie,marginal</field>
+            <field name="allow_mullion" eval="True"/>
+            <field name="allow_transom" eval="True"/>
+            <field name="opening_directions">left_right,top_hung,bottom_hung,fixed,tilt_turn</field>
+        </record>
+
+    </data>
+</odoo>

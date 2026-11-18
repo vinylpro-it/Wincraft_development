@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Project Analysis — Pivot/Graph Views
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <record id="view_wincraft_analysis_pivot" model="ir.ui.view">
+        <field name="name">wincraft.project.analysis.pivot</field>
+        <field name="model">wincraft.project.analysis</field>
+        <field name="arch" type="xml">
+            <pivot string="Project Analysis">
+                <field name="user_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_price" type="measure"/>
+                <field name="total_windows" type="measure"/>
+                <field name="total_area_sqm" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_wincraft_analysis_graph" model="ir.ui.view">
+        <field name="name">wincraft.project.analysis.graph</field>
+        <field name="model">wincraft.project.analysis</field>
+        <field name="arch" type="xml">
+            <graph string="Project Revenue">
+                <field name="create_date" interval="month" type="row"/>
+                <field name="total_price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_wincraft_analysis_list" model="ir.ui.view">
+        <field name="name">wincraft.project.analysis.list</field>
+        <field name="model">wincraft.project.analysis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="total_windows"/>
+                <field name="total_area_sqm" string="Area (m²)"/>
+                <field name="total_price"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_wincraft_analysis_search" model="ir.ui.view">
+        <field name="name">wincraft.project.analysis.search</field>
+        <field name="model">wincraft.project.analysis</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="dealer_id"/>
+                <filter name="filter_quoted" string="Quoted" domain="[('state','=','quoted')]"/>
+                <filter name="filter_accepted" string="Accepted" domain="[('state','=','accepted')]"/>
+                <filter name="filter_delivered" string="Delivered" domain="[('state','=','delivered')]"/>
+                <separator/>
+                <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'user_id'}"/>
+                <filter name="group_dealer" string="Dealer" context="{'group_by': 'dealer_id'}"/>
+                <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                <filter name="group_month" string="Month" context="{'group_by': 'create_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_wincraft_analysis" model="ir.actions.act_window">
+        <field name="name">Project Analytics</field>
+        <field name="res_model">wincraft.project.analysis</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_wincraft_analysis_search"/>
+    </record>
+
+</odoo>

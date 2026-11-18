@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Quick Quote Wizard — Form View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_quick_quote_wizard_form" model="ir.ui.view">
+        <field name="name">wincraft.quick.quote.wizard.form</field>
+        <field name="model">wincraft.quick.quote.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Quick Quote">
+                <group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="project_name"/>
+                    </group>
+                    <group>
+                        <field name="installation_charge"/>
+                        <field name="estimated_total" readonly="1" class="fw-bold"/>
+                    </group>
+                </group>
+                <separator string="Windows"/>
+                <field name="line_ids">
+                    <list editable="bottom">
+                        <field name="name"/>
+                        <field name="window_type"/>
+                        <field name="width_mm"/>
+                        <field name="height_mm"/>
+                        <field name="panels_horizontal"/>
+                        <field name="panels_vertical"/>
+                        <field name="material_id"/>
+                        <field name="glass_type_id"/>
+                        <field name="estimated_price" readonly="1"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_create_project"
+                            string="Create Project &amp; Quote"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Quick Quote Wizard — Action
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="action_quick_quote_wizard" model="ir.actions.act_window">
+        <field name="name">Quick Quote</field>
+        <field name="res_model">wincraft.quick.quote.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

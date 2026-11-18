@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Work Centres — window fabrication production line
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <record id="workcenter_cut" model="mrp.workcenter">
+            <field name="name">Cut Station</field>
+            <field name="code">WC-CUT</field>
+            <field name="time_start">5</field>
+            <field name="time_stop">2</field>
+            <field name="time_efficiency">95</field>
+            <field name="color">1</field>
+            <field name="note">Profile cutting — saws, mitre cuts for frame, sash, mullion, and bead lengths.</field>
+        </record>
+
+        <record id="workcenter_weld" model="mrp.workcenter">
+            <field name="name">Weld / Join Station</field>
+            <field name="code">WC-WELD</field>
+            <field name="time_start">3</field>
+            <field name="time_stop">2</field>
+            <field name="time_efficiency">90</field>
+            <field name="color">2</field>
+            <field name="note">Corner welding (uPVC) or mechanical joining (aluminium) of frame and sash profiles.</field>
+        </record>
+
+        <record id="workcenter_hardware" model="mrp.workcenter">
+            <field name="name">Hardware Station</field>
+            <field name="code">WC-HW</field>
+            <field name="time_start">2</field>
+            <field name="time_stop">1</field>
+            <field name="time_efficiency">95</field>
+            <field name="color">3</field>
+            <field name="note">Hinges, handles, locking hardware, stays, and operator installation.</field>
+        </record>
+
+        <record id="workcenter_glazing" model="mrp.workcenter">
+            <field name="name">Glazing Station</field>
+            <field name="code">WC-GLAZ</field>
+            <field name="time_start">3</field>
+            <field name="time_stop">2</field>
+            <field name="time_efficiency">90</field>
+            <field name="color">4</field>
+            <field name="note">Insert sealed glass units, apply beads, gaskets, and weatherseal.</field>
+        </record>
+
+        <record id="workcenter_qc" model="mrp.workcenter">
+            <field name="name">Quality Check</field>
+            <field name="code">WC-QC</field>
+            <field name="time_start">2</field>
+            <field name="time_stop">1</field>
+            <field name="time_efficiency">100</field>
+            <field name="color">10</field>
+            <field name="note">Visual inspection, air/water test, dimension verification, label and pack.</field>
+        </record>
+
+    </data>
+</odoo>

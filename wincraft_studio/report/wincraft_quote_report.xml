@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Quote — QWeb PDF Report Template
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <template id="report_wincraft_quote">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="project">
+                <t t-set="unit_sys" t-value="project.env['ir.config_parameter'].sudo().get_param('wincraft_studio.unit_system', 'metric')"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- ═══ Cover page ═══ -->
+                        <div style="page-break-after: always;">
+                            <h1 style="font-weight:300; letter-spacing:1px; color:#1f2937;">QUOTATION</h1>
+                            <p style="color:#64748b; font-size:13px;">Quotation No. <strong t-esc="project.ref"/></p>
+                            <hr style="border-top: 1px solid #dee2e6; margin: 18px 0;"/>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <p style="color:#94a3b8; text-transform:uppercase; font-size:10px; margin-bottom:2px;">Project</p>
+                                    <p>
+                                        <strong t-field="project.name"/><br/>
+                                        <span t-field="project.create_date" t-options="{'widget': 'date'}"/><br/>
+                                        <t t-esc="project.total_windows"/> window<t t-if="project.total_windows != 1">s</t> &#183;
+                                        <t t-esc="'%.2f' % sum(project.window_ids.mapped('area_sqm'))"/> Sq.M total
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p t-if="project.partner_id" style="color:#94a3b8; text-transform:uppercase; font-size:10px; margin-bottom:2px;">Customer</p>
+                                    <p t-if="project.partner_id">
+                                        <strong t-field="project.partner_id.name"/><br/>
+                                        <span t-field="project.partner_id.street"/><br/>
+                                        <span t-field="project.partner_id.city"/>
+                                        <t t-if="project.partner_id.state_id"> - <span t-field="project.partner_id.state_id.name"/></t><br/>
+                                        <span t-field="project.partner_id.phone"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ Product cards — one per window ═══ -->
+                        <t t-foreach="project.window_ids" t-as="win">
+                            <div class="wc-quote-item"
+                                 style="page-break-inside: avoid; margin-bottom: 22px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 4px; background: #ffffff;">
+                                <h4 style="font-weight:400; color:#1f2937; margin-bottom: 2px;">
+                                    <t t-esc="'Item %02d' % (win_index + 1)"/> — <span t-esc="win._get_quote_product_name()"/>
+                                </h4>
+                                <p style="color:#94a3b8; font-size:11px; margin-bottom:14px;" t-esc="win.name"/>
+
+                                <!-- Elevation + 3D preview, side by side -->
+                                <t t-set="elevation_svg" t-value="win._get_quote_elevation_svg()"/>
+                                <t t-set="iso_svg" t-value="win._get_quote_iso_svg()"/>
+                                <div class="row mb-3">
+                                    <div class="col-6 text-center">
+                                        <t t-if="elevation_svg" t-out="elevation_svg"/>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <t t-if="iso_svg" t-out="iso_svg"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Dimensions -->
+                                    <div class="col-4">
+                                        <p style="color:#94a3b8; text-transform:uppercase; font-size:10px; margin-bottom:6px;">Dimensions</p>
+                                        <table class="table table-sm mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width:50%;"><strong>Width</strong></td>
+                                                    <td t-if="unit_sys == 'imperial'" t-esc="'%.2f in' % (win.width_mm / 25.4)"/>
+                                                    <td t-else="" t-esc="'%s mm' % win.width_mm"/>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Height</strong></td>
+                                                    <td t-if="unit_sys == 'imperial'" t-esc="'%.2f in' % (win.height_mm / 25.4)"/>
+                                                    <td t-else="" t-esc="'%s mm' % win.height_mm"/>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Area</strong></td>
+                                                    <td t-if="unit_sys == 'imperial'" t-esc="'%.2f Sq.Ft' % (win.area_sqm * 10.7639)"/>
+                                                    <td t-else="" t-esc="'%.3f Sq.M' % win.area_sqm"/>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Technical specs -->
+                                    <div class="col-8">
+                                        <p style="color:#94a3b8; text-transform:uppercase; font-size:10px; margin-bottom:6px;">Technical Specification</p>
+                                        <table class="table table-sm mb-0">
+                                            <tbody>
+                                                <t t-foreach="win._get_quote_spec_lines()" t-as="spec">
+                                                    <tr>
+                                                        <td style="width:35%;"><strong t-esc="spec[0]"/></td>
+                                                        <td t-esc="spec[1]"/>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Commercial -->
+                                <div class="row mt-2" style="border-top: 1px solid #e2e8f0; padding-top: 8px;">
+                                    <div class="col-12 text-end">
+                                        <span class="text-muted">Qty 1 &#183; Unit Price </span>
+                                        <span t-field="win.unit_price" t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                        <span class="text-muted"> &#183; Amount </span>
+                                        <strong>
+                                            <span t-field="win.unit_price"
+                                                  t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- ═══ Final summary page ═══ -->
+                        <div style="page-break-before: always;">
+                            <h3 style="font-weight:300; color:#1f2937;">Summary</h3>
+                            <div class="row mt-4">
+                                <div class="col-6"/>
+                                <div class="col-6">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Subtotal</strong></td>
+                                            <td class="text-end">
+                                                <span t-field="project.subtotal_price"
+                                                      t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Installation</td>
+                                            <td class="text-end">
+                                                <span t-field="project.installation_charge"
+                                                      t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="project.discount_pct">
+                                            <td>Discount (<t t-esc="project.discount_pct"/>%)</td>
+                                            <td class="text-end text-danger">
+                                                - <span t-field="project.discount_amount"
+                                                         t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tax (<t t-esc="project.gst_pct"/>%)</td>
+                                            <td class="text-end">
+                                                <span t-field="project.tax_amount"
+                                                      t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-top">
+                                            <td><strong>Grand Total</strong></td>
+                                            <td class="text-end">
+                                                <strong>
+                                                    <span t-field="project.total_price"
+                                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Terms -->
+                            <div t-if="project.terms" class="mt-4">
+                                <h5>Terms &amp; Conditions</h5>
+                                <p t-field="project.terms"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

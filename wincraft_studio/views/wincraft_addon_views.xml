@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══ Add-on Category ══════════════════════════════════════════════ -->
+
+        <record id="wincraft_addon_category_view_form" model="ir.ui.view">
+            <field name="name">wincraft.addon.category.form</field>
+            <field name="model">wincraft.addon.category</field>
+            <field name="arch" type="xml">
+                <form string="Add-on Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="icon"/>
+                            </group>
+                            <group>
+                                <field name="scope"/>
+                                <field name="sequence"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <field name="description" widget="text" placeholder="Description..."/>
+                        <notebook>
+                            <page string="Add-ons" name="addons">
+                                <field name="addon_ids">
+                                    <list>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="addon_code"/>
+                                        <field name="price"/>
+                                        <field name="per_window"/>
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_addon_category_view_list" model="ir.ui.view">
+            <field name="name">wincraft.addon.category.list</field>
+            <field name="model">wincraft.addon.category</field>
+            <field name="arch" type="xml">
+                <list string="Add-on Categories">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="icon"/>
+                    <field name="scope"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_addon_category_action" model="ir.actions.act_window">
+            <field name="name">Add-on Categories</field>
+            <field name="res_model">wincraft.addon.category</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- ══ Add-on ═══════════════════════════════════════════════════════ -->
+
+        <record id="wincraft_addon_view_form" model="ir.ui.view">
+            <field name="name">wincraft.addon.form</field>
+            <field name="model">wincraft.addon</field>
+            <field name="arch" type="xml">
+                <form string="Add-on">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="category_id"/>
+                                <field name="category_code" invisible="1"/>
+                                <field name="addon_code"/>
+                                <field name="price"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="scope" readonly="1"/>
+                                <field name="per_window"/>
+                                <field name="sequence"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="opening_type_ids" widget="many2many_tags"/>
+                            <field name="product_tmpl_id"/>
+                        </group>
+                        <field name="description" widget="text" placeholder="Description..."/>
+                        <group string="CSV Upload">
+                            <group>
+                                <field name="group_code"/>
+                                <field name="color"/>
+                                <field name="material"/>
+                                <field name="pricing_basis"/>
+                            </group>
+                            <group>
+                                <field name="is_georgian"/>
+                                <field name="is_painted"/>
+                                <field name="star_price"/>
+                                <field name="min_charge"/>
+                            </group>
+                        </group>
+                        <group string="CSV Upload — Options" invisible="category_code != 'option'">
+                            <group string="Flags">
+                                <field name="is_input_size"/>
+                                <field name="is_discount_eligible"/>
+                                <field name="is_sm_casing"/>
+                                <field name="is_lg_casing"/>
+                                <field name="is_painted_inside"/>
+                                <field name="is_painted_outside"/>
+                                <field name="has_rosette"/>
+                                <field name="is_stained"/>
+                                <field name="is_urban"/>
+                                <field name="has_2nd_urban_folder"/>
+                                <field name="is_reported"/>
+                            </group>
+                            <group string="Dimensions">
+                                <field name="pricing_width"/>
+                                <field name="width_qty"/>
+                                <field name="pricing_height"/>
+                                <field name="height_qty"/>
+                                <field name="cutting_width"/>
+                                <field name="cutting_height"/>
+                                <field name="bm_size_width"/>
+                                <field name="bm_size_height"/>
+                            </group>
+                            <group string="Pricing">
+                                <field name="pricing_unit"/>
+                                <field name="white_price"/>
+                                <field name="colour_price"/>
+                                <field name="stain_price"/>
+                                <field name="outside_painted_price"/>
+                                <field name="inside_painted_price"/>
+                                <field name="outside_stain_price"/>
+                                <field name="inside_stain_price"/>
+                            </group>
+                            <group string="Urban / Misc">
+                                <field name="urban_material"/>
+                                <field name="urban_model"/>
+                                <field name="urban_part"/>
+                                <field name="urban_code"/>
+                                <field name="mat_code"/>
+                                <field name="casing_type"/>
+                                <field name="extra_number"/>
+                                <field name="bins"/>
+                            </group>
+                        </group>
+                        <group string="Config Parameters (JSON)" groups="base.group_no_one">
+                            <field name="config_params" widget="json"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_addon_view_list" model="ir.ui.view">
+            <field name="name">wincraft.addon.list</field>
+            <field name="model">wincraft.addon</field>
+            <field name="arch" type="xml">
+                <list string="Add-ons">
+                    <field name="sequence" widget="handle"/>
+                    <field name="category_id"/>
+                    <field name="name"/>
+                    <field name="addon_code"/>
+                    <field name="group_code"/>
+                    <field name="color"/>
+                    <field name="price"/>
+                    <field name="per_window"/>
+                    <field name="scope"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="currency_id" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_addon_action" model="ir.actions.act_window">
+            <field name="name">Add-ons</field>
+            <field name="res_model">wincraft.addon</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'group_by': 'category_id'}</field>
+        </record>
+
+        <!-- ══ Grill — dedicated view onto the Grill add-on category ══════════
+             Same wincraft.addon model/views as generic Add-ons, pre-filtered so
+             fabricators can find grill/grille patterns directly under
+             Configuration instead of digging through the generic Add-ons list. -->
+        <record id="wincraft_addon_action_grill" model="ir.actions.act_window">
+            <field name="name">Grill / Grille</field>
+            <field name="res_model">wincraft.addon</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('category_id.code', '=', 'grill')]</field>
+            <field name="context" eval="{'default_category_id': ref('addon_cat_grill')}"/>
+        </record>
+
+        <!-- ══ Options — dedicated view onto the Options add-on category ══════
+             Same pattern as Grill above: window-level trim/casing/extension
+             catalog, picked via two cascading selects in the designer's Frame
+             properties panel (group_code -> item), see properties_panel.js. -->
+        <record id="wincraft_addon_action_option" model="ir.actions.act_window">
+            <field name="name">Options</field>
+            <field name="res_model">wincraft.addon</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('category_id.code', '=', 'option')]</field>
+            <field name="context" eval="{'default_category_id': ref('addon_cat_option')}"/>
+        </record>
+
+    </data>
+</odoo>

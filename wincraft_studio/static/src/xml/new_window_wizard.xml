@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.NewWindowWizard">
+        <div class="wc-wizard-overlay" t-on-click="onOverlayClick">
+            <div class="wc-wizard-modal">
+                <div class="wc-wizard-header">
+                    <h3><i class="fa fa-plus-circle"/> New Window</h3>
+                    <button class="wc-wizard-close" t-on-click="props.onClose">
+                        <i class="fa fa-times"/>
+                    </button>
+                </div>
+
+                <div class="wc-wizard-body">
+                    <div class="wc-wizard-form">
+                        <div class="wc-wizard-row">
+                            <div class="wc-wizard-field">
+                                <label>Order Line</label>
+                                <input type="text" readonly="readonly" t-att-value="props.orderLine || 1"/>
+                            </div>
+                            <div class="wc-wizard-field">
+                                <label>Room</label>
+                                <select t-on-change="onRoomChange">
+                                    <option value="">— Select room —</option>
+                                    <t t-foreach="props.rooms || []" t-as="room" t-key="room.id">
+                                        <option t-att-value="room.id" t-att-selected="state.roomId === room.id"><t t-esc="room.name"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="wc-wizard-row">
+                            <div class="wc-wizard-field">
+                                <label>Width (<t t-esc="dimUnit"/>)</label>
+                                <input type="text" inputmode="decimal"
+                                       t-att-value="state.width"
+                                       t-on-input="onWidthInput"/>
+                            </div>
+                            <div class="wc-wizard-field">
+                                <label>Height (<t t-esc="dimUnit"/>)</label>
+                                <input type="text" inputmode="decimal"
+                                       t-att-value="state.height"
+                                       t-on-input="onHeightInput"/>
+                            </div>
+                        </div>
+                        <p class="wc-wizard-note wc-wizard-note--alert">All windows enter as outside view</p>
+                        <p class="wc-wizard-note">* size including Brickmould size</p>
+
+                        <div class="wc-wizard-summary">
+                            <div class="wc-wizard-summary-head">
+                                <span>Window configuration</span>
+                                <button type="button" class="wc-wizard-edit" t-on-click="onEditConfig">
+                                    <i class="fa fa-pencil"/> Edit this window configuration
+                                </button>
+                            </div>
+                            <dl class="wc-wizard-summary-grid">
+                                <t t-foreach="configSummary" t-as="row" t-key="row.label">
+                                    <div class="wc-wizard-summary-item">
+                                        <dt t-esc="row.label"/>
+                                        <dd t-esc="row.value"/>
+                                    </div>
+                                </t>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="wc-wizard-footer">
+                        <button class="wc-wizard-cancel" t-on-click="props.onClose">Cancel</button>
+                        <button class="wc-wizard-confirm" t-att-disabled="!canConfirm" t-on-click="onConfirm">
+                            <i class="fa fa-plus"/> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

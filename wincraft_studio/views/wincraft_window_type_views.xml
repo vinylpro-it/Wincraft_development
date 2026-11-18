@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_window_type_view_form" model="ir.ui.view">
+            <field name="name">wincraft.window.type.form</field>
+            <field name="model">wincraft.window.type</field>
+            <field name="arch" type="xml">
+                <form string="Window Type">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="key"/>
+                                <field name="sequence"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                            <group>
+                                <field name="frame_shapes"/>
+                                <field name="sash_layouts"/>
+                                <field name="hinge_sides"/>
+                                <field name="georgian_patterns"/>
+                                <field name="opening_directions"/>
+                                <field name="allow_mullion"/>
+                                <field name="allow_transom"/>
+                            </group>
+                        </group>
+                        <group string="Allowed Opening Types">
+                            <field name="opening_type_ids" widget="many2many_tags" nolabel="1"/>
+                        </group>
+                        <group string="Catalog">
+                            <field name="profile_type_id"/>
+                            <field name="kind_id"/>
+                        </group>
+                        <group string="Canvas Template">
+                            <field name="template_id" string="Template"/>
+                            <button name="action_design_canvas_template" type="object"
+                                    string="Design" class="btn-link" icon="fa-pencil-square-o"/>
+                            <field name="template_thumbnail_svg" widget="svg_preview"
+                                   nolabel="1" invisible="not template_id"/>
+                        </group>
+                        <group string="CSV Upload">
+                            <group>
+                                <field name="min_width_mm"/>
+                                <field name="max_width_mm"/>
+                                <field name="min_height_mm"/>
+                                <field name="max_height_mm"/>
+                            </group>
+                            <group>
+                                <field name="is_fh"/>
+                                <field name="style_code"/>
+                                <field name="price_code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_window_type_view_list" model="ir.ui.view">
+            <field name="name">wincraft.window.type.list</field>
+            <field name="model">wincraft.window.type</field>
+            <field name="arch" type="xml">
+                <list string="Window Types" default_order="sequence">
+                    <field name="sequence" widget="handle"/>
+                    <field name="template_thumbnail_svg" widget="svg_preview" options="{'small': True}" string="Preview"/>
+                    <field name="name"/>
+                    <field name="key"/>
+                    <field name="profile_type_id"/>
+                    <field name="kind_id"/>
+                    <field name="price_code"/>
+                    <field name="opening_type_ids" widget="many2many_tags"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_window_type_view_search" model="ir.ui.view">
+            <field name="name">wincraft.window.type.search</field>
+            <field name="model">wincraft.window.type</field>
+            <field name="arch" type="xml">
+                <search string="Window Types">
+                    <field name="name"/>
+                    <field name="key"/>
+                    <field name="profile_type_id"/>
+                    <field name="kind_id"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group>
+                        <filter string="Profile Type" name="group_by_profile_type" context="{'group_by': 'profile_type_id'}"/>
+                        <filter string="Kind" name="group_by_kind" context="{'group_by': 'kind_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="wincraft_window_type_action" model="ir.actions.act_window">
+            <field name="name">Window Types</field>
+            <field name="res_model">wincraft.window.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <data>
+
+        <record id="bim_addon_no" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">no</field>
+            <field name="field_name">sequence</field>
+        </record>
+        <record id="bim_addon_input_size" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">input size</field>
+            <field name="field_name">is_input_size</field>
+        </record>
+        <record id="bim_addon_short_code" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">short code</field>
+            <field name="field_name">addon_code</field>
+        </record>
+        <record id="bim_addon_type" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">type</field>
+            <field name="field_name">group_code</field>
+        </record>
+        <record id="bim_addon_discount" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">discount</field>
+            <field name="field_name">is_discount_eligible</field>
+        </record>
+        <record id="bim_addon_sm_casing" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">sm casing</field>
+            <field name="field_name">is_sm_casing</field>
+        </record>
+        <record id="bim_addon_lg_casing" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">lg casing</field>
+            <field name="field_name">is_lg_casing</field>
+        </record>
+        <record id="bim_addon_painted_inside" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">painted inside</field>
+            <field name="field_name">is_painted_inside</field>
+        </record>
+        <record id="bim_addon_painted_outside" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">painted outside</field>
+            <field name="field_name">is_painted_outside</field>
+        </record>
+        <record id="bim_addon_rosette" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">rosette</field>
+            <field name="field_name">has_rosette</field>
+        </record>
+        <record id="bim_addon_xtra_num" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">xtra #</field>
+            <field name="field_name">extra_number</field>
+        </record>
+        <record id="bim_addon_description" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">description</field>
+            <field name="field_name">name</field>
+        </record>
+        <record id="bim_addon_mat_code" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">mat code</field>
+            <field name="field_name">mat_code</field>
+        </record>
+        <record id="bim_addon_pricing_width" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">pricing width</field>
+            <field name="field_name">pricing_width</field>
+        </record>
+        <record id="bim_addon_width_qty" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">width qty</field>
+            <field name="field_name">width_qty</field>
+        </record>
+        <record id="bim_addon_pricing_ht" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">pricing ht</field>
+            <field name="field_name">pricing_height</field>
+        </record>
+        <record id="bim_addon_ht_qty" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">ht qty</field>
+            <field name="field_name">height_qty</field>
+        </record>
+        <record id="bim_addon_stained" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">stained</field>
+            <field name="field_name">is_stained</field>
+        </record>
+        <record id="bim_addon_white_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">white price</field>
+            <field name="field_name">price</field>
+        </record>
+        <record id="bim_addon_colour_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">colour price</field>
+            <field name="field_name">colour_price</field>
+        </record>
+        <record id="bim_addon_stain_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">stain price</field>
+            <field name="field_name">stain_price</field>
+        </record>
+        <record id="bim_addon_lin_fix_sq" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">lin/fix/sq</field>
+            <field name="field_name">pricing_unit</field>
+        </record>
+        <record id="bim_addon_cutting_width" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">cutting width</field>
+            <field name="field_name">cutting_width</field>
+        </record>
+        <record id="bim_addon_cutting_ht" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">cutting ht</field>
+            <field name="field_name">cutting_height</field>
+        </record>
+        <record id="bim_addon_bm_size_wudth" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">bm size wudth</field>
+            <field name="field_name">bm_size_width</field>
+        </record>
+        <record id="bim_addon_bm_size_ht" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">bm size ht</field>
+            <field name="field_name">bm_size_height</field>
+        </record>
+        <record id="bim_addon_urban" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">urban</field>
+            <field name="field_name">is_urban</field>
+        </record>
+        <record id="bim_addon_urban_material" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">urban material</field>
+            <field name="field_name">urban_material</field>
+        </record>
+        <record id="bim_addon_urban_model" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">urban model</field>
+            <field name="field_name">urban_model</field>
+        </record>
+        <record id="bim_addon_urban_part" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">urban part</field>
+            <field name="field_name">urban_part</field>
+        </record>
+        <record id="bim_addon_urban_code" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">urban code</field>
+            <field name="field_name">urban_code</field>
+        </record>
+        <record id="bim_addon_n_2nd_urban_folder" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">2nd urban folder</field>
+            <field name="field_name">has_2nd_urban_folder</field>
+        </record>
+        <record id="bim_addon_bins" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">bins</field>
+            <field name="field_name">bins</field>
+        </record>
+        <record id="bim_addon_outs_painted_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">outs painted price</field>
+            <field name="field_name">outside_painted_price</field>
+        </record>
+        <record id="bim_addon_inside_painted_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">inside painted price</field>
+            <field name="field_name">inside_painted_price</field>
+        </record>
+        <record id="bim_addon_outs_stain_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">outs stain price</field>
+            <field name="field_name">outside_stain_price</field>
+        </record>
+        <record id="bim_addon_inside_stain_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">inside stain price</field>
+            <field name="field_name">inside_stain_price</field>
+        </record>
+        <record id="bim_addon_report" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">report</field>
+            <field name="field_name">is_reported</field>
+        </record>
+        <record id="bim_addon_casing_type" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">casing type</field>
+            <field name="field_name">casing_type</field>
+        </record>
+        <record id="bim_addon_georgian" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">georgian</field>
+            <field name="field_name">is_georgian</field>
+        </record>
+        <record id="bim_addon_color" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">color</field>
+            <field name="field_name">color</field>
+        </record>
+        <record id="bim_addon_material" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">material</field>
+            <field name="field_name">material</field>
+        </record>
+        <record id="bim_addon_sq_f" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">sq/f</field>
+            <field name="field_name">pricing_basis</field>
+        </record>
+        <record id="bim_addon_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">price</field>
+            <field name="field_name">price</field>
+        </record>
+        <record id="bim_addon_star_price" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">star price</field>
+            <field name="field_name">star_price</field>
+        </record>
+        <record id="bim_addon_painted" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">painted</field>
+            <field name="field_name">is_painted</field>
+        </record>
+        <record id="bim_addon_min" model="base_import.mapping">
+            <field name="res_model">wincraft.addon</field>
+            <field name="column_name">min</field>
+            <field name="field_name">min_charge</field>
+        </record>
+        <record id="bim_glass_no_dot" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">no.</field>
+            <field name="field_name">sequence</field>
+        </record>
+        <record id="bim_glass_description" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">description</field>
+            <field name="field_name">name</field>
+        </record>
+        <record id="bim_glass_optiway_code" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">optiway code</field>
+            <field name="field_name">external_code</field>
+        </record>
+        <record id="bim_glass_discount" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">discount</field>
+            <field name="field_name">is_discount_eligible</field>
+        </record>
+        <record id="bim_glass_available_for_outside" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">available for outside</field>
+            <field name="field_name">is_available_outside</field>
+        </record>
+        <record id="bim_glass_available_for_middle" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">available for middle</field>
+            <field name="field_name">is_available_middle</field>
+        </record>
+        <record id="bim_glass_available_for_inside" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">available for inside</field>
+            <field name="field_name">is_available_inside</field>
+        </record>
+        <record id="bim_glass_n_3_mil_sf_price" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">3 mil sf price</field>
+            <field name="field_name">sf_price_3mm</field>
+        </record>
+        <record id="bim_glass_n_4_mil_sf_price" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">4 mil sf price</field>
+            <field name="field_name">sf_price_4mm</field>
+        </record>
+        <record id="bim_glass_n_5_mil_sf_price" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">5 mil sf price</field>
+            <field name="field_name">sf_price_5mm</field>
+        </record>
+        <record id="bim_glass_n_6_mil_sf_price" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">6 mil sf price</field>
+            <field name="field_name">sf_price_6mm</field>
+        </record>
+        <record id="bim_glass_mil" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">mil</field>
+            <field name="field_name">thickness</field>
+        </record>
+        <record id="bim_glass_apply_shape_charge" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">apply shape charge</field>
+            <field name="field_name">has_shape_charge</field>
+        </record>
+        <record id="bim_glass_purchased" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">purchased</field>
+            <field name="field_name">is_purchased</field>
+        </record>
+        <record id="bim_glass_part_name" model="base_import.mapping">
+            <field name="res_model">wincraft.glass.lite</field>
+            <field name="column_name">part name</field>
+            <field name="field_name">part_name</field>
+        </record>
+        <record id="bim_wtype_type" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">type</field>
+            <field name="field_name">key</field>
+        </record>
+        <record id="bim_wtype_description" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">description</field>
+            <field name="field_name">name</field>
+        </record>
+        <record id="bim_wtype_max_wid" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">max wid</field>
+            <field name="field_name">max_width_mm</field>
+        </record>
+        <record id="bim_wtype_min_wid" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">min wid</field>
+            <field name="field_name">min_width_mm</field>
+        </record>
+        <record id="bim_wtype_max_ht" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">max ht</field>
+            <field name="field_name">max_height_mm</field>
+        </record>
+        <record id="bim_wtype_min_ht" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">min ht</field>
+            <field name="field_name">min_height_mm</field>
+        </record>
+        <record id="bim_wtype_fh" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">fh</field>
+            <field name="field_name">is_fh</field>
+        </record>
+        <record id="bim_wtype_style" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">style</field>
+            <field name="field_name">style_code</field>
+        </record>
+        <record id="bim_wtype_price_code" model="base_import.mapping">
+            <field name="res_model">wincraft.window.type</field>
+            <field name="column_name">price code</field>
+            <field name="field_name">price_code</field>
+        </record>
+
+        <!-- Color (WS-15) — one mapping per vendor's "No" column header -->
+        <record id="bim_color_gentek_no" model="base_import.mapping">
+            <field name="res_model">wincraft.color</field>
+            <field name="column_name">gentek no</field>
+            <field name="field_name">code</field>
+        </record>
+        <record id="bim_color_kaycan_no" model="base_import.mapping">
+            <field name="res_model">wincraft.color</field>
+            <field name="column_name">kaycan no</field>
+            <field name="field_name">code</field>
+        </record>
+        <record id="bim_color_stain_no" model="base_import.mapping">
+            <field name="res_model">wincraft.color</field>
+            <field name="column_name">stain no</field>
+            <field name="field_name">code</field>
+        </record>
+        <record id="bim_color_description" model="base_import.mapping">
+            <field name="res_model">wincraft.color</field>
+            <field name="column_name">description</field>
+            <field name="field_name">name</field>
+        </record>
+
+    </data>
+</odoo>

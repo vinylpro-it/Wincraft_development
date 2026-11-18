@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — AI Assistant Chat Panel
+         Dark-themed slide-in panel for the designer.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.AIAssistant">
+        <div t-att-class="'wc-ai-panel ' + (props.isOpen ? 'open' : '')">
+            <!-- Header -->
+            <div class="wc-ai-header">
+                <span class="wc-ai-title">
+                    <i class="fa fa-magic me-1"/> AI Assistant
+                </span>
+                <button class="wc-ai-close" t-on-click="props.onClose" title="Close">
+                    <i class="fa fa-times"/>
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div class="wc-ai-messages">
+                <t t-if="!state.messages.length">
+                    <div class="wc-ai-placeholder">
+                        Describe your windows in plain English, e.g.<br/>
+                        <em>"3 casement windows 1200×1500, 1 sliding door 2400×2100"</em>
+                    </div>
+                </t>
+                <t t-foreach="state.messages" t-as="msg" t-key="msg_index">
+                    <div t-att-class="'wc-ai-msg wc-ai-msg-' + msg.role">
+                        <div class="wc-ai-msg-content" t-esc="msg.content"/>
+                        <t t-if="msg.windows">
+                            <div class="wc-ai-window-cards">
+                                <t t-foreach="msg.windows" t-as="w" t-key="w_index">
+                                    <div class="wc-ai-window-card">
+                                        <strong t-esc="w.window_type"/>
+                                        <span class="text-muted ms-1">
+                                            <t t-esc="w.width_mm"/>×<t t-esc="w.height_mm"/>mm
+                                        </span>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <div t-if="state.isLoading" class="wc-ai-msg wc-ai-msg-assistant">
+                    <div class="wc-ai-msg-content">
+                        <i class="fa fa-spinner fa-spin me-1"/> Thinking…
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="wc-ai-input-bar">
+                <textarea class="wc-ai-input"
+                          t-att-value="state.inputText"
+                          t-on-input="onInput"
+                          t-on-keydown="onKeydown"
+                          placeholder="Describe your windows…"
+                          rows="2"/>
+                <button class="wc-ai-send" t-on-click="onSend"
+                        t-att-disabled="state.isLoading || !state.inputText.trim()">
+                    <i class="fa fa-paper-plane"/>
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

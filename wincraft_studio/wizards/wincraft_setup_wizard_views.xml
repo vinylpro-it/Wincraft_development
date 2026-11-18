@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         WinCraft Studio – Setup Wizard (TransientModel form)
+         Replaces the fragile onboarding.onboarding approach with a
+         standard ir.actions.act_window wizard that works across
+         all Odoo editions (CE / EE) and versions.
+         ══════════════════════════════════════════════════════════════════ -->
+
+    <record id="view_wincraft_setup_wizard_form" model="ir.ui.view">
+        <field name="name">wincraft.setup.wizard.form</field>
+        <field name="model">wincraft.setup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="WinCraft Studio Setup">
+                <div class="oe_title mb-3">
+                    <h2>
+                        <span invisible="stage != 'welcome'">
+                            Welcome to WinCraft Studio
+                        </span>
+                        <span invisible="stage != 'company'">
+                            Step 1 — Company Details
+                        </span>
+                        <span invisible="stage != 'catalogue'">
+                            Step 2 — Materials &amp; Glass
+                        </span>
+                        <span invisible="stage != 'pricing'">
+                            Step 3 — Pricing
+                        </span>
+                        <span invisible="stage != 'done'">
+                            You're All Set!
+                        </span>
+                    </h2>
+                </div>
+
+                <field name="stage" invisible="1"/>
+
+                <!-- ─── Stage: Welcome ─────────────────────────────── -->
+                <div invisible="stage != 'welcome'">
+                    <p class="text-muted">
+                        This quick wizard helps you configure
+                        WinCraft Studio in under two minutes.
+                    </p>
+                    <p>We'll walk through:</p>
+                    <ol>
+                        <li>Company details (GST, phone)</li>
+                        <li>Default materials &amp; glass catalogue</li>
+                        <li>Pricing parameters (margin, GST, validity)</li>
+                    </ol>
+                    <p class="text-muted">
+                        You can skip this and configure everything
+                        later from
+                        <b>Settings → WinCraft Studio</b>.
+                    </p>
+                </div>
+
+                <!-- ─── Stage: Company ─────────────────────────────── -->
+                <group invisible="stage != 'company'">
+                    <field name="company_gst" placeholder="e.g. 29AABCU9603R1ZM"/>
+                    <field name="company_phone" placeholder="+91 98765 43210"/>
+                </group>
+
+                <!-- ─── Stage: Catalogue ───────────────────────────── -->
+                <div invisible="stage != 'catalogue'">
+                    <group string="Frame Materials">
+                        <group>
+                            <field name="mat1_name"/>
+                            <field name="mat1_rate"/>
+                        </group>
+                        <group>
+                            <field name="mat2_name"/>
+                            <field name="mat2_rate"/>
+                        </group>
+                    </group>
+                    <group string="Glass Types">
+                        <group>
+                            <field name="glass1_name"/>
+                            <field name="glass1_rate"/>
+                        </group>
+                        <group>
+                            <field name="glass2_name"/>
+                            <field name="glass2_rate"/>
+                        </group>
+                    </group>
+                </div>
+
+                <!-- ─── Stage: Pricing ─────────────────────────────── -->
+                <group invisible="stage != 'pricing'">
+                    <field name="default_margin_pct"/>
+                    <field name="default_gst_rate"/>
+                    <field name="default_validity_days"/>
+                    <field name="default_installation_rate"/>
+                </group>
+
+                <!-- ─── Stage: Done ────────────────────────────────── -->
+                <div invisible="stage != 'done'">
+                    <p class="text-success">
+                        <i class="fa fa-check-circle"/> Setup complete!
+                    </p>
+                    <p>
+                        Click <b>Open Projects</b> to start your first
+                        WinCraft project.
+                    </p>
+                </div>
+
+                <!-- ─── Footer buttons ─────────────────────────────── -->
+                <footer>
+                    <button string="Let's Go"
+                            type="object" name="action_next"
+                            class="btn-primary"
+                            invisible="stage != 'welcome'"/>
+                    <button string="Next →"
+                            type="object" name="action_next"
+                            class="btn-primary"
+                            invisible="stage in ('welcome', 'done')"/>
+                    <button string="← Back"
+                            type="object" name="action_prev"
+                            class="btn-secondary"
+                            invisible="stage in ('welcome', 'done')"/>
+                    <button string="Open Projects"
+                            type="object" name="action_finish"
+                            class="btn-primary"
+                            invisible="stage != 'done'"/>
+                    <button string="Skip — I'll Do It Later"
+                            type="object" name="action_skip"
+                            class="btn-link"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard action (can be called from menu or Python) -->
+    <record id="action_wincraft_setup_wizard" model="ir.actions.act_window">
+        <field name="name">WinCraft Studio Setup</field>
+        <field name="res_model">wincraft.setup.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

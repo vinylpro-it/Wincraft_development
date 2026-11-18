@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ═══════════════════════════════════════════════════
+             RESIDENTIAL TEMPLATES
+             ═══════════════════════════════════════════════════ -->
+
+        <!-- Casement -->
+        <record id="tmpl_res_case_600x900" model="wincraft.window.template">
+            <field name="name">Small Casement 600×900</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">600</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_900x1200" model="wincraft.window.template">
+            <field name="name">Casement 900×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_1200x1000" model="wincraft.window.template">
+            <field name="name">Standard Casement 1200×1000</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1000</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_1200x1200" model="wincraft.window.template">
+            <field name="name">Casement 1200×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_1500x1200" model="wincraft.window.template">
+            <field name="name">Wide Casement 1500×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_1800x1200" model="wincraft.window.template">
+            <field name="name">Triple Casement 1800×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_case_2100x1200" model="wincraft.window.template">
+            <field name="name">Quad Casement 2100×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">2100</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Tilt & Turn -->
+        <record id="tmpl_res_tt_600x1200" model="wincraft.window.template">
+            <field name="name">Small T&amp;T 600×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">600</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_tt_900x1200" model="wincraft.window.template">
+            <field name="name">Standard T&amp;T 900×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_tt_1200x1400" model="wincraft.window.template">
+            <field name="name">T&amp;T 1200×1400</field>
+            <field name="category">residential</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1400</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_tt_1800x1400" model="wincraft.window.template">
+            <field name="name">Triple T&amp;T 1800×1400</field>
+            <field name="category">residential</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1400</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Fixed / Picture -->
+        <record id="tmpl_res_fix_600x600" model="wincraft.window.template">
+            <field name="name">Small Fixed 600×600</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">600</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_res_fix_1200x1200" model="wincraft.window.template">
+            <field name="name">Picture Window 1200×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_res_fix_1800x600" model="wincraft.window.template">
+            <field name="name">Horizontal Strip 1800×600</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_res_fix_2400x1800" model="wincraft.window.template">
+            <field name="name">Large Picture 2400×1800</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Awning -->
+        <record id="tmpl_res_awn_900x600" model="wincraft.window.template">
+            <field name="name">Bathroom Awning 900×600</field>
+            <field name="category">residential</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">900</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+        <record id="tmpl_res_awn_1200x600" model="wincraft.window.template">
+            <field name="name">Standard Awning 1200×600</field>
+            <field name="category">residential</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+        <record id="tmpl_res_awn_1800x600" model="wincraft.window.template">
+            <field name="name">Wide Awning 1800×600</field>
+            <field name="category">residential</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+
+        <!-- Sliding -->
+        <record id="tmpl_res_slide_1200x1200" model="wincraft.window.template">
+            <field name="name">Sliding 1200×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_slide_1800x1200" model="wincraft.window.template">
+            <field name="name">Standard Sliding 1800×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_slide_2400x1200" model="wincraft.window.template">
+            <field name="name">Wide Sliding 2400×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Single / Double Hung -->
+        <record id="tmpl_res_shung_600x1200" model="wincraft.window.template">
+            <field name="name">Single Hung 600×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">single_hung</field>
+            <field name="default_width">600</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_res_shung_900x1500" model="wincraft.window.template">
+            <field name="name">Tall Single Hung 900×1500</field>
+            <field name="category">residential</field>
+            <field name="window_type">single_hung</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_res_dhung_600x1200" model="wincraft.window.template">
+            <field name="name">Double Hung 600×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">600</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_res_dhung_900x1500" model="wincraft.window.template">
+            <field name="name">Tall Double Hung 900×1500</field>
+            <field name="category">residential</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+
+        <!-- Bay Windows -->
+        <record id="tmpl_res_bay_2400x1200" model="wincraft.window.template">
+            <field name="name">Standard Bay 2400×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">bay</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_bay_3000x1400" model="wincraft.window.template">
+            <field name="name">Large Bay 3000×1400</field>
+            <field name="category">residential</field>
+            <field name="window_type">bay</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">1400</field>
+            <field name="default_panels">5</field>
+            <field name="panels_horizontal">5</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Bi-Fold -->
+        <record id="tmpl_res_bifold_1800x2100" model="wincraft.window.template">
+            <field name="name">3-Panel Bifold 1800×2100</field>
+            <field name="category">residential</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_bifold_2400x2100" model="wincraft.window.template">
+            <field name="name">4-Panel Bifold 2400×2100</field>
+            <field name="category">residential</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_bifold_3000x2100" model="wincraft.window.template">
+            <field name="name">5-Panel Bifold 3000×2100</field>
+            <field name="category">residential</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">5</field>
+            <field name="panels_horizontal">5</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_bifold_3600x2100" model="wincraft.window.template">
+            <field name="name">6-Panel Bifold 3600×2100</field>
+            <field name="category">residential</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">3600</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">6</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Fixed Casement Combos -->
+        <record id="tmpl_res_fc_1200x1200" model="wincraft.window.template">
+            <field name="name">Fixed-Casement 1200×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed_casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_fc_1800x1200" model="wincraft.window.template">
+            <field name="name">Fixed-Case-Fixed 1800×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">fixed_casement</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Single / Double Slider -->
+        <record id="tmpl_res_sslide_1200x1000" model="wincraft.window.template">
+            <field name="name">Single Slider 1200×1000</field>
+            <field name="category">residential</field>
+            <field name="window_type">single_slider</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1000</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_res_dslide_1800x1000" model="wincraft.window.template">
+            <field name="name">Double Slider 1800×1000</field>
+            <field name="category">residential</field>
+            <field name="window_type">double_slider</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1000</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- End Vent Slider -->
+        <record id="tmpl_res_evs_1800x1200" model="wincraft.window.template">
+            <field name="name">End Vent Slider 1800×1200</field>
+            <field name="category">residential</field>
+            <field name="window_type">end_vent_slider</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════
+             COMMERCIAL TEMPLATES
+             ═══════════════════════════════════════════════════ -->
+
+        <!-- Large Fixed Glazing -->
+        <record id="tmpl_com_fix_1500x1500" model="wincraft.window.template">
+            <field name="name">Office Fixed 1500×1500</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_com_fix_2400x1800" model="wincraft.window.template">
+            <field name="name">Storefront 2400×1800</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_com_fix_3000x2100" model="wincraft.window.template">
+            <field name="name">Curtain Wall Panel 3000×2100</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_com_fix_3600x2400" model="wincraft.window.template">
+            <field name="name">Full Glazing 3600×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3600</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Commercial Sliding -->
+        <record id="tmpl_com_slide_2400x2100" model="wincraft.window.template">
+            <field name="name">Commercial Slider 2400×2100</field>
+            <field name="category">commercial</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_com_slide_3000x2100" model="wincraft.window.template">
+            <field name="name">Wide Commercial Slider 3000×2100</field>
+            <field name="category">commercial</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_com_slide_4200x2400" model="wincraft.window.template">
+            <field name="name">Panoramic Slider 4200×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">4200</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Commercial Tilt & Turn -->
+        <record id="tmpl_com_tt_900x1500" model="wincraft.window.template">
+            <field name="name">Office T&amp;T 900×1500</field>
+            <field name="category">commercial</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_com_tt_1200x1800" model="wincraft.window.template">
+            <field name="name">Large Office T&amp;T 1200×1800</field>
+            <field name="category">commercial</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Commercial Awning -->
+        <record id="tmpl_com_awn_1800x900" model="wincraft.window.template">
+            <field name="name">Commercial Awning 1800×900</field>
+            <field name="category">commercial</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+        <record id="tmpl_com_awn_2400x900" model="wincraft.window.template">
+            <field name="name">Wide Commercial Awning 2400×900</field>
+            <field name="category">commercial</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+
+        <!-- Commercial Bifold -->
+        <record id="tmpl_com_bifold_4200x2400" model="wincraft.window.template">
+            <field name="name">7-Panel Bifold 4200×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">4200</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">7</field>
+            <field name="panels_horizontal">7</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_com_bifold_4800x2400" model="wincraft.window.template">
+            <field name="name">8-Panel Bifold 4800×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">4800</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">8</field>
+            <field name="panels_horizontal">8</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Commercial Casement -->
+        <record id="tmpl_com_case_1200x1500" model="wincraft.window.template">
+            <field name="name">Office Casement 1200×1500</field>
+            <field name="category">commercial</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_com_case_2100x1500" model="wincraft.window.template">
+            <field name="name">Triple Office Casement 2100×1500</field>
+            <field name="category">commercial</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">2100</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Commercial Grid Windows -->
+        <record id="tmpl_com_grid_2400x2400" model="wincraft.window.template">
+            <field name="name">Grid Window 2×2 2400×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_com_grid_3600x2400" model="wincraft.window.template">
+            <field name="name">Grid Window 3×2 3600×2400</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3600</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_com_grid_4000x3000" model="wincraft.window.template">
+            <field name="name">Grid Window 4×3 4000×3000</field>
+            <field name="category">commercial</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">4000</field>
+            <field name="default_height">3000</field>
+            <field name="default_panels">12</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">3</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════
+             HERITAGE TEMPLATES
+             ═══════════════════════════════════════════════════ -->
+
+        <!-- Heritage Arched -->
+        <record id="tmpl_her_arch_600x1200" model="wincraft.window.template">
+            <field name="name">Gothic Arch 600×1200</field>
+            <field name="category">heritage</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">600</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_her_arch_900x1500" model="wincraft.window.template">
+            <field name="name">Church Arch 900×1500</field>
+            <field name="category">heritage</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_her_arch_1200x1800" model="wincraft.window.template">
+            <field name="name">Grand Arch 1200×1800</field>
+            <field name="category">heritage</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_her_arch_600x900" model="wincraft.window.template">
+            <field name="name">Small Round Top 600×900</field>
+            <field name="category">heritage</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">600</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_her_arch_1500x2100" model="wincraft.window.template">
+            <field name="name">Cathedral Window 1500×2100</field>
+            <field name="category">heritage</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Heritage Arch-Top Combination — fixed curved transom over an
+             operable rectangular sash, the realistic real-world pattern for
+             an "arched window" (see instruction/CHANGELOG.md). window_type
+             is 'casement' (not 'arched') because its bundle allows both an
+             arched frame_shape and operable opening types — 'arched' itself
+             is fixed-only by design. -->
+        <record id="tmpl_her_arch_combo_1200x1800" model="wincraft.window.template">
+            <field name="name">Arch-Top Combination 1200×1800</field>
+            <field name="category">heritage</field>
+            <field name="window_type">casement</field>
+            <field name="frame_shape">arched</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+            <field name="panel_tree" eval="{
+                'type': 'split', 'id': 'arch_combo_split', 'direction': 'horizontal', 'position': 600,
+                'first': {'type': 'leaf', 'id': 'arch_combo_top', 'config': {'openingType': 'fixed'}},
+                'second': {'type': 'leaf', 'id': 'arch_combo_bottom', 'config': {'openingType': 'casement-l', 'hinge': 'left'}},
+            }"/>
+            <field name="description">A fixed arched transom over an operable casement sash — the realistic combination-window pattern real manufacturers build, instead of a single sash that is both curved and operable.</field>
+        </record>
+
+        <!-- Heritage Casement (Georgian style) -->
+        <record id="tmpl_her_case_600x900_4p" model="wincraft.window.template">
+            <field name="name">Georgian 4-Pane 600×900</field>
+            <field name="category">heritage</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">600</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_her_case_900x1200_6p" model="wincraft.window.template">
+            <field name="name">Georgian 6-Pane 900×1200</field>
+            <field name="category">heritage</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">3</field>
+        </record>
+        <record id="tmpl_her_case_900x1500_8p" model="wincraft.window.template">
+            <field name="name">Georgian 8-Pane 900×1500</field>
+            <field name="category">heritage</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">8</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">4</field>
+        </record>
+        <record id="tmpl_her_case_1200x1500_12p" model="wincraft.window.template">
+            <field name="name">Georgian 12-Pane 1200×1500</field>
+            <field name="category">heritage</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">12</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">4</field>
+        </record>
+
+        <!-- Heritage Sash (Double Hung) -->
+        <record id="tmpl_her_sash_600x1200" model="wincraft.window.template">
+            <field name="name">Victorian Sash 600×1200</field>
+            <field name="category">heritage</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">600</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_her_sash_900x1500" model="wincraft.window.template">
+            <field name="name">Traditional Sash 900×1500</field>
+            <field name="category">heritage</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_her_sash_900x1800" model="wincraft.window.template">
+            <field name="name">Tall Sash 900×1800</field>
+            <field name="category">heritage</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">2</field>
+        </record>
+        <record id="tmpl_her_sash_1200x1800_6p" model="wincraft.window.template">
+            <field name="name">Dual Sash 6-Pane 1200×1800</field>
+            <field name="category">heritage</field>
+            <field name="window_type">double_hung</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">3</field>
+        </record>
+
+        <!-- Heritage Bay -->
+        <record id="tmpl_her_bay_2400x1500" model="wincraft.window.template">
+            <field name="name">Victorian Bay 2400×1500</field>
+            <field name="category">heritage</field>
+            <field name="window_type">bay</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_her_bay_3000x1800" model="wincraft.window.template">
+            <field name="name">Edwardian Bay 3000×1800</field>
+            <field name="category">heritage</field>
+            <field name="window_type">bay</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">5</field>
+            <field name="panels_horizontal">5</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Heritage Fixed with mullions -->
+        <record id="tmpl_her_fix_900x600" model="wincraft.window.template">
+            <field name="name">Fanlight 900×600</field>
+            <field name="category">heritage</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">900</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_her_fix_1200x400" model="wincraft.window.template">
+            <field name="name">Transom Light 1200×400</field>
+            <field name="category">heritage</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">400</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════
+             CONTEMPORARY TEMPLATES
+             ═══════════════════════════════════════════════════ -->
+
+        <!-- Minimal Frame -->
+        <record id="tmpl_con_fix_1200x1200" model="wincraft.window.template">
+            <field name="name">Minimal Fixed 1200×1200</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_fix_2400x1800" model="wincraft.window.template">
+            <field name="name">Floor-to-Ceiling 2400×1800</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_fix_3000x2400" model="wincraft.window.template">
+            <field name="name">Feature Wall 3000×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_fix_600x2400" model="wincraft.window.template">
+            <field name="name">Vertical Slot 600×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">600</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_fix_3000x600" model="wincraft.window.template">
+            <field name="name">Ribbon Window 3000×600</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Sliding -->
+        <record id="tmpl_con_slide_3000x2100" model="wincraft.window.template">
+            <field name="name">Slim Slider 3000×2100</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_slide_4200x2400" model="wincraft.window.template">
+            <field name="name">Panoramic Slider 4200×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">4200</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_slide_6000x2400" model="wincraft.window.template">
+            <field name="name">Ultra-Wide Slider 6000×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">sliding</field>
+            <field name="default_width">6000</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Tilt & Turn -->
+        <record id="tmpl_con_tt_900x1800" model="wincraft.window.template">
+            <field name="name">Modern T&amp;T 900×1800</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_tt_1500x1800" model="wincraft.window.template">
+            <field name="name">Dual T&amp;T Modern 1500×1800</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">tilt_turn</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Bifold -->
+        <record id="tmpl_con_bifold_3000x2400" model="wincraft.window.template">
+            <field name="name">Slim Bifold 5-Panel 3000×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">3000</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">5</field>
+            <field name="panels_horizontal">5</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_bifold_4200x2400" model="wincraft.window.template">
+            <field name="name">Slim Bifold 7-Panel 4200×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">bifold</field>
+            <field name="default_width">4200</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">7</field>
+            <field name="panels_horizontal">7</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Casement -->
+        <record id="tmpl_con_case_1200x1500" model="wincraft.window.template">
+            <field name="name">Modern Casement 1200×1500</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1500</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_case_1800x1200" model="wincraft.window.template">
+            <field name="name">Triple Modern Case 1800×1200</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">casement</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Awning -->
+        <record id="tmpl_con_awn_1500x600" model="wincraft.window.template">
+            <field name="name">Modern Awning 1500×600</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">top_hung</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- Contemporary Grid Glazing -->
+        <record id="tmpl_con_grid_2400x2400" model="wincraft.window.template">
+            <field name="name">Modern Grid 2×2 2400×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+        <record id="tmpl_con_grid_3600x2400" model="wincraft.window.template">
+            <field name="name">Modern Grid 3×2 3600×2400</field>
+            <field name="category">contemporary</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">3600</field>
+            <field name="default_height">2400</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">2</field>
+            <field name="opening_direction">fixed</field>
+            <field name="frame_colour">#2d2d2d</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════
+             SPECIALTY TEMPLATES
+             ═══════════════════════════════════════════════════ -->
+
+        <!-- Circle / Porthole -->
+        <record id="tmpl_spc_circle_600" model="wincraft.window.template">
+            <field name="name">Porthole 600×600</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">600</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_circle_900" model="wincraft.window.template">
+            <field name="name">Round Window 900×900</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">900</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Triangular -->
+        <record id="tmpl_spc_tri_900x600" model="wincraft.window.template">
+            <field name="name">Triangle 900×600</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">900</field>
+            <field name="default_height">600</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_tri_1200x900" model="wincraft.window.template">
+            <field name="name">Large Triangle 1200×900</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Trapezoid -->
+        <record id="tmpl_spc_trap_1200x900" model="wincraft.window.template">
+            <field name="name">Trapezoid 1200×900</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_trap_1800x1200" model="wincraft.window.template">
+            <field name="name">Large Trapezoid 1800×1200</field>
+            <field name="category">specialty</field>
+            <field name="window_type">arched</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Narrow/Highlight -->
+        <record id="tmpl_spc_narrow_300x1200" model="wincraft.window.template">
+            <field name="name">Narrow Side Light 300×1200</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">300</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_narrow_300x2100" model="wincraft.window.template">
+            <field name="name">Tall Side Light 300×2100</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">300</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_highlight_1800x300" model="wincraft.window.template">
+            <field name="name">Highlight Strip 1800×300</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">300</field>
+            <field name="default_panels">1</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_highlight_2400x400" model="wincraft.window.template">
+            <field name="name">Wide Highlight 2400×400</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">2400</field>
+            <field name="default_height">400</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Corner Windows -->
+        <record id="tmpl_spc_corner_1200x1200" model="wincraft.window.template">
+            <field name="name">Corner Window 1200×1200</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Combination Windows (over-under) -->
+        <record id="tmpl_spc_combo_1200x1800_2x3" model="wincraft.window.template">
+            <field name="name">Grid 2×3 1200×1800</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">1800</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">3</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+        <record id="tmpl_spc_combo_1500x2000_3x4" model="wincraft.window.template">
+            <field name="name">Grid 3×4 1500×2000</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">1500</field>
+            <field name="default_height">2000</field>
+            <field name="default_panels">12</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">4</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+        <!-- Louvre / Jalousie -->
+        <record id="tmpl_spc_louvre_600x900" model="wincraft.window.template">
+            <field name="name">Louvre 600×900</field>
+            <field name="category">specialty</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">600</field>
+            <field name="default_height">900</field>
+            <field name="default_panels">4</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">4</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+        <record id="tmpl_spc_louvre_900x1200" model="wincraft.window.template">
+            <field name="name">Tall Louvre 900×1200</field>
+            <field name="category">specialty</field>
+            <field name="window_type">awning</field>
+            <field name="default_width">900</field>
+            <field name="default_height">1200</field>
+            <field name="default_panels">6</field>
+            <field name="panels_horizontal">1</field>
+            <field name="panels_vertical">6</field>
+            <field name="opening_direction">top_hung</field>
+        </record>
+
+        <!-- Fixed Casement Specialty -->
+        <record id="tmpl_spc_fc_twin_1200x2100" model="wincraft.window.template">
+            <field name="name">French Style 1200×2100</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed_casement</field>
+            <field name="default_width">1200</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">2</field>
+            <field name="panels_horizontal">2</field>
+            <field name="panels_vertical">1</field>
+        </record>
+        <record id="tmpl_spc_fc_triple_1800x2100" model="wincraft.window.template">
+            <field name="name">Triple French 1800×2100</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed_casement</field>
+            <field name="default_width">1800</field>
+            <field name="default_height">2100</field>
+            <field name="default_panels">3</field>
+            <field name="panels_horizontal">3</field>
+            <field name="panels_vertical">1</field>
+        </record>
+
+        <!-- Extra-large Commercial Specials -->
+        <record id="tmpl_spc_xl_wall_6000x3000" model="wincraft.window.template">
+            <field name="name">Glass Wall 6000×3000</field>
+            <field name="category">specialty</field>
+            <field name="window_type">fixed</field>
+            <field name="default_width">6000</field>
+            <field name="default_height">3000</field>
+            <field name="default_panels">12</field>
+            <field name="panels_horizontal">4</field>
+            <field name="panels_vertical">3</field>
+            <field name="opening_direction">fixed</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Branch — Views
+             Sprint 7: Multi-branch / warehouse support
+             ============================================================ -->
+
+        <!-- ── Branch — List ── -->
+        <record id="view_wincraft_branch_list" model="ir.ui.view">
+            <field name="name">wincraft.branch.list</field>
+            <field name="model">wincraft.branch</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="warehouse_id"/>
+                    <field name="manager_id" widget="many2one_avatar_user"/>
+                    <field name="phone" optional="hide"/>
+                    <field name="email" optional="hide"/>
+                    <field name="project_count" string="Projects"/>
+                    <field name="delivery_count" string="Deliveries"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Branch — Form ── -->
+        <record id="view_wincraft_branch_form" model="ir.ui.view">
+            <field name="name">wincraft.branch.form</field>
+            <field name="model">wincraft.branch</field>
+            <field name="arch" type="xml">
+                <form string="Branch">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="action_view_projects" icon="fa-briefcase">
+                                <field name="project_count" widget="statinfo" string="Projects"/>
+                            </button>
+                            <button class="oe_stat_button" type="object"
+                                    name="action_view_deliveries" icon="fa-truck">
+                                <field name="delivery_count" widget="statinfo" string="Deliveries"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name" placeholder="e.g. Toronto Main Plant"/></h1>
+                        </div>
+                        <group>
+                            <group string="Warehouse Link">
+                                <field name="code"/>
+                                <field name="warehouse_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group string="Contact">
+                                <field name="manager_id"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                        <group string="Address">
+                            <field name="address" nolabel="1" colspan="2"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Branch — Search ── -->
+        <record id="view_wincraft_branch_search" model="ir.ui.view">
+            <field name="name">wincraft.branch.search</field>
+            <field name="model">wincraft.branch</field>
+            <field name="arch" type="xml">
+                <search string="Branches">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="warehouse_id"/>
+                    <field name="manager_id"/>
+                    <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                    <group>
+                        <filter name="group_manager" string="Manager"
+                                context="{'group_by': 'manager_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action ── -->
+        <record id="action_wincraft_branch" model="ir.actions.act_window">
+            <field name="name">Branches</field>
+            <field name="res_model">wincraft.branch</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first branch location!
+                </p>
+                <p>Branches connect to Odoo warehouses for multi-location tracking.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

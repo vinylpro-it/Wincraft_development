@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_hardware_view_form" model="ir.ui.view">
+            <field name="name">wincraft.hardware.form</field>
+            <field name="model">wincraft.hardware</field>
+            <field name="arch" type="xml">
+                <form string="Hardware Item">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="category"/>
+                                <field name="hardware_role"/>
+                            </group>
+                            <group>
+                                <field name="unit_price"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="opening_type_ids" widget="many2many_tags"/>
+                            <field name="product_tmpl_id"/>
+                        </group>
+                        <field name="description" widget="text" placeholder="Notes..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_hardware_view_list" model="ir.ui.view">
+            <field name="name">wincraft.hardware.list</field>
+            <field name="model">wincraft.hardware</field>
+            <field name="arch" type="xml">
+                <list string="Hardware Items" default_order="category,name">
+                    <field name="name"/>
+                    <field name="category"/>
+                    <field name="hardware_role"/>
+                    <field name="opening_type_ids" widget="many2many_tags"/>
+                    <field name="unit_price"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_hardware_view_search" model="ir.ui.view">
+            <field name="name">wincraft.hardware.search</field>
+            <field name="model">wincraft.hardware</field>
+            <field name="arch" type="xml">
+                <search string="Hardware Items">
+                    <field name="name"/>
+                    <field name="category"/>
+                    <field name="hardware_role"/>
+                    <filter name="group_role" string="Hardware Role" context="{'group_by': 'hardware_role'}"/>
+                    <filter name="group_category" string="Category" context="{'group_by': 'category'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="wincraft_hardware_action" model="ir.actions.act_window">
+            <field name="name">Hardware Items</field>
+            <field name="res_model">wincraft.hardware</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Profile Cutlist — generated, project-wise manufacturing
+             cutlist for linear profile components (frame, sash, mullion,
+             reinforcement, bead, gasket, weatherseal, spacer).
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <record id="view_wincraft_cutlist_profile_line_list" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.profile.line.list</field>
+            <field name="model">wincraft.cutlist.profile.line</field>
+            <field name="arch" type="xml">
+                <list string="Profile Cutlist" create="0" edit="0" delete="0" export_xlsx="1">
+                    <field name="ref" optional="show"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="profile_code"/>
+                    <field name="profile_name"/>
+                    <field name="part_type" widget="badge"/>
+                    <field name="length_mm"/>
+                    <field name="quantity"/>
+                    <field name="angle_left"/>
+                    <field name="angle_right"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_wincraft_cutlist_profile_line_search" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.profile.line.search</field>
+            <field name="model">wincraft.cutlist.profile.line</field>
+            <field name="arch" type="xml">
+                <search string="Profile Cutlist">
+                    <field name="ref"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="product_id" string="Profile"/>
+                    <field name="profile_code"/>
+                    <field name="profile_name"/>
+                    <group>
+                        <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                        <filter name="group_window" string="Unit" context="{'group_by': 'window_id'}"/>
+                        <filter name="group_part_type" string="Part Type" context="{'group_by': 'part_type'}"/>
+                        <filter name="group_profile" string="Profile" context="{'group_by': 'profile_code'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_wincraft_cutlist_profile_line" model="ir.actions.act_window">
+            <field name="name">Profile Cutlists</field>
+            <field name="res_model">wincraft.cutlist.profile.line</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_wincraft_cutlist_profile_line_search"/>
+            <field name="context">{'group_by': ['project_id']}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No profile cutlist lines yet.
+                </p>
+                <p>
+                    Use Fabrication → Cutlists → Generate Cutlists to build a project's
+                    profile cutlist from its windows' BOMs.
+                </p>
+            </field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Glass Cutlist — generated, project-wise manufacturing cutlist
+             for glass panes.
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <record id="view_wincraft_cutlist_glass_line_list" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.glass.line.list</field>
+            <field name="model">wincraft.cutlist.glass.line</field>
+            <field name="arch" type="xml">
+                <list string="Glass Cutlist" create="0" edit="0" delete="0" export_xlsx="1">
+                    <field name="ref" optional="show"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="glass_type"/>
+                    <field name="width_mm"/>
+                    <field name="height_mm"/>
+                    <field name="quantity"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_wincraft_cutlist_glass_line_search" model="ir.ui.view">
+            <field name="name">wincraft.cutlist.glass.line.search</field>
+            <field name="model">wincraft.cutlist.glass.line</field>
+            <field name="arch" type="xml">
+                <search string="Glass Cutlist">
+                    <field name="ref"/>
+                    <field name="project_id"/>
+                    <field name="window_id"/>
+                    <field name="glass_type"/>
+                    <group>
+                        <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                        <filter name="group_window" string="Unit" context="{'group_by': 'window_id'}"/>
+                        <filter name="group_glass_type" string="Glass Type" context="{'group_by': 'glass_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_wincraft_cutlist_glass_line" model="ir.actions.act_window">
+            <field name="name">Glass Cutlists</field>
+            <field name="res_model">wincraft.cutlist.glass.line</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="view_wincraft_cutlist_glass_line_search"/>
+            <field name="context">{'group_by': ['project_id']}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No glass cutlist lines yet.
+                </p>
+                <p>
+                    Use Fabrication → Cutlists → Generate Cutlists to build a project's
+                    glass cutlist from its windows' BOMs.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Studio — Security Groups (Odoo 19)
+             Hierarchy:  Admin → Sales → Viewer
+             Fabricator is a separate privilege.
+             ============================================================ -->
+
+        <!-- Module category -->
+        <record id="module_wincraft_studio" model="ir.module.category">
+            <field name="name">WinCraft Studio</field>
+            <field name="description">Window design, configuration, and quotation management.</field>
+            <field name="sequence">200</field>
+        </record>
+
+        <!-- ── Privileges ── -->
+        <record id="privilege_wincraft_access" model="res.groups.privilege">
+            <field name="name">WinCraft Access</field>
+            <field name="category_id" ref="module_wincraft_studio"/>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="privilege_wincraft_fabrication" model="res.groups.privilege">
+            <field name="name">WinCraft Fabrication</field>
+            <field name="category_id" ref="module_wincraft_studio"/>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- ── Groups ── -->
+
+        <!-- Viewer: read-only access to projects, windows, catalogue -->
+        <record id="group_wincraft_viewer" model="res.groups">
+            <field name="name">WinCraft Viewer</field>
+            <field name="privilege_id" ref="privilege_wincraft_access"/>
+            <field name="comment">Can view WinCraft projects, windows, and catalogue items. Cannot create or edit.</field>
+        </record>
+
+        <!-- Fabricator: read projects assigned to them, mark windows as fabricated -->
+        <record id="group_wincraft_fabricator" model="res.groups">
+            <field name="name">WinCraft Fabricator</field>
+            <field name="privilege_id" ref="privilege_wincraft_fabrication"/>
+            <field name="comment">Can view and update fabrication status on their assigned projects. Cannot quote or modify pricing.</field>
+        </record>
+
+        <!-- Sales: create, edit, quote projects; cannot manage groups or pricing rules -->
+        <record id="group_wincraft_sales" model="res.groups">
+            <field name="name">WinCraft Sales</field>
+            <field name="privilege_id" ref="privilege_wincraft_access"/>
+            <field name="implied_ids" eval="[(4, ref('group_wincraft_viewer'))]"/>
+            <field name="comment">Can create and manage WinCraft projects, configure windows, and generate quotes. Inherits Viewer rights.</field>
+        </record>
+
+        <!-- Admin: full access including catalogue management and settings -->
+        <record id="group_wincraft_admin" model="res.groups">
+            <field name="name">WinCraft Administrator</field>
+            <field name="privilege_id" ref="privilege_wincraft_access"/>
+            <field name="implied_ids" eval="[(4, ref('group_wincraft_sales'))]"/>
+            <field name="comment">Full access: manage catalogue materials, pricing rules, fabricators, and all projects. Inherits Sales and Viewer rights.</field>
+            <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

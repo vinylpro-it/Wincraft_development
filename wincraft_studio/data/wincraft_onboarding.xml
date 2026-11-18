@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        WinCraft Studio — First Run Setup
+        Uses a standard ir.actions.act_window wizard instead of
+        onboarding.onboarding to avoid Odoo version compatibility issues.
+        The wizard opens automatically when no wincraft.project exists.
+    -->
+
+    <!-- Default GST tax parameter -->
+    <record id="wincraft_default_gst_rate" model="ir.config_parameter">
+        <field name="key">wincraft_studio.default_gst_rate</field>
+        <field name="value">18.0</field>
+    </record>
+
+    <!-- Default validity days -->
+    <record id="wincraft_default_validity_days" model="ir.config_parameter">
+        <field name="key">wincraft_studio.default_validity_days</field>
+        <field name="value">30</field>
+    </record>
+
+    <!-- Default installation rate -->
+    <record id="wincraft_default_installation_rate" model="ir.config_parameter">
+        <field name="key">wincraft_studio.installation_rate</field>
+        <field name="value">0.0</field>
+    </record>
+
+    <!-- Onboarding done flag (set to False on install, True after wizard) -->
+    <record id="wincraft_onboarding_done" model="ir.config_parameter">
+        <field name="key">wincraft_studio.onboarding_done</field>
+        <field name="value">False</field>
+    </record>
+
+</odoo>

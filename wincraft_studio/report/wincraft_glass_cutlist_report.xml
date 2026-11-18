@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Report action: Glass Cutlist PDF — selectable from the Glass
+         Cutlists list view's Print menu (binding_model_id below). -->
+    <record id="action_wincraft_glass_cutlist_report" model="ir.actions.report">
+        <field name="name">Glass Cutlist</field>
+        <field name="model">wincraft.cutlist.glass.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wincraft_studio.report_wincraft_glass_cutlist</field>
+        <field name="report_file">wincraft_studio.report_wincraft_glass_cutlist</field>
+        <field name="print_report_name">'Glass_Cutlist'</field>
+        <field name="binding_model_id" ref="model_wincraft_cutlist_glass_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Glass Cutlist — QWeb PDF Report Template
+         Grouped by Project, then listing each Unit's glass cut pieces.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <template id="report_wincraft_glass_cutlist">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Glass Cutlist</h2>
+                    <t t-foreach="docs.mapped('project_id')" t-as="project">
+                        <h4>
+                            <span t-field="project.ref"/> — <span t-field="project.name"/>
+                        </h4>
+                        <table class="table table-sm table-bordered mt-2">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Unit</th>
+                                    <th>Glass Type</th>
+                                    <th>Width (mm)</th>
+                                    <th>Height (mm)</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs.filtered(lambda l: l.project_id == project)" t-as="line">
+                                    <tr>
+                                        <td><span t-field="line.window_id.name"/></td>
+                                        <td><t t-esc="line.glass_type"/></td>
+                                        <td><t t-esc="line.width_mm"/></td>
+                                        <td><t t-esc="line.height_mm"/></td>
+                                        <td><t t-esc="line.quantity"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

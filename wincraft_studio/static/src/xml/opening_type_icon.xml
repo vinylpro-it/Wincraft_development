@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Opening Type Icon — architectural SVG mini-icon
+         ═══════════════════════════════════════════════════════════════════ -->
+    <t t-name="wincraft_studio.OpeningTypeIcon">
+        <t t-out="fullSvg"/>
+    </t>
+</templates>

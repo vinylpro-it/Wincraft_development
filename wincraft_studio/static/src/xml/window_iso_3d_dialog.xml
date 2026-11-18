@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.WindowIso3DDialog">
+        <Dialog title="title" size="'lg'" contentClass="'wc-iso-3d-dialog'">
+            <div class="wc-iso-3d-body" style="width:100%;min-height:480px;"
+                 t-on-mousedown="onSvgMouseDown" t-out="svgMarkup"/>
+            <div class="text-muted small mt-2">
+                Use the buttons in the corner to rotate (◀ ▶), tilt (▴ ▾), or reset (⌂) the view.
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary" t-on-click="() => props.close()">Close</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

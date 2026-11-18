@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Spacer Config List View ── -->
+    <record id="view_wincraft_spacer_config_list" model="ir.ui.view">
+        <field name="name">wincraft.spacer.config.list</field>
+        <field name="model">wincraft.spacer.config</field>
+        <field name="arch" type="xml">
+            <list string="Spacer Options" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="label"/>
+                <field name="spacer_key"/>
+                <field name="product_tmpl_id"/>
+                <field name="product_code" readonly="1"/>
+                <field name="is_default"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Spacer Config Form View ── -->
+    <record id="view_wincraft_spacer_config_form" model="ir.ui.view">
+        <field name="name">wincraft.spacer.config.form</field>
+        <field name="model">wincraft.spacer.config</field>
+        <field name="arch" type="xml">
+            <form string="Spacer Option">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="label" placeholder="e.g. Aluminium Spacer"/>
+                        </h1>
+                        <h2>
+                            <field name="spacer_key" placeholder="e.g. alu"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Product">
+                            <field name="product_tmpl_id"/>
+                            <field name="product_code" readonly="1"/>
+                        </group>
+                        <group string="Settings">
+                            <field name="is_default"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Spacer Config Search View ── -->
+    <record id="view_wincraft_spacer_config_search" model="ir.ui.view">
+        <field name="name">wincraft.spacer.config.search</field>
+        <field name="model">wincraft.spacer.config</field>
+        <field name="arch" type="xml">
+            <search string="Spacer Options">
+                <field name="label"/>
+                <field name="spacer_key"/>
+                <field name="product_tmpl_id"/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <filter string="Default Only" name="default" domain="[('is_default','=',True)]"/>
+                <filter string="Archived" name="archived" domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Spacer Config Action ── -->
+    <record id="action_wincraft_spacer_config" model="ir.actions.act_window">
+        <field name="name">Spacer Options</field>
+        <field name="res_model">wincraft.spacer.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No spacer options configured yet.
+            </p>
+            <p>
+                Map each spacer key (e.g. <strong>alu</strong>, <strong>warm-edge</strong>)
+                to a real spacer product for BOM generation.
+            </p>
+        </field>
+    </record>
+</odoo>

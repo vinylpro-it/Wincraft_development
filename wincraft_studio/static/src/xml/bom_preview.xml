@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.BomPreview">
+        <div class="wc-bom-overlay" t-on-click="onCloseClick">
+            <div class="wc-bom-modal" t-on-click.stop="">
+
+                <!-- Header -->
+                <div class="wc-bom-header">
+                    <div class="wc-bom-header-left">
+                        <i class="fa fa-cogs wc-bom-header-icon"/>
+                        <div>
+                            <h3 class="wc-bom-title">BOM Preview</h3>
+                            <p class="wc-bom-subtitle">
+                                <t t-esc="props.data.project_ref"/> — <t t-esc="props.data.project_name"/>
+                            </p>
+                        </div>
+                    </div>
+                    <button class="wc-bom-close" t-on-click="onCloseClick">
+                        <i class="fa fa-times"/>
+                    </button>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="wc-bom-summary">
+                    <div class="wc-bom-summary-card">
+                        <span class="wc-bom-summary-value" t-esc="props.data.window_count"/>
+                        <span class="wc-bom-summary-label">Windows</span>
+                    </div>
+                    <div class="wc-bom-summary-card">
+                        <span class="wc-bom-summary-value" t-esc="totalComponents"/>
+                        <span class="wc-bom-summary-label">Components</span>
+                    </div>
+                    <div class="wc-bom-summary-card">
+                        <span class="wc-bom-summary-value" t-esc="categories.length"/>
+                        <span class="wc-bom-summary-label">Categories</span>
+                    </div>
+                </div>
+
+                <!-- Category Totals Strip -->
+                <div class="wc-bom-totals-strip">
+                    <button t-att-class="{ 'wc-bom-cat-pill': true, 'active': state.activeCategory === 'all' }"
+                            t-on-click="() => this.setCategory('all')">
+                        All
+                    </button>
+                    <t t-foreach="categories" t-as="cat" t-key="cat">
+                        <button t-att-class="{ 'wc-bom-cat-pill': true, 'active': state.activeCategory === cat }"
+                                t-on-click="() => this.setCategory(cat)">
+                            <i t-att-class="'fa ' + getCategoryIcon(cat)"/>
+                            <t t-esc="getCategoryLabel(cat)"/>
+                            <span class="wc-bom-cat-total" t-esc="formatQty(grandTotals[cat] || 0)"/>
+                        </button>
+                    </t>
+                </div>
+
+                <!-- Window Breakdown -->
+                <div class="wc-bom-body">
+                    <t t-foreach="filteredWindows" t-as="win" t-key="win.id">
+                        <div class="wc-bom-window-card">
+                            <div class="wc-bom-window-header" t-on-click="() => this.toggleWindow(win.id)">
+                                <div class="wc-bom-window-info">
+                                    <i t-att-class="isExpanded(win.id) ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"
+                                       style="width:14px"/>
+                                    <strong t-esc="win.name"/>
+                                    <span class="wc-bom-window-badge" t-esc="win.window_type"/>
+                                </div>
+                                <div class="wc-bom-window-meta">
+                                    <span><t t-esc="win.width_mm"/> × <t t-esc="win.height_mm"/> mm</span>
+                                    <span class="wc-bom-window-sep">|</span>
+                                    <span><t t-esc="win.panels"/> panes</span>
+                                    <span class="wc-bom-window-sep">|</span>
+                                    <span><t t-esc="win.area_sqm"/> m²</span>
+                                    <span class="wc-bom-window-sep">|</span>
+                                    <span><t t-esc="win.components.length"/> items</span>
+                                </div>
+                            </div>
+                            <div class="wc-bom-window-components" t-if="isExpanded(win.id)">
+                                <table class="wc-bom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Component</th>
+                                            <th class="text-end">Qty</th>
+                                            <th>UoM</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="win.components" t-as="comp" t-key="comp.name + '_' + comp_index">
+                                            <tr>
+                                                <td>
+                                                    <span class="wc-bom-cat-badge" t-att-data-category="comp.category">
+                                                        <i t-att-class="'fa ' + getCategoryIcon(comp.category)"/>
+                                                        <t t-esc="getCategoryLabel(comp.category)"/>
+                                                    </span>
+                                                </td>
+                                                <td t-esc="comp.name"/>
+                                                <td class="text-end wc-bom-qty" t-esc="formatQty(comp.qty)"/>
+                                                <td class="wc-bom-uom" t-esc="getUomLabel(comp.uom_ref)"/>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+
+                    <div class="wc-bom-empty" t-if="filteredWindows.length === 0">
+                        <i class="fa fa-inbox"/>
+                        <p>No components match the selected filter</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="wc-bom-footer">
+                    <div class="wc-bom-footer-hint" t-if="!mrpInstalled">
+                        <i class="fa fa-info-circle"/>
+                        Manufacturing module (mrp) not installed — BOM records cannot be created.
+                    </div>
+                    <div class="wc-bom-footer-actions">
+                        <button class="wc-bom-btn wc-bom-btn--secondary" t-on-click="onCloseClick">
+                            Cancel
+                        </button>
+                        <button class="wc-bom-btn wc-bom-btn--primary"
+                                t-on-click="onConfirmClick"
+                                t-att-disabled="!mrpInstalled">
+                            <i class="fa fa-check"/> Confirm &amp; Generate BOM
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

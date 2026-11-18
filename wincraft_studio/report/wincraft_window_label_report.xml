@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Window Label Report — QWeb PDF
+         Prints 4 labels per page (2 × 2 CSS grid) for selected windows.
+         Each label shows ref, window number, type, dims, material, glass, QR.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <template id="report_wincraft_window_labels">
+        <t t-call="web.html_container">
+            <t t-set="label_list" t-value="[]"/>
+            <t t-foreach="docs" t-as="win">
+                <t t-set="label_list" t-value="label_list + [win]"/>
+            </t>
+
+            <t t-call="web.external_layout">
+                <style>
+                    .wc-label-grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        grid-template-rows: 1fr 1fr;
+                        gap: 16px;
+                        width: 100%;
+                        height: 230mm;
+                        padding: 10mm;
+                        box-sizing: border-box;
+                    }
+                    .wc-label-box {
+                        border: 2px solid #2c2c2a;
+                        border-radius: 6px;
+                        padding: 14px;
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        page-break-inside: avoid;
+                    }
+                    .wc-label-top {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                    }
+                    .wc-label-ref {
+                        font-family: monospace;
+                        font-size: 10px;
+                        color: #888;
+                    }
+                    .wc-label-winno {
+                        font-size: 22px;
+                        font-weight: 700;
+                        color: #2c2c2a;
+                    }
+                    .wc-label-middle {
+                        margin-top: 8px;
+                    }
+                    .wc-label-typedims {
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #2c2c2a;
+                    }
+                    .wc-label-materials {
+                        font-size: 12px;
+                        color: #555;
+                        margin-top: 4px;
+                    }
+                    .wc-label-bottom {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-end;
+                        margin-top: 10px;
+                    }
+                    .wc-label-barcode {
+                        flex: 1;
+                    }
+                    .wc-label-barcode img {
+                        height: 36px;
+                    }
+                    .wc-label-barcode-text {
+                        font-family: monospace;
+                        font-size: 9px;
+                        color: #666;
+                        margin-top: 2px;
+                    }
+                    .wc-label-qr img {
+                        width: 64px;
+                        height: 64px;
+                    }
+                </style>
+
+                <!-- Chunk labels into groups of 4 for paging -->
+                <t t-set="page_count" t-value="(len(label_list) + 3) // 4"/>
+                <t t-foreach="range(page_count)" t-as="page_idx">
+                    <div class="wc-label-grid">
+                        <t t-set="start" t-value="page_idx * 4"/>
+                        <t t-set="end" t-value="min(start + 4, len(label_list))"/>
+                        <t t-foreach="label_list[start:end]" t-as="win">
+                            <div class="wc-label-box">
+                                <div class="wc-label-top">
+                                    <span class="wc-label-ref"
+                                          t-esc="win.project_id.ref or ''"/>
+                                    <span class="wc-label-winno">
+                                        Win-<t t-esc="'%02d' % (win.sequence or (win_index + 1))"/>
+                                    </span>
+                                </div>
+                                <div class="wc-label-middle">
+                                    <div class="wc-label-typedims">
+                                        <t t-esc="dict(win._fields['window_type'].selection).get(win.window_type, win.window_type)"/>
+                                        — <t t-esc="win.width_mm"/> × <t t-esc="win.height_mm"/> mm
+                                    </div>
+                                    <div class="wc-label-materials">
+                                        <t t-if="win.frame_material_id">
+                                            Frame: <t t-esc="win.frame_material_id.name"/>
+                                        </t>
+                                        <t t-if="win.glass_type_id">
+                                            <br/>Glass: <t t-esc="win.glass_type_id.name"/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="wc-label-bottom">
+                                    <div class="wc-label-barcode" t-if="win.barcode">
+                                        <img t-att-src="'/report/barcode/?barcode_type=Code128&amp;value=%s&amp;width=200&amp;height=40' % win.barcode"/>
+                                        <div class="wc-label-barcode-text" t-esc="win.barcode"/>
+                                    </div>
+                                    <div class="wc-label-qr" t-if="win.project_id.qr_code_image">
+                                        <img t-att-src="'data:image/png;base64,' + win.project_id.qr_code_image.decode('ascii')"
+                                             alt="QR Code"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <!-- Fill empty cells to maintain grid -->
+                        <t t-set="remaining" t-value="4 - (end - start)"/>
+                        <t t-foreach="range(remaining)" t-as="empty">
+                            <div/>
+                        </t>
+                    </div>
+                    <t t-if="page_idx &lt; page_count - 1">
+                        <div style="page-break-after: always;"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; color: #2c2c2a; line-height: 1.6; }
+        .hero { background: linear-gradient(135deg, #2c2c2a 0%, #714b67 100%); color: #fff;
+                padding: 60px 40px; text-align: center; border-radius: 8px; margin-bottom: 40px; }
+        .hero h1 { font-size: 36px; margin: 0 0 12px; }
+        .hero p { font-size: 18px; opacity: .9; margin: 0; }
+        .section { max-width: 900px; margin: 0 auto 40px; }
+        .section h2 { color: #714b67; border-bottom: 2px solid #e8c97a; padding-bottom: 8px; }
+        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+        .feat { background: #f8f8f6; border-radius: 8px; padding: 20px; }
+        .feat h3 { margin: 0 0 8px; color: #2c2c2a; }
+        .feat p { margin: 0; color: #555; font-size: 14px; }
+        .feat i { color: #714b67; margin-right: 6px; }
+        .screenshots img { max-width: 100%; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.12); margin-bottom: 16px; }
+        table.compat { border-collapse: collapse; width: 100%; }
+        table.compat th, table.compat td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        table.compat th { background: #f4f4f4; }
+        .badge { display: inline-block; background: #714b67; color: #fff; padding: 4px 12px;
+                 border-radius: 12px; font-size: 12px; margin-right: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>WinCraft Studio</h1>
+    <p>Professional Window Design, Quotation &amp; Fabrication — 100% Native Odoo 19</p>
+</div>
+
+<div class="section">
+    <h2>Overview</h2>
+    <p>
+        WinCraft Studio is a complete window fabrication management system built natively
+        inside Odoo 19. It gives window manufacturers, dealers, and installers an interactive
+        SVG canvas designer, live pricing engine, professional PDF quotes, cut-list generation,
+        profile optimisation, and full fabrication tracking — all from a single Odoo module.
+    </p>
+    <p>
+        <span class="badge">Manufacturing</span>
+        <span class="badge">Quotation</span>
+        <span class="badge">Fabrication</span>
+        <span class="badge">Portal</span>
+        <span class="badge">AI-Powered</span>
+    </p>
+</div>
+
+<div class="section">
+    <h2>Key Features</h2>
+    <div class="features">
+        <div class="feat">
+            <h3><i class="fa fa-pencil-square-o"></i> Interactive Designer</h3>
+            <p>Drag-and-drop SVG canvas with snap-to-grid, undo/redo, component library, and
+               elevation view. Design windows visually and see live pricing updates.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-calculator"></i> Live Pricing Engine</h3>
+            <p>Automatic unit pricing based on material rates, glass type, hardware, add-ons,
+               fabrication cost, and per-window margin percentage.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-file-pdf-o"></i> Professional PDF Reports</h3>
+            <p>QWeb quote PDF with configurable tax, cut-list PDF with per-window dimensions,
+               profile order sheets, and window fabrication labels.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-cogs"></i> Profile Optimiser</h3>
+            <p>First-fit-decreasing bin-packing algorithm minimises aluminium bar waste.
+               Visual bar diagrams show cutting patterns and utilisation.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-magic"></i> AI Configuration Assistant</h3>
+            <p>Describe windows in plain English — the AI parses specifications into structured
+               configurations. Powered by Anthropic Claude with regex fallback.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-globe"></i> Customer Portal</h3>
+            <p>Branded portal with project list, detailed quote view, online acceptance,
+               revision requests, and PDF download.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-users"></i> Dealer Network</h3>
+            <p>Manage dealers with commission tracking, territory assignment, and
+               performance analytics with stat buttons.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-bar-chart"></i> Analytics Dashboard</h3>
+            <p>Pivot, graph, and list views for project analytics.
+               Track revenue, window counts, material usage, and fabrication progress.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-qrcode"></i> QR Fabrication Tracking</h3>
+            <p>Generate QR codes per window. Fabricators scan to mark windows complete.
+               Real-time status updates on the project.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-whatsapp"></i> WhatsApp Sharing</h3>
+            <p>One-click quote sharing via WhatsApp with portal link.
+               Pre-formatted message with project summary and total.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-history"></i> Quote Versioning</h3>
+            <p>Automatic version control for quotes. Track revision history with
+               chatter messages. Quick-quote wizard for rapid estimates.</p>
+        </div>
+        <div class="feat">
+            <h3><i class="fa fa-shield"></i> Multi-Role Access</h3>
+            <p>Four security roles: Admin, Sales, Fabricator, Viewer.
+               Record rules and group-based menu visibility.</p>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Integrations</h2>
+    <p>WinCraft Studio integrates deeply with standard Odoo modules:</p>
+    <table class="compat">
+        <tr><th>Module</th><th>Integration</th></tr>
+        <tr><td>Sale Management</td><td>Auto-create sale orders from accepted quotes</td></tr>
+        <tr><td>CRM</td><td>Link projects to leads and opportunities</td></tr>
+        <tr><td>Inventory</td><td>Glass sheet stock reservation on fabrication start</td></tr>
+        <tr><td>Accounting</td><td>GST tax configuration and invoice integration</td></tr>
+        <tr><td>Portal</td><td>Customer-facing project views with accept/revision</td></tr>
+        <tr><td>Mail</td><td>Chatter, email notifications, activity scheduling</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Technical Details</h2>
+    <table class="compat">
+        <tr><th>Attribute</th><th>Value</th></tr>
+        <tr><td>Odoo Version</td><td>19.0</td></tr>
+        <tr><td>License</td><td>LGPL-3</td></tr>
+        <tr><td>Category</td><td>Manufacturing / Window Fabrication</td></tr>
+        <tr><td>Frontend</td><td>OWL Components (ES module)</td></tr>
+        <tr><td>Reports</td><td>QWeb PDF (Quote, Cut-list, Labels, Profile Order)</td></tr>
+        <tr><td>Dependencies</td><td>base, mail, sale_management, crm, product, account, stock, web, portal</td></tr>
+    </table>
+</div>
+
+</body>
+</html>

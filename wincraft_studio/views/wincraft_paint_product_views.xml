@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Paint Product Form (lightweight — just what a fabricator needs) ── -->
+        <record id="wincraft_paint_product_view_form" model="ir.ui.view">
+            <field name="name">product.template.wincraft.paint.form</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <form string="Paint Product">
+                    <sheet>
+                        <field name="x_is_paint_product" invisible="1"/>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="e.g. Red"/></h1>
+                        </div>
+                        <group>
+                            <group string="Identification">
+                                <field name="default_code" string="SKU"/>
+                                <field name="uom_id"/>
+                                <field name="x_paint_colour_hex" widget="color"/>
+                            </group>
+                            <group string="Consumption (per frame)">
+                                <field name="x_paint_consumption_per_inch"/>
+                                <field name="x_paint_layers"/>
+                                <field name="qty_available" string="On Hand" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Costing">
+                            <field name="standard_price" string="Cost / Litre"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Paint Product List ── -->
+        <record id="wincraft_paint_product_view_list" model="ir.ui.view">
+            <field name="name">product.template.wincraft.paint.list</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <list string="Paint Products">
+                    <field name="name"/>
+                    <field name="default_code" string="SKU"/>
+                    <field name="x_paint_colour_hex" widget="color" string="Swatch"/>
+                    <field name="uom_id"/>
+                    <field name="qty_available" string="On Hand"/>
+                    <field name="x_paint_consumption_per_inch"/>
+                    <field name="x_paint_layers"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_wincraft_paint_product" model="ir.actions.act_window">
+            <field name="name">Paint Products</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('x_is_paint_product', '=', True)]</field>
+            <field name="context">{
+                'default_x_is_paint_product': True,
+                'default_type': 'consu',
+                'default_is_storable': True,
+                'default_sale_ok': False,
+                'default_purchase_ok': True,
+                'default_uom_id': ref('uom.product_uom_litre'),
+                'search_default_active': 1,
+            }</field>
+            <field name="view_ids" eval="[
+                (5, 0, 0),
+                (0, 0, {'view_mode': 'list', 'view_id': ref('wincraft_paint_product_view_list')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('wincraft_paint_product_view_form')}),
+            ]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smart_action">
+                    Add a paint product (e.g. "Red", "White") to use it as a frame
+                    colour in WinCraft Studio — it will appear in the Inside/Outside
+                    paint picker and feed the BOM and stock requirements.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

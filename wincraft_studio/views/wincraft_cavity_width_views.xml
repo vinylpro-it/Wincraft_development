@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form View -->
+        <record id="wincraft_cavity_width_view_form" model="ir.ui.view">
+            <field name="name">wincraft.cavity.width.form</field>
+            <field name="model">wincraft.cavity.width</field>
+            <field name="arch" type="xml">
+                <form string="Cavity Width">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived"
+                                bg_color="text-bg-danger"
+                                invisible="active"/>
+                        <group>
+                            <group string="Details">
+                                <field name="name"/>
+                                <field name="width_mm"/>
+                                <field name="sequence"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- List View -->
+        <record id="wincraft_cavity_width_view_list" model="ir.ui.view">
+            <field name="name">wincraft.cavity.width.list</field>
+            <field name="model">wincraft.cavity.width</field>
+            <field name="arch" type="xml">
+                <list string="Cavity Widths" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="width_mm"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="wincraft_cavity_width_action" model="ir.actions.act_window">
+            <field name="name">Cavity Widths</field>
+            <field name="res_model">wincraft.cavity.width</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a cavity width option
+                </p>
+                <p>Cavity widths appear in the glass configuration dropdowns of the designer.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Delivery Schedule
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Delivery — List ── -->
+        <record id="view_wincraft_delivery_tree" model="ir.ui.view">
+            <field name="name">wincraft.delivery.tree</field>
+            <field name="model">wincraft.delivery</field>
+            <field name="arch" type="xml">
+                <list string="Deliveries"
+                      decoration-info="state == 'scheduled'"
+                      decoration-warning="state == 'in_transit'"
+                      decoration-success="state == 'delivered'"
+                      decoration-muted="state == 'cancelled'">
+                    <field name="name"/>
+                    <field name="scheduled_date"/>
+                    <field name="driver_id"/>
+                    <field name="vehicle_ref"/>
+                    <field name="project_count"/>
+                    <field name="total_windows"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'scheduled'"
+                           decoration-warning="state in ('loading', 'in_transit')"
+                           decoration-success="state == 'delivered'"
+                           decoration-danger="state == 'cancelled'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Delivery — Form ── -->
+        <record id="view_wincraft_delivery_form" model="ir.ui.view">
+            <field name="name">wincraft.delivery.form</field>
+            <field name="model">wincraft.delivery</field>
+            <field name="arch" type="xml">
+                <form string="Delivery Schedule">
+                    <header>
+                        <button name="action_schedule"
+                                string="Schedule"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_start_loading"
+                                string="Start Loading"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'scheduled'"/>
+                        <button name="action_depart"
+                                string="Depart"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'loading'"/>
+                        <button name="action_mark_delivered"
+                                string="Mark Delivered"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'in_transit'"/>
+                        <button name="action_cancel"
+                                string="Cancel"
+                                type="object"
+                                invisible="state in ('delivered', 'cancelled')"/>
+                        <button name="action_reset_draft"
+                                string="Reset to Draft"
+                                type="object"
+                                invisible="state != 'cancelled'"/>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="draft,scheduled,loading,in_transit,delivered"
+                               readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" icon="fa-archive">
+                                <field name="project_count" widget="statinfo" string="Projects"/>
+                            </button>
+                            <button class="oe_stat_button" icon="fa-window-maximize">
+                                <field name="total_windows" widget="statinfo" string="Windows"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group string="Schedule">
+                                <field name="scheduled_date"/>
+                                <field name="driver_id"/>
+                                <field name="vehicle_ref"/>
+                                <field name="branch_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Delivery Lines" name="lines">
+                                <field name="line_ids" nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="load_sequence"/>
+                                        <field name="project_id"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="window_count" readonly="1"/>
+                                        <field name="delivered" readonly="1"/>
+                                        <field name="delivery_date" readonly="1"/>
+                                        <field name="signed_by"/>
+                                        <field name="delivery_notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" nolabel="1"
+                                       placeholder="Route notes, special instructions..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Delivery — Calendar ── -->
+        <record id="view_wincraft_delivery_calendar" model="ir.ui.view">
+            <field name="name">wincraft.delivery.calendar</field>
+            <field name="model">wincraft.delivery</field>
+            <field name="arch" type="xml">
+                <calendar string="Delivery Schedule"
+                          date_start="scheduled_date"
+                          color="state"
+                          quick_create="0">
+                    <field name="name"/>
+                    <field name="driver_id"/>
+                    <field name="project_count"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- ── Delivery — Search ── -->
+        <record id="view_wincraft_delivery_search" model="ir.ui.view">
+            <field name="name">wincraft.delivery.search</field>
+            <field name="model">wincraft.delivery</field>
+            <field name="arch" type="xml">
+                <search string="Deliveries">
+                    <field name="name"/>
+                    <field name="driver_id"/>
+                    <field name="vehicle_ref"/>
+                    <field name="branch_id"/>
+                    <filter name="today" string="Today"
+                            domain="[('scheduled_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter name="upcoming" string="Upcoming"
+                            domain="[('scheduled_date', '&gt;=', context_today().strftime('%Y-%m-%d')),
+                                     ('state', 'not in', ['delivered', 'cancelled'])]"/>
+                    <separator/>
+                    <filter name="in_transit" string="In Transit"
+                            domain="[('state', '=', 'in_transit')]"/>
+                    <filter name="delivered" string="Delivered"
+                            domain="[('state', '=', 'delivered')]"/>
+                    <group>
+                        <filter name="group_state" string="Status"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_date" string="Scheduled Date"
+                                context="{'group_by': 'scheduled_date'}"/>
+                        <filter name="group_driver" string="Driver"
+                                context="{'group_by': 'driver_id'}"/>
+                        <filter name="group_branch" string="Branch"
+                                context="{'group_by': 'branch_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: Deliveries ── -->
+        <record id="action_wincraft_delivery" model="ir.actions.act_window">
+            <field name="name">Deliveries</field>
+            <field name="res_model">wincraft.delivery</field>
+            <field name="view_mode">list,form,calendar</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Schedule your first delivery
+                </p>
+                <p>Group fabricated projects into truck loads and track delivery to site.</p>
+            </field>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Truck Loading Manifest
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Loading Manifest — List ── -->
+        <record id="view_wincraft_loading_manifest_tree" model="ir.ui.view">
+            <field name="name">wincraft.loading.manifest.tree</field>
+            <field name="model">wincraft.loading.manifest</field>
+            <field name="arch" type="xml">
+                <list string="Loading Manifest"
+                      decoration-success="loaded"
+                      decoration-muted="not loaded">
+                    <field name="load_sequence"/>
+                    <field name="barcode"/>
+                    <field name="window_id"/>
+                    <field name="project_id"/>
+                    <field name="loaded" widget="boolean_toggle"/>
+                    <field name="loaded_at"/>
+                    <field name="loaded_by"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Loading Manifest — Form ── -->
+        <record id="view_wincraft_loading_manifest_form" model="ir.ui.view">
+            <field name="name">wincraft.loading.manifest.form</field>
+            <field name="model">wincraft.loading.manifest</field>
+            <field name="arch" type="xml">
+                <form string="Loading Manifest Entry">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="delivery_id"/>
+                                <field name="window_id"/>
+                                <field name="barcode" readonly="1"/>
+                                <field name="load_sequence"/>
+                            </group>
+                            <group>
+                                <field name="loaded"/>
+                                <field name="loaded_at" readonly="1"/>
+                                <field name="loaded_by" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Action: Loading Manifest ── -->
+        <record id="action_wincraft_loading_manifest" model="ir.actions.act_window">
+            <field name="name">Loading Manifest</field>
+            <field name="res_model">wincraft.loading.manifest</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No windows in this manifest yet
+                </p>
+            </field>
+        </record>
+
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             Installation Confirmation
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <!-- ── Installation — List ── -->
+        <record id="view_wincraft_installation_tree" model="ir.ui.view">
+            <field name="name">wincraft.installation.tree</field>
+            <field name="model">wincraft.installation</field>
+            <field name="arch" type="xml">
+                <list string="Installations"
+                      decoration-info="state == 'scheduled'"
+                      decoration-warning="state == 'in_progress'"
+                      decoration-success="state == 'completed'"
+                      decoration-danger="state == 'issue'">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="partner_id"/>
+                    <field name="scheduled_date"/>
+                    <field name="installer_id"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'scheduled'"
+                           decoration-warning="state == 'in_progress'"
+                           decoration-success="state == 'completed'"
+                           decoration-danger="state == 'issue'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Installation — Form ── -->
+        <record id="view_wincraft_installation_form" model="ir.ui.view">
+            <field name="name">wincraft.installation.form</field>
+            <field name="model">wincraft.installation</field>
+            <field name="arch" type="xml">
+                <form string="Installation Confirmation">
+                    <header>
+                        <button name="action_start"
+                                string="Start Installation"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'scheduled'"/>
+                        <button name="action_complete"
+                                string="Complete"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'in_progress'"/>
+                        <button name="action_report_issue"
+                                string="Report Issue"
+                                type="object"
+                                class="btn-danger"
+                                invisible="state not in ('in_progress', 'completed')"/>
+                        <button name="action_generate_checks"
+                                string="Generate Window Checks"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state not in ('scheduled', 'in_progress')"/>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="scheduled,in_progress,completed"
+                               readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group string="Project">
+                                <field name="project_id"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="delivery_id"/>
+                            </group>
+                            <group string="Schedule">
+                                <field name="scheduled_date"/>
+                                <field name="installer_id"/>
+                                <field name="started_at" readonly="1"/>
+                                <field name="completed_at" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Sign-Off">
+                                <field name="customer_sign"/>
+                                <field name="photo_ids" widget="many2many_binary"/>
+                            </group>
+                        </group>
+
+                        <separator string="Window Checks"/>
+                        <field name="check_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="window_id" readonly="1"/>
+                                <field name="result" widget="badge"
+                                       decoration-info="result == 'pending'"
+                                       decoration-success="result == 'pass'"
+                                       decoration-danger="result == 'fail'"/>
+                                <field name="notes"/>
+                            </list>
+                        </field>
+
+                        <group invisible="state != 'issue'">
+                            <field name="issue_description"/>
+                        </group>
+
+                        <separator string="Notes"/>
+                        <field name="notes" nolabel="1"
+                               placeholder="Installation notes..."/>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Installation — Search ── -->
+        <record id="view_wincraft_installation_search" model="ir.ui.view">
+            <field name="name">wincraft.installation.search</field>
+            <field name="model">wincraft.installation</field>
+            <field name="arch" type="xml">
+                <search string="Installations">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="installer_id"/>
+                    <filter name="scheduled" string="Scheduled"
+                            domain="[('state', '=', 'scheduled')]"/>
+                    <filter name="in_progress" string="In Progress"
+                            domain="[('state', '=', 'in_progress')]"/>
+                    <filter name="completed" string="Completed"
+                            domain="[('state', '=', 'completed')]"/>
+                    <filter name="issues" string="Issues"
+                            domain="[('state', '=', 'issue')]"/>
+                    <group>
+                        <filter name="group_state" string="Status"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_installer" string="Installer"
+                                context="{'group_by': 'installer_id'}"/>
+                        <filter name="group_date" string="Scheduled Date"
+                                context="{'group_by': 'scheduled_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: Installations ── -->
+        <record id="action_wincraft_installation" model="ir.actions.act_window">
+            <field name="name">Installations</field>
+            <field name="res_model">wincraft.installation</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No installations scheduled yet
+                </p>
+                <p>Confirm window installation at the customer site with per-window pass/fail checks.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Simple catalog dropdown cell. Caller sets `lbl`, `field` and `opts`. -->
+    <t t-name="wincraft_studio.WindowConfigurationCatalogCell">
+        <div class="wc-cfgt-cell">
+            <span class="wc-cfgt-label" t-esc="lbl"/>
+            <select class="wc-cfg-select" t-on-change="(ev) => this.onSelectChange(ev, field)">
+                <option value="">— Select —</option>
+                <t t-foreach="opts" t-as="o" t-key="o.id">
+                    <option t-att-value="o.id" t-att-selected="fieldId(field) === o.id" t-att-title="o.description or ''">
+                        <t t-esc="o.name"/>
+                    </option>
+                </t>
+            </select>
+        </div>
+    </t>
+
+    <!-- "Colour Company | Colour" cell pair for a colour-catalog pick.
+         Caller sets `pick` (entry of colourPicks), `clbl` (colour label) and `rk`. -->
+    <t t-name="wincraft_studio.WindowConfigurationColourCells">
+        <div class="wc-cfgt-cell">
+            <span class="wc-cfgt-label">Colour Company</span>
+            <select class="wc-cfg-select" t-on-change="(ev) => this.onColourCompanyChange(pick, ev.target.value)">
+                <option value="">— Company —</option>
+                <t t-foreach="vendorColourCompanies" t-as="v" t-key="rk + v">
+                    <option t-att-value="v" t-att-selected="colourCompany(pick) === v"><t t-esc="v"/></option>
+                </t>
+            </select>
+        </div>
+        <div class="wc-cfgt-cell">
+            <span class="wc-cfgt-label" t-esc="clbl"/>
+            <select class="wc-cfg-select" t-att-disabled="!colourCompany(pick)"
+                    t-on-change="(ev) => this.onColourPick(pick, ev.target.value)">
+                <option value="">— Colour —</option>
+                <t t-foreach="colourOptions(pick)" t-as="c" t-key="rk + c.id">
+                    <option t-att-value="c.id" t-att-selected="fieldId(pick.field) === c.id"><t t-esc="c.name"/></option>
+                </t>
+            </select>
+        </div>
+    </t>
+
+    <!-- Trim row: type dropdown | colour company | colour. Caller sets `trim`, `clbl`, `rk`. -->
+    <t t-name="wincraft_studio.WindowConfigurationTrimRow">
+        <div class="wc-cfgt-cell">
+            <span class="wc-cfgt-label" t-esc="trim.label"/>
+            <select class="wc-cfg-select" t-att-disabled="!trimOptions(trim).length"
+                    t-on-change="(ev) => this.onTrimChange(trim, ev.target.value)">
+                <option value=""><t t-esc="trimOptions(trim).length ? '— None —' : '— No options imported —'"/></option>
+                <t t-foreach="trimOptions(trim)" t-as="opt" t-key="opt.id">
+                    <option t-att-value="opt.id" t-att-selected="selectedTrimId(trim) === opt.id"><t t-esc="opt.name"/></option>
+                </t>
+            </select>
+        </div>
+        <t t-if="trim.colourIdx !== undefined">
+            <t t-set="pick" t-value="colourPicks[trim.colourIdx]"/>
+            <t t-call="wincraft_studio.WindowConfigurationColourCells"/>
+        </t>
+        <t t-else="">
+            <div class="wc-cfgt-cell">
+                <span class="wc-cfgt-label">Size</span>
+                <input type="text" class="wc-cfg-input" placeholder="Enter size manually"
+                       t-att-value="record.wood_extension_size || ''"
+                       t-on-blur="(ev) => this.onTextFieldBlur(ev, 'wood_extension_size')"/>
+            </div>
+            <div class="wc-cfgt-cell"/>
+        </t>
+    </t>
+
+    <!-- Frame In/Out row: chosen colour (read-only) | colour company | colour. Caller sets `pick`, `rk`. -->
+    <t t-name="wincraft_studio.WindowConfigurationFrameRow">
+        <div class="wc-cfgt-cell">
+            <span class="wc-cfgt-label" t-esc="'Frame ' + pick.label + ' Colour'"/>
+            <input type="text" class="wc-cfg-input" readonly="readonly"
+                   t-att-placeholder="'Select frame ' + pick.label.toLowerCase() + ' colour'"
+                   t-att-value="selectedColourName(pick)"/>
+        </div>
+        <t t-set="clbl" t-value="'Colour'"/>
+        <t t-call="wincraft_studio.WindowConfigurationColourCells"/>
+    </t>
+
+    <t t-name="wincraft_studio.WindowConfigurationDialog">
+        <Dialog title="dialogTitle" size="'xl'">
+            <div class="wc-wincfg wc-cfgt">
+
+                <div class="wc-wincfg-hint" t-if="isDraftMode">
+                    No window on canvas yet — these values will be applied as
+                    defaults to the next window you create via "New Window".
+                </div>
+
+                <!-- PROFILE AND VIEW -->
+                <h3 class="wc-cfgt-title">Profile and View</h3>
+                <div class="wc-cfgt-table wc-cfgt-table--view">
+                    <div class="wc-cfgt-cell">
+                        <span class="wc-cfgt-label">View from</span>
+                        <div class="wc-cfgt-checks">
+                            <t t-foreach="catalog('viewFrom')" t-as="vf" t-key="vf.id">
+                                <label class="wc-cfgt-check">
+                                    <input type="radio" name="wc-view-from"
+                                           t-att-checked="fieldId('view_from_id') === vf.id"
+                                           t-on-change="() => this.onViewFromChange(vf)"/>
+                                    <span t-esc="vf.name"/>
+                                </label>
+                            </t>
+                        </div>
+                    </div>
+                    <t t-set="lbl" t-value="'Window Size'"/><t t-set="field" t-value="'window_size_id'"/><t t-set="opts" t-value="catalog('windowSize')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                    <t t-set="lbl" t-value="'Profile Type'"/><t t-set="field" t-value="'profile_type_id'"/><t t-set="opts" t-value="props.profileTypes or []"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                    <t t-set="lbl" t-value="'Rubber colour'"/><t t-set="field" t-value="'rubber_colour_cfg_id'"/><t t-set="opts" t-value="catalog('rubberColour')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                </div>
+
+                <!-- MATERIAL AND HARDWARE -->
+                <h3 class="wc-cfgt-title">Material and Hardware</h3>
+                <div class="wc-cfgt-table wc-cfgt-table--five">
+                    <div class="wc-cfgt-cell">
+                        <span class="wc-cfgt-label">Casement Hardware</span>
+                        <select class="wc-cfg-select" t-on-change="(ev) => this.onCasementHardwareChange(ev.target.value)">
+                            <option value="">— Select hardware —</option>
+                            <t t-foreach="hardwareOptions" t-as="hw" t-key="hw.id">
+                                <option t-att-value="hw.id" t-att-selected="selectedCasementHardwareId === hw.id">
+                                    <t t-esc="hw.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <t t-set="lbl" t-value="'Handle and cover colour'"/><t t-set="field" t-value="'handle_cover_colour_cfg_id'"/><t t-set="opts" t-value="catalog('handleCoverColour')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                    <t t-set="lbl" t-value="'Spacer'"/><t t-set="field" t-value="'cfg_spacer_id'"/><t t-set="opts" t-value="catalog('spacer')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                    <t t-set="lbl" t-value="'Screen Bar Color'"/><t t-set="field" t-value="'screen_bar_colour_id'"/><t t-set="opts" t-value="catalog('screenBarColour')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                    <t t-set="lbl" t-value="'Screen Mesh Color'"/><t t-set="field" t-value="'screen_mesh_colour_id'"/><t t-set="opts" t-value="catalog('screenMeshColour')"/>
+                    <t t-call="wincraft_studio.WindowConfigurationCatalogCell"/>
+                </div>
+
+                <!-- GLASS -->
+                <h3 class="wc-cfgt-title">Glass</h3>
+                <div class="wc-cfgt-table wc-cfgt-table--trim">
+                    <t t-foreach="glassPanes" t-as="pane" t-key="pane.field">
+                        <div class="wc-cfgt-cell">
+                            <span class="wc-cfgt-label" t-esc="pane.label"/>
+                            <select class="wc-cfg-select" t-on-change="(ev) => this.onSelectChange(ev, pane.field)">
+                                <option value=""><t t-esc="pane.field === 'glass_middle_lite_id' ? '— Select glass or None —' : '— Select glass —'"/></option>
+                                <t t-foreach="glassOptionsFor(pane)" t-as="gl" t-key="gl.id">
+                                    <option t-att-value="gl.id" t-att-selected="fieldId(pane.field) === gl.id"><t t-esc="gl.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- TRIM AND FRAME -->
+                <h3 class="wc-cfgt-title">Trim and Frame</h3>
+                <div class="wc-cfgt-table wc-cfgt-table--trim">
+                    <t t-set="pick" t-value="colourPicks[0]"/><t t-set="rk" t-value="'in_'"/>
+                    <t t-call="wincraft_studio.WindowConfigurationFrameRow"/>
+                    <t t-set="pick" t-value="colourPicks[1]"/><t t-set="rk" t-value="'out_'"/>
+                    <t t-call="wincraft_studio.WindowConfigurationFrameRow"/>
+                    <t t-foreach="trimPicks" t-as="trim" t-key="trim.label">
+                        <t t-set="rk" t-value="trim.label + '_'"/>
+                        <t t-set="clbl" t-value="trim.colourLabel"/>
+                        <t t-call="wincraft_studio.WindowConfigurationTrimRow"/>
+                    </t>
+                </div>
+
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="() => props.close()">Save</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

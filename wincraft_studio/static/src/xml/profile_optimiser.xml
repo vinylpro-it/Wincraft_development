@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Profile Optimiser Bar Chart Widget
+         Renders horizontal stacked bars showing used vs waste per bar.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.ProfileOptimiserWidget">
+        <div class="wc-profile-chart">
+            <t t-if="state.isLoaded and state.bars.length">
+                <div class="mb-2 text-muted small">
+                    <strong t-esc="state.totalBars"/> bars |
+                    Waste: <strong><t t-esc="state.wastePct.toFixed(1)"/>%</strong> |
+                    Standard length: <strong><t t-esc="state.standardLength"/>mm</strong>
+                </div>
+                <t t-foreach="state.bars" t-as="bar" t-key="bar.id">
+                    <div class="wc-bar-row mb-1 d-flex align-items-center">
+                        <span class="wc-bar-label me-2 text-muted small"
+                              style="min-width:30px;">
+                            #<t t-esc="bar.sequence"/>
+                        </span>
+                        <div class="wc-bar-track flex-grow-1"
+                             style="height:18px;background:#eee;border-radius:3px;overflow:hidden;display:flex;">
+                            <div t-att-style="'width:' + getUsedWidth(bar) + ';background:' + getBarColour(bar) + ';height:100%;'"
+                                 t-att-title="'Used: ' + bar.used_mm + 'mm'"/>
+                            <div t-att-style="'width:' + getWasteWidth(bar) + ';background:#f5c6cb;height:100%;'"
+                                 t-att-title="'Waste: ' + bar.waste_mm + 'mm'"/>
+                        </div>
+                        <span class="ms-2 small" style="min-width:40px;">
+                            <t t-esc="bar.utilisation_pct.toFixed(0)"/>%
+                        </span>
+                    </div>
+                </t>
+            </t>
+            <t t-elif="state.isLoaded">
+                <div class="text-muted py-3 text-center">
+                    <i class="fa fa-bar-chart fa-2x mb-2 d-block"/>
+                    Run the optimiser to see bar diagrams.
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

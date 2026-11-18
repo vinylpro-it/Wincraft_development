@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Demo Data
+         Loaded when 'Demonstration Data' is enabled at install.
+         Provides sample clients, dealers, projects covering all window types,
+         and a quote-history snapshot.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Demo Customers ──────────────────────────────────────────────────── -->
+    <record id="partner_demo_greenfield" model="res.partner">
+        <field name="name">Greenfield Builders Pvt. Ltd.</field>
+        <field name="company_type">company</field>
+        <field name="street">Plot 42, Industrial Area Phase-II</field>
+        <field name="city">Pune</field>
+        <field name="phone">+91 20 2765 1234</field>
+        <field name="email">projects@greenfield-builders.example.com</field>
+    </record>
+    <record id="partner_demo_sharma" model="res.partner">
+        <field name="name">Rajesh Sharma</field>
+        <field name="company_type">person</field>
+        <field name="street">Flat 301, Sunrise Towers</field>
+        <field name="city">Mumbai</field>
+        <field name="phone">+91 98765 43210</field>
+        <field name="email">rajesh.sharma@example.com</field>
+    </record>
+    <record id="partner_demo_mehra" model="res.partner">
+        <field name="name">Priya Mehra Interiors</field>
+        <field name="company_type">company</field>
+        <field name="street">12-A, MG Road</field>
+        <field name="city">Bangalore</field>
+        <field name="phone">+91 80 2558 4321</field>
+        <field name="email">priya@mehra-interiors.example.com</field>
+    </record>
+
+    <!-- ── Demo Dealer ─────────────────────────────────────────────────────── -->
+    <record id="dealer_demo_citywindows" model="wincraft.dealer">
+        <field name="name">City Windows &amp; Doors</field>
+        <field name="partner_id" ref="partner_demo_mehra"/>
+        <field name="code">DLR-001</field>
+        <field name="commission_pct">8.0</field>
+        <field name="territory">South Bangalore</field>
+        <field name="credit_limit">500000</field>
+    </record>
+
+    <!-- ── Demo Project 1 — Commercial (Quoted) ────────────────────────────── -->
+    <record id="project_demo_greenfield" model="wincraft.project">
+        <field name="name">Greenfield Phase-II — Tower A</field>
+        <field name="partner_id" ref="partner_demo_greenfield"/>
+        <field name="state">designing</field>
+        <field name="installation_charge">25000</field>
+        <field name="discount_pct">5</field>
+        <field name="terms">1. 50% advance on order confirmation.
+2. Balance due before dispatch.
+3. Delivery within 21 working days from confirmed measurements.
+4. Warranty: 10 years on profiles, 5 years on hardware.</field>
+    </record>
+
+    <!-- Windows for Project 1 — casement, sliding, fixed -->
+    <record id="win_gf_casement_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_greenfield"/>
+        <field name="window_type">casement</field>
+        <field name="width_mm">1200</field>
+        <field name="height_mm">1000</field>
+        <field name="panels_horizontal">2</field>
+        <field name="panels_vertical">1</field>
+        <field name="frame_material_id" ref="mat_upvc_white"/>
+        <field name="glass_type_id" ref="glass_double_24mm"/>
+        <field name="canvas_x">50</field>
+        <field name="canvas_y">60</field>
+    </record>
+    <record id="win_gf_sliding_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_greenfield"/>
+        <field name="window_type">sliding</field>
+        <field name="width_mm">1800</field>
+        <field name="height_mm">1200</field>
+        <field name="panels_horizontal">2</field>
+        <field name="panels_vertical">1</field>
+        <field name="frame_material_id" ref="mat_upvc_white"/>
+        <field name="glass_type_id" ref="glass_double_24mm"/>
+        <field name="canvas_x">1400</field>
+        <field name="canvas_y">60</field>
+    </record>
+    <record id="win_gf_fixed_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_greenfield"/>
+        <field name="window_type">fixed</field>
+        <field name="width_mm">1500</field>
+        <field name="height_mm">1500</field>
+        <field name="frame_material_id" ref="mat_aluminium_natural"/>
+        <field name="glass_type_id" ref="glass_triple_lowe"/>
+        <field name="canvas_x">50</field>
+        <field name="canvas_y">1400</field>
+    </record>
+
+    <!-- ── Demo Project 2 — Residential (Draft) ───────────────────────────── -->
+    <record id="project_demo_sharma" model="wincraft.project">
+        <field name="name">Sharma Residence — Living Room Renovation</field>
+        <field name="partner_id" ref="partner_demo_sharma"/>
+        <field name="state">draft</field>
+        <field name="installation_charge">8000</field>
+        <field name="discount_pct">0</field>
+    </record>
+
+    <!-- Windows for Project 2 — bifold, awning, tilt_turn -->
+    <record id="win_sh_bifold_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_sharma"/>
+        <field name="window_type">bifold</field>
+        <field name="width_mm">3600</field>
+        <field name="height_mm">2100</field>
+        <field name="panels_horizontal">4</field>
+        <field name="panels_vertical">1</field>
+        <field name="frame_material_id" ref="mat_aluminium_black"/>
+        <field name="glass_type_id" ref="glass_double_toughened"/>
+        <field name="canvas_x">100</field>
+        <field name="canvas_y">100</field>
+    </record>
+    <record id="win_sh_awning_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_sharma"/>
+        <field name="window_type">awning</field>
+        <field name="width_mm">900</field>
+        <field name="height_mm">600</field>
+        <field name="frame_material_id" ref="mat_upvc_grey"/>
+        <field name="glass_type_id" ref="glass_single_6mm"/>
+        <field name="canvas_x">100</field>
+        <field name="canvas_y">2500</field>
+    </record>
+    <record id="win_sh_tilt_turn_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_sharma"/>
+        <field name="window_type">tilt_turn</field>
+        <field name="width_mm">1000</field>
+        <field name="height_mm">1200</field>
+        <field name="panels_horizontal">1</field>
+        <field name="panels_vertical">1</field>
+        <field name="frame_material_id" ref="mat_timber_oak"/>
+        <field name="glass_type_id" ref="glass_double_24mm"/>
+        <field name="canvas_x">1200</field>
+        <field name="canvas_y">2500</field>
+    </record>
+
+    <!-- ── Demo Project 3 — Via Dealer (Quoted with history) ───────────────── -->
+    <record id="project_demo_mehra" model="wincraft.project">
+        <field name="name">Mehra Showroom — Display Window Wall</field>
+        <field name="partner_id" ref="partner_demo_mehra"/>
+        <field name="dealer_id" ref="dealer_demo_citywindows"/>
+        <field name="state">quoted</field>
+        <field name="installation_charge">15000</field>
+        <field name="discount_pct">3</field>
+        <field name="quote_version">2</field>
+    </record>
+
+    <record id="win_me_bay_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_mehra"/>
+        <field name="window_type">bay</field>
+        <field name="width_mm">2400</field>
+        <field name="height_mm">1500</field>
+        <field name="panels_horizontal">3</field>
+        <field name="panels_vertical">1</field>
+        <field name="frame_material_id" ref="mat_aluminium_natural"/>
+        <field name="glass_type_id" ref="glass_double_24mm"/>
+        <field name="canvas_x">50</field>
+        <field name="canvas_y">80</field>
+    </record>
+    <record id="win_me_hopper_1" model="wincraft.window">
+        <field name="project_id" ref="project_demo_mehra"/>
+        <field name="window_type">hopper</field>
+        <field name="width_mm">800</field>
+        <field name="height_mm">500</field>
+        <field name="frame_material_id" ref="mat_upvc_white"/>
+        <field name="glass_type_id" ref="glass_single_4mm"/>
+        <field name="canvas_x">2600</field>
+        <field name="canvas_y">80</field>
+    </record>
+
+    <!-- Quote history snapshot for Project 3 (revision 1) -->
+    <record id="history_mehra_v1" model="wincraft.quote.history">
+        <field name="project_id" ref="project_demo_mehra"/>
+        <field name="version">1</field>
+        <field name="subtotal">185000</field>
+        <field name="total">211930</field>
+        <field name="window_data">[{"name": "Bay 2400×1500", "window_type": "bay", "width_mm": 2400, "height_mm": 1500, "unit_price": 156000}, {"name": "Hopper 800×500", "window_type": "hopper", "width_mm": 800, "height_mm": 500, "unit_price": 14000}]</field>
+        <field name="note">Initial quote before discount adjustment</field>
+    </record>
+
+</odoo>

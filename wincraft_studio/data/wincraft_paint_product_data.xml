@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Starter Paint Product Catalog
+         Real storable inventory products (litres) an admin can extend from
+         Inventory → Paint Products. wincraft.window.inside/outside_paint_product_id
+         default to "White" so every new window starts fully configured.
+         noupdate="1" — these become live inventory records (stock, price) that
+         must not be reset on every module upgrade.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <record id="product_paint_white" model="product.template">
+        <field name="name">White</field>
+        <field name="default_code">PAINT-WHITE</field>
+        <field name="type">consu</field>
+        <field name="is_storable">True</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="x_is_paint_product">True</field>
+        <field name="x_paint_colour_hex">#f0ede8</field>
+        <field name="x_paint_consumption_per_inch">1.0</field>
+        <field name="x_paint_layers">1</field>
+    </record>
+
+    <record id="product_paint_red" model="product.template">
+        <field name="name">Red</field>
+        <field name="default_code">PAINT-RED</field>
+        <field name="type">consu</field>
+        <field name="is_storable">True</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="x_is_paint_product">True</field>
+        <field name="x_paint_colour_hex">#a83232</field>
+        <field name="x_paint_consumption_per_inch">1.2</field>
+        <field name="x_paint_layers">2</field>
+    </record>
+
+    <record id="product_paint_green" model="product.template">
+        <field name="name">Green</field>
+        <field name="default_code">PAINT-GREEN</field>
+        <field name="type">consu</field>
+        <field name="is_storable">True</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="x_is_paint_product">True</field>
+        <field name="x_paint_colour_hex">#3a7d44</field>
+        <field name="x_paint_consumption_per_inch">1.2</field>
+        <field name="x_paint_layers">2</field>
+    </record>
+
+    <record id="product_paint_blue" model="product.template">
+        <field name="name">Blue</field>
+        <field name="default_code">PAINT-BLUE</field>
+        <field name="type">consu</field>
+        <field name="is_storable">True</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="x_is_paint_product">True</field>
+        <field name="x_paint_colour_hex">#3b5b92</field>
+        <field name="x_paint_consumption_per_inch">1.2</field>
+        <field name="x_paint_layers">2</field>
+    </record>
+
+    <record id="product_paint_brown" model="product.template">
+        <field name="name">Brown</field>
+        <field name="default_code">PAINT-BROWN</field>
+        <field name="type">consu</field>
+        <field name="is_storable">True</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="uom_id" ref="uom.product_uom_litre"/>
+        <field name="x_is_paint_product">True</field>
+        <field name="x_paint_colour_hex">#8b6c42</field>
+        <field name="x_paint_consumption_per_inch">1.2</field>
+        <field name="x_paint_layers">1</field>
+    </record>
+
+</odoo>

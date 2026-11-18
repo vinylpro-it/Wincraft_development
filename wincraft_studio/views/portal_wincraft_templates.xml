@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Portal Templates
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Template A: Project List ── /my/wincraft ── -->
+    <template id="portal_wincraft_projects_list" name="My Window Projects">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="0"/>
+            <div class="container mt-3 mb-5">
+                <h3 class="mb-4">My Window Projects</h3>
+
+                <t t-if="projects">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Reference</th>
+                                <th>Project Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="projects" t-as="proj">
+                                <tr>
+                                    <td><span style="font-family:monospace;color:#e8c97a;" t-esc="proj.ref"/></td>
+                                    <td t-esc="proj.name"/>
+                                    <td><span t-field="proj.create_date" t-options="{'widget': 'date'}"/></td>
+                                    <td>
+                                        <span t-if="proj.state == 'draft'" class="badge text-bg-secondary">Draft</span>
+                                        <span t-if="proj.state == 'designing'" class="badge text-bg-info">Designing</span>
+                                        <span t-if="proj.state == 'quoted'" class="badge text-bg-warning">Quoted</span>
+                                        <span t-if="proj.state == 'accepted'" class="badge text-bg-success">Accepted</span>
+                                        <span t-if="proj.state == 'fabricating'" class="badge text-bg-primary">Fabricating</span>
+                                        <span t-if="proj.state == 'delivered'" class="badge" style="background:#198754;color:#fff;">Delivered</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="proj.total_price"
+                                              t-options="{'widget': 'monetary', 'display_currency': proj.currency_id}"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/wincraft/#{proj.id}" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <t t-if="pager" t-call="portal.pager"/>
+                </t>
+
+                <div t-else="" class="text-center text-muted py-5">
+                    <i class="fa fa-window-maximize fa-3x mb-3 d-block"/>
+                    <p>You don't have any window projects yet.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ── Template B: Project Detail ── /my/wincraft/<id> ── -->
+    <template id="portal_wincraft_project" name="WinCraft Project Portal">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="0"/>
+            <div class="container mt-3 mb-5">
+
+                <!-- Accepted state banner -->
+                <div t-if="project.state == 'accepted'"
+                     class="alert alert-success text-center" role="alert">
+                    <i class="fa fa-check-circle me-1"/>
+                    <strong>Quote accepted.</strong> Our team will contact you shortly to begin fabrication.
+                </div>
+
+                <!-- Header card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <span style="font-family:monospace;color:#e8c97a;font-size:14px;"
+                                      t-esc="project.ref"/>
+                                <h2 class="mt-1 mb-2" t-esc="project.name"/>
+                                <span t-if="project.state == 'draft'" class="badge text-bg-secondary">Draft</span>
+                                <span t-if="project.state == 'designing'" class="badge text-bg-info">Designing</span>
+                                <span t-if="project.state == 'quoted'" class="badge text-bg-warning">Quoted</span>
+                                <span t-if="project.state == 'accepted'" class="badge text-bg-success">Accepted</span>
+                                <span t-if="project.state == 'fabricating'" class="badge text-bg-primary">Fabricating</span>
+                                <span t-if="project.state == 'delivered'" class="badge" style="background:#198754;color:#fff;">Delivered</span>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <div class="text-muted small">
+                                    <span t-field="project.create_date" t-options="{'widget': 'date'}"/>
+                                    <t t-if="project.due_date">
+                                        <br/>Valid until: <span t-field="project.due_date"/>
+                                    </t>
+                                </div>
+                                <div class="mt-2" t-if="project.partner_id">
+                                    <span t-field="project.partner_id" t-options="{'widget': 'contact', 'fields': ['name', 'address']}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows table -->
+                <h4 class="mb-3">Windows</h4>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Preview</th>
+                            <th>Description</th>
+                            <th>Dimensions</th>
+                            <th class="text-end">Unit Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="project.window_ids" t-as="win">
+                            <tr>
+                                <td><t t-esc="win_index + 1"/></td>
+                                <td style="width:170px;">
+                                    <t t-if="win.thumbnail_svg" t-out="win.thumbnail_svg"/>
+                                    <button class="btn btn-sm btn-outline-secondary mt-1 wc-3d-toggle"
+                                            t-att-data-win-id="win.id"
+                                            t-att-data-width="win.width_mm"
+                                            t-att-data-height="win.height_mm"
+                                            t-att-data-panels-h="win.panels_horizontal"
+                                            t-att-data-panels-v="win.panels_vertical"
+                                            t-att-data-type="win.window_type"
+                                            onclick="toggleWc3D(this)">
+                                        <i class="fa fa-cube me-1"/> 3D
+                                    </button>
+                                    <div t-attf-id="wc3d-#{win.id}" class="wc-3d-canvas" style="display:none;width:160px;height:120px;"/>
+                                </td>
+                                <td>
+                                    <strong t-field="win.window_type"/><br/>
+                                    <span class="text-muted small">
+                                        <t t-if="win.frame_material_id">
+                                            Frame: <t t-esc="win.frame_material_id.name"/>
+                                        </t>
+                                        <t t-if="win.glass_type_id">
+                                            <br/>Glass: <t t-esc="win.glass_type_id.name"/>
+                                        </t>
+                                        <t t-if="win.hardware_ids">
+                                            <br/>Hardware: <t t-esc="', '.join(win.hardware_ids.mapped('name'))"/>
+                                        </t>
+                                        <t t-if="win.addon_ids">
+                                            <br/>Add-ons: <t t-esc="', '.join(win.addon_ids.mapped('name'))"/>
+                                        </t>
+                                    </span>
+                                </td>
+                                <td><t t-esc="str(win.width_mm)"/> × <t t-esc="str(win.height_mm)"/> mm</td>
+                                <td class="text-end">
+                                    <span t-field="win.unit_price"
+                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- Totals section -->
+                <div class="row">
+                    <div class="col-md-6"/>
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Subtotal</td>
+                                <td class="text-end">
+                                    <span t-field="project.subtotal_price"
+                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr t-if="project.installation_charge > 0">
+                                <td>Installation</td>
+                                <td class="text-end">
+                                    <span t-field="project.installation_charge"
+                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr t-if="project.discount_pct > 0">
+                                <td>Discount (<t t-esc="project.discount_pct"/>%)</td>
+                                <td class="text-end text-danger">
+                                    -<span t-field="project.discount_amount"
+                                           t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tax (<t t-esc="project.gst_pct"/>%)</td>
+                                <td class="text-end">
+                                    <span t-field="project.tax_amount"
+                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr style="font-weight:700;border-top:2px solid #2c2c2a;">
+                                <td style="font-size:16px;">Grand Total</td>
+                                <td class="text-end" style="font-size:16px;color:#714b67;">
+                                    <span t-field="project.total_price"
+                                          t-options="{'widget': 'monetary', 'display_currency': project.currency_id}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div t-if="project.terms" class="mt-4 mb-4">
+                    <h5>Terms &amp; Conditions</h5>
+                    <div t-field="project.terms"/>
+                </div>
+
+                <!-- Action section (only when state is 'quoted') -->
+                <t t-if="project.state == 'quoted'">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <form t-attf-action="/my/wincraft/#{project.id}/accept" method="POST">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <button type="submit" class="btn btn-success btn-lg w-100">
+                                            <i class="fa fa-check me-1"/> Accept Quote
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <a t-attf-href="/report/pdf/wincraft_studio.report_wincraft_quote/#{project.id}"
+                                       class="btn btn-outline-secondary w-100 mb-3">
+                                        <i class="fa fa-file-pdf-o me-1"/> Download PDF
+                                    </a>
+                                </div>
+                            </div>
+                            <hr class="my-3"/>
+                            <h6>Request Revision</h6>
+                            <form t-attf-action="/my/wincraft/#{project.id}/revision" method="POST">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <textarea name="comment" class="form-control mb-2" rows="3"
+                                          placeholder="Describe the changes you'd like..."/>
+                                <button type="submit" class="btn btn-outline-warning">
+                                    <i class="fa fa-comment me-1"/> Submit Revision Request
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Track Progress link (visible when project is past quoted state) -->
+                <t t-if="project.state in ('accepted', 'fabricating', 'delivered')">
+                    <div class="card mt-4 border-primary">
+                        <div class="card-body text-center">
+                            <i class="fa fa-truck fa-2x text-primary mb-2 d-block" title="Track progress"/>
+                            <h5>Track Your Order</h5>
+                            <p class="text-muted">View fabrication progress, delivery status, and installation updates.</p>
+                            <a t-attf-href="/my/wincraft/#{project.id}/tracking"
+                               class="btn btn-primary">
+                                <i class="fa fa-map-marker me-1" title="Tracking"/> View Tracking
+                            </a>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Back to list link -->
+                <div class="mt-4">
+                    <a href="/my/wincraft" class="btn btn-link">
+                        <i class="fa fa-arrow-left me-1"/> Back to My Projects
+                    </a>
+                </div>
+
+                <!-- Three.js 3D Window Preview (lazy-loaded, CSP-safe) -->
+                <script>//<![CDATA[
+                (function(){
+                    var THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+                    var _loading = false, _loaded = false, _failed = false;
+
+                    function loadThree(cb) {
+                        if (_loaded) { cb(); return; }
+                        if (_failed) return;
+                        if (_loading) {
+                            var iv = setInterval(function(){
+                                if (_loaded) { clearInterval(iv); cb(); }
+                                if (_failed) clearInterval(iv);
+                            }, 100);
+                            return;
+                        }
+                        _loading = true;
+                        var s = document.createElement('script');
+                        s.src = THREE_URL;
+                        s.onload  = function(){ _loaded = true; _loading = false; cb(); };
+                        s.onerror = function(){
+                            _failed = true; _loading = false;
+                            document.querySelectorAll('.wc-3d-toggle')
+                                .forEach(function(b){ b.style.display = 'none'; });
+                        };
+                        document.head.appendChild(s);
+                    }
+
+                    function renderWindow(container, btn) {
+                        if (container.querySelector('canvas')) return;
+                        var w  = parseInt(btn.getAttribute('data-width'))  || 1200;
+                        var h  = parseInt(btn.getAttribute('data-height')) || 1000;
+                        var pH = parseInt(btn.getAttribute('data-panels-h')) || 1;
+                        var pV = parseInt(btn.getAttribute('data-panels-v')) || 1;
+
+                        var scene = new THREE.Scene();
+                        scene.background = new THREE.Color(0xf8f8f6);
+                        var camera = new THREE.PerspectiveCamera(45, 160/120, 0.1, 100);
+                        camera.position.set(0, 0, 3);
+                        var renderer = new THREE.WebGLRenderer({antialias: true});
+                        renderer.setSize(160, 120);
+                        container.appendChild(renderer.domElement);
+
+                        var aspect = w / h;
+                        var frameW = aspect > 1 ? 1.6 : 1.6 * aspect;
+                        var frameH = aspect > 1 ? 1.6 / aspect : 1.6;
+
+                        var frameMat = new THREE.MeshPhongMaterial({color: 0x555555});
+                        var frame = new THREE.Mesh(
+                            new THREE.BoxGeometry(frameW, frameH, 0.08), frameMat);
+                        scene.add(frame);
+
+                        var glassMat = new THREE.MeshPhongMaterial(
+                            {color: 0x88ccee, transparent: true, opacity: 0.4});
+                        var panelW = (frameW - 0.06) / pH;
+                        var panelH = (frameH - 0.06) / pV;
+                        for (var px = 0; px &lt; pH; px++) {
+                            for (var py = 0; py &lt; pV; py++) {
+                                var glass = new THREE.Mesh(
+                                    new THREE.BoxGeometry(panelW*0.9, panelH*0.9, 0.02), glassMat);
+                                glass.position.x = -frameW/2 + 0.03 + panelW*(px+0.5);
+                                glass.position.y = -frameH/2 + 0.03 + panelH*(py+0.5);
+                                glass.position.z = 0.04;
+                                scene.add(glass);
+                            }
+                        }
+
+                        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+                        var dl = new THREE.DirectionalLight(0xffffff, 0.8);
+                        dl.position.set(2, 3, 5);
+                        scene.add(dl);
+
+                        (function animate(){
+                            requestAnimationFrame(animate);
+                            frame.rotation.y = Math.sin(Date.now()*0.001)*0.3;
+                            scene.children.forEach(function(c){
+                                if(c!==frame) c.rotation.y = frame.rotation.y;
+                            });
+                            renderer.render(scene, camera);
+                        })();
+                    }
+
+                    window.toggleWc3D = function(btn) {
+                        var winId = btn.getAttribute('data-win-id');
+                        var container = document.getElementById('wc3d-' + winId);
+                        if (container.style.display !== 'none') {
+                            container.style.display = 'none';
+                            return;
+                        }
+                        container.style.display = 'block';
+                        loadThree(function(){ renderWindow(container, btn); });
+                    };
+                })();
+                //]]></script>
+            </div>
+        </t>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Sprint 5 — Project Tracking Portal Page
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <template id="portal_project_tracking" name="WinCraft Project Tracking">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="0"/>
+            <div class="container mt-3 mb-5">
+
+                <!-- Header -->
+                <div class="d-flex align-items-center mb-4">
+                    <a t-attf-href="/my/wincraft/#{project.id}" class="btn btn-link p-0 me-3">
+                        <i class="fa fa-arrow-left" title="Back"/>
+                    </a>
+                    <div>
+                        <span style="font-family:monospace;color:#e8c97a;font-size:14px;"
+                              t-esc="project.ref"/>
+                        <h3 class="mb-0" t-esc="project.name"/>
+                    </div>
+                    <div class="ms-auto">
+                        <span t-if="project.state == 'accepted'" class="badge text-bg-success fs-6">Accepted</span>
+                        <span t-if="project.state == 'fabricating'" class="badge text-bg-primary fs-6">Fabricating</span>
+                        <span t-if="project.state == 'delivered'" class="badge fs-6" style="background:#198754;color:#fff;">Delivered</span>
+                    </div>
+                </div>
+
+                <!-- ── Progress Overview ── -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fa fa-industry fa-2x text-primary mb-2 d-block" title="Fabrication"/>
+                                <h6>Fabrication</h6>
+                                <div class="display-6">
+                                    <t t-esc="fabricated_count"/> / <t t-esc="total_windows"/>
+                                </div>
+                                <div class="progress mt-2" style="height:8px;">
+                                    <div class="progress-bar bg-primary"
+                                         role="progressbar"
+                                         t-att-style="'width:%d%%' % (fabricated_count * 100 / total_windows if total_windows else 0)"/>
+                                </div>
+                                <small class="text-muted">windows fabricated</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fa fa-truck fa-2x text-info mb-2 d-block" title="Deliveries"/>
+                                <h6>Deliveries</h6>
+                                <div class="display-6">
+                                    <t t-esc="len(deliveries)"/>
+                                </div>
+                                <small class="text-muted">
+                                    <t t-if="deliveries">
+                                        <t t-set="delivered_count" t-value="len(deliveries.filtered(lambda d: d.state == 'delivered'))"/>
+                                        <t t-esc="delivered_count"/> completed
+                                    </t>
+                                    <t t-else="">no deliveries yet</t>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <i class="fa fa-wrench fa-2x text-success mb-2 d-block" title="Installations"/>
+                                <h6>Installation</h6>
+                                <div class="display-6">
+                                    <t t-esc="len(installations)"/>
+                                </div>
+                                <small class="text-muted">
+                                    <t t-if="installations">
+                                        <t t-set="completed_installs" t-value="len(installations.filtered(lambda i: i.state == 'completed'))"/>
+                                        <t t-esc="completed_installs"/> completed
+                                    </t>
+                                    <t t-else="">not scheduled</t>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Fabrication Detail ── -->
+                <h4 class="mb-3">
+                    <i class="fa fa-industry me-2" title="Fabrication"/>Fabrication Progress
+                </h4>
+                <table class="table table-bordered mb-4">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Window</th>
+                            <th>Type</th>
+                            <th>Dimensions</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="windows" t-as="win">
+                            <tr>
+                                <td><t t-esc="win_index + 1"/></td>
+                                <td t-esc="win.name"/>
+                                <td><t t-esc="win.window_type"/></td>
+                                <td><t t-esc="str(win.width_mm)"/> × <t t-esc="str(win.height_mm)"/> mm</td>
+                                <td class="text-center">
+                                    <span t-if="win.fabricated" class="badge text-bg-success">
+                                        <i class="fa fa-check me-1" title="Fabricated"/>Fabricated
+                                    </span>
+                                    <span t-else="" class="badge text-bg-secondary">
+                                        <i class="fa fa-clock-o me-1" title="Pending"/>Pending
+                                    </span>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- ── Delivery Schedule ── -->
+                <h4 class="mb-3">
+                    <i class="fa fa-truck me-2" title="Delivery"/>Delivery Schedule
+                </h4>
+                <t t-if="deliveries">
+                    <t t-foreach="deliveries" t-as="dlv">
+                        <div class="card mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <strong t-esc="dlv.name"/>
+                                <span t-if="dlv.state == 'draft'" class="badge text-bg-secondary">Draft</span>
+                                <span t-if="dlv.state == 'scheduled'" class="badge text-bg-info">Scheduled</span>
+                                <span t-if="dlv.state == 'loading'" class="badge text-bg-warning">Loading</span>
+                                <span t-if="dlv.state == 'in_transit'" class="badge text-bg-primary">In Transit</span>
+                                <span t-if="dlv.state == 'delivered'" class="badge text-bg-success">Delivered</span>
+                                <span t-if="dlv.state == 'cancelled'" class="badge text-bg-danger">Cancelled</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <small class="text-muted">Scheduled Date</small><br/>
+                                        <span t-field="dlv.scheduled_date"/>
+                                    </div>
+                                    <div class="col-md-4" t-if="dlv.vehicle_ref">
+                                        <small class="text-muted">Vehicle</small><br/>
+                                        <span t-esc="dlv.vehicle_ref"/>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted">Windows</small><br/>
+                                        <t t-set="proj_manifests" t-value="manifests.filtered(lambda m: m.delivery_id.id == dlv.id)"/>
+                                        <t t-set="loaded_cnt" t-value="len(proj_manifests.filtered(lambda m: m.loaded))"/>
+                                        <t t-esc="loaded_cnt"/> / <t t-esc="len(proj_manifests)"/> loaded
+                                    </div>
+                                </div>
+                                <!-- Loading manifest for this project -->
+                                <t t-if="proj_manifests">
+                                    <table class="table table-sm mt-3 mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Barcode</th>
+                                                <th>Window</th>
+                                                <th class="text-center">Loaded</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="proj_manifests" t-as="mf">
+                                                <tr>
+                                                    <td><code t-esc="mf.barcode"/></td>
+                                                    <td t-esc="mf.window_id.name"/>
+                                                    <td class="text-center">
+                                                        <i t-if="mf.loaded" class="fa fa-check-circle text-success" title="Loaded"/>
+                                                        <i t-else="" class="fa fa-circle-o text-muted" title="Not loaded"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <div t-else="" class="alert alert-light text-center mb-4">
+                    <i class="fa fa-info-circle me-1" title="Info"/>
+                    No deliveries scheduled yet. We'll update this page once your windows are ready to ship.
+                </div>
+
+                <!-- ── Installation Status ── -->
+                <h4 class="mb-3">
+                    <i class="fa fa-wrench me-2" title="Installation"/>Installation Status
+                </h4>
+                <t t-if="installations">
+                    <t t-foreach="installations" t-as="inst">
+                        <div class="card mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <strong t-esc="inst.name"/>
+                                <span t-if="inst.state == 'scheduled'" class="badge text-bg-info">Scheduled</span>
+                                <span t-if="inst.state == 'in_progress'" class="badge text-bg-warning">In Progress</span>
+                                <span t-if="inst.state == 'completed'" class="badge text-bg-success">Completed</span>
+                                <span t-if="inst.state == 'issue'" class="badge text-bg-danger">Issue</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <small class="text-muted">Scheduled Date</small><br/>
+                                        <span t-field="inst.scheduled_date"/>
+                                    </div>
+                                    <div class="col-md-4" t-if="inst.installer_id">
+                                        <small class="text-muted">Installer</small><br/>
+                                        <span t-esc="inst.installer_id.name"/>
+                                    </div>
+                                    <div class="col-md-4" t-if="inst.completed_at">
+                                        <small class="text-muted">Completed</small><br/>
+                                        <span t-field="inst.completed_at" t-options="{'widget': 'datetime'}"/>
+                                    </div>
+                                </div>
+                                <!-- Window checks -->
+                                <t t-if="inst.check_ids">
+                                    <table class="table table-sm mt-3 mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Window</th>
+                                                <th class="text-center">Result</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="inst.check_ids" t-as="chk">
+                                                <tr>
+                                                    <td t-esc="chk.window_id.name"/>
+                                                    <td class="text-center">
+                                                        <span t-if="chk.result == 'pass'" class="badge text-bg-success">Pass</span>
+                                                        <span t-if="chk.result == 'fail'" class="badge text-bg-danger">Fail</span>
+                                                        <span t-if="chk.result == 'pending'" class="badge text-bg-secondary">Pending</span>
+                                                    </td>
+                                                    <td class="text-muted small" t-esc="chk.notes"/>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <!-- Customer sign-off -->
+                                <div t-if="inst.customer_sign" class="mt-3 alert alert-success mb-0">
+                                    <i class="fa fa-pencil me-1" title="Signed"/>
+                                    Signed off by: <strong t-esc="inst.customer_sign"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <div t-else="" class="alert alert-light text-center mb-4">
+                    <i class="fa fa-info-circle me-1" title="Info"/>
+                    Installation has not been scheduled yet.
+                </div>
+
+                <!-- Back link -->
+                <div class="mt-4">
+                    <a t-attf-href="/my/wincraft/#{project.id}" class="btn btn-link">
+                        <i class="fa fa-arrow-left me-1" title="Back"/> Back to Project
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

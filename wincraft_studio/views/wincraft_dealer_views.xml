@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Dealer Network — Form View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_dealer_form" model="ir.ui.view">
+        <field name="name">wincraft.dealer.form</field>
+        <field name="model">wincraft.dealer</field>
+        <field name="arch" type="xml">
+            <form string="Dealer">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_projects" type="object"
+                                class="oe_stat_button" icon="fa-folder-open">
+                            <field name="project_count" widget="statinfo" string="Projects"/>
+                        </button>
+                        <button name="action_view_commissions" type="object"
+                                class="oe_stat_button" icon="fa-money">
+                            <field name="commission_count" widget="statinfo" string="Commissions"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Dealer Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="code"/>
+                            <field name="territory"/>
+                        </group>
+                        <group>
+                            <field name="commission_pct"/>
+                            <field name="credit_limit"/>
+                            <field name="outstanding_amount" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Internal notes..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_wincraft_dealer_list" model="ir.ui.view">
+        <field name="name">wincraft.dealer.list</field>
+        <field name="model">wincraft.dealer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="territory"/>
+                <field name="commission_pct"/>
+                <field name="project_count"/>
+                <field name="commission_count"/>
+                <field name="total_commission"/>
+                <field name="outstanding_amount"/>
+                <field name="currency_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_wincraft_dealer" model="ir.actions.act_window">
+        <field name="name">Dealer Network</field>
+        <field name="res_model">wincraft.dealer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wincraft_casement_hardware_view_form" model="ir.ui.view">
+            <field name="name">wincraft.casement.hardware.form</field>
+            <field name="model">wincraft.casement.hardware</field>
+            <field name="arch" type="xml">
+                <form string="Casement Hardware">
+                    <sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="price"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_casement_hardware_view_list" model="ir.ui.view">
+            <field name="name">wincraft.casement.hardware.list</field>
+            <field name="model">wincraft.casement.hardware</field>
+            <field name="arch" type="xml">
+                <list string="Casement Hardware" default_order="sequence, code, name" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="price"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_casement_hardware_action" model="ir.actions.act_window">
+            <field name="name">Casement Hardware</field>
+            <field name="res_model">wincraft.casement.hardware</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No casement hardware yet.
+                </p>
+                <p>
+                    Add ID, Description and Price - every item listed here
+                    appears in the "Casement hardware" field of the canvas
+                    Window Configuration popup.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

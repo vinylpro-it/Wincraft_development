@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Go-Live — Views
+             Sprint 9: Checklist + Health Check Wizard
+             ============================================================ -->
+
+        <!-- ── Go-Live Checklist — List ── -->
+        <record id="view_wincraft_golive_checklist_list" model="ir.ui.view">
+            <field name="name">wincraft.golive.checklist.list</field>
+            <field name="model">wincraft.golive.checklist</field>
+            <field name="arch" type="xml">
+                <list decoration-success="state == 'done'"
+                      decoration-muted="state == 'na'"
+                      decoration-warning="state == 'in_progress'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="category" widget="badge"/>
+                    <field name="assignee_id" widget="many2one_avatar_user"/>
+                    <field name="due_date"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state == 'todo'"
+                           decoration-warning="state == 'in_progress'"
+                           decoration-success="state == 'done'"
+                           decoration-muted="state == 'na'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Go-Live Checklist — Form ── -->
+        <record id="view_wincraft_golive_checklist_form" model="ir.ui.view">
+            <field name="name">wincraft.golive.checklist.form</field>
+            <field name="model">wincraft.golive.checklist</field>
+            <field name="arch" type="xml">
+                <form string="Checklist Item">
+                    <header>
+                        <button name="action_mark_done" type="object"
+                                string="Mark Done" class="btn-primary"
+                                invisible="state in ('done', 'na')"/>
+                        <button name="action_mark_na" type="object"
+                                string="N/A" class="btn-secondary"
+                                invisible="state in ('done', 'na')"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="todo,in_progress,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="category"/>
+                                <field name="assignee_id"/>
+                                <field name="due_date"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description" nolabel="1" colspan="2"/>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes" nolabel="1" colspan="2"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Go-Live Checklist — Search ── -->
+        <record id="view_wincraft_golive_checklist_search" model="ir.ui.view">
+            <field name="name">wincraft.golive.checklist.search</field>
+            <field name="model">wincraft.golive.checklist</field>
+            <field name="arch" type="xml">
+                <search string="Go-Live Checklist">
+                    <field name="name"/>
+                    <field name="assignee_id"/>
+                    <filter name="todo" string="To Do" domain="[('state', '=', 'todo')]"/>
+                    <filter name="in_progress" string="In Progress"
+                            domain="[('state', '=', 'in_progress')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <group>
+                        <filter name="group_category" string="Category"
+                                context="{'group_by': 'category'}"/>
+                        <filter name="group_status" string="Status"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_assignee" string="Assignee"
+                                context="{'group_by': 'assignee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action: Go-Live Checklist ── -->
+        <record id="action_wincraft_golive_checklist" model="ir.actions.act_window">
+            <field name="name">Go-Live Checklist</field>
+            <field name="res_model">wincraft.golive.checklist</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create go-live checklist items!
+                </p>
+                <p>Track configuration, data quality, integration, security, and training tasks.</p>
+            </field>
+        </record>
+
+        <!-- ── Health Check Wizard — Form ── -->
+        <record id="view_wincraft_health_check_wizard_form" model="ir.ui.view">
+            <field name="name">wincraft.health.check.wizard.form</field>
+            <field name="model">wincraft.health.check.wizard</field>
+            <field name="arch" type="xml">
+                <form string="System Health Check">
+                    <group>
+                        <group>
+                            <field name="check_date"/>
+                            <field name="total_checks"/>
+                            <field name="passed_checks"/>
+                            <field name="failed_checks"/>
+                        </group>
+                    </group>
+                    <group string="Results">
+                        <field name="result_html" nolabel="1" colspan="2"/>
+                    </group>
+                    <footer>
+                        <button name="action_run_checks" type="object"
+                                string="Run Health Check" class="btn-primary"/>
+                        <button special="cancel" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Action: Health Check Wizard ── -->
+        <record id="action_wincraft_health_check_wizard" model="ir.actions.act_window">
+            <field name="name">System Health Check</field>
+            <field name="res_model">wincraft.health.check.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

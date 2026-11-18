@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Canadian Tax Records
+         GST, HST, and PST rates for Canadian provinces.
+
+         Fiscal positions auto-map a customer's province to the correct tax
+         combination so sale order lines pick up the right rate.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Tax Group ─────────────────────────────────────────────────────── -->
+    <record id="tax_group_gst" model="account.tax.group">
+        <field name="name">GST</field>
+        <field name="sequence">10</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_group_hst" model="account.tax.group">
+        <field name="name">HST</field>
+        <field name="sequence">11</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_group_pst" model="account.tax.group">
+        <field name="name">PST</field>
+        <field name="sequence">12</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <!-- ── GST 5% (Federal — applies in AB, BC, MB, NT, NU, QC, SK, YT) ─ -->
+    <record id="tax_gst_5" model="account.tax">
+        <field name="name">GST 5%</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">5</field>
+        <field name="tax_group_id" ref="tax_group_gst"/>
+        <field name="description">GST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <!-- ── HST (combined federal + provincial) ───────────────────────────── -->
+    <record id="tax_hst_13" model="account.tax">
+        <field name="name">HST 13% (ON)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">13</field>
+        <field name="tax_group_id" ref="tax_group_hst"/>
+        <field name="description">HST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_hst_15_ns" model="account.tax">
+        <field name="name">HST 15% (NS)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">15</field>
+        <field name="tax_group_id" ref="tax_group_hst"/>
+        <field name="description">HST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_hst_15_nb" model="account.tax">
+        <field name="name">HST 15% (NB)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">15</field>
+        <field name="tax_group_id" ref="tax_group_hst"/>
+        <field name="description">HST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_hst_15_nl" model="account.tax">
+        <field name="name">HST 15% (NL)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">15</field>
+        <field name="tax_group_id" ref="tax_group_hst"/>
+        <field name="description">HST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_hst_15_pe" model="account.tax">
+        <field name="name">HST 15% (PE)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">15</field>
+        <field name="tax_group_id" ref="tax_group_hst"/>
+        <field name="description">HST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <!-- ── Provincial PST (separate from GST) ────────────────────────────── -->
+    <record id="tax_pst_bc_7" model="account.tax">
+        <field name="name">PST 7% (BC)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">7</field>
+        <field name="tax_group_id" ref="tax_group_pst"/>
+        <field name="description">PST-BC</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_pst_sk_6" model="account.tax">
+        <field name="name">PST 6% (SK)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">6</field>
+        <field name="tax_group_id" ref="tax_group_pst"/>
+        <field name="description">PST-SK</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_pst_mb_7" model="account.tax">
+        <field name="name">PST 7% (MB)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">7</field>
+        <field name="tax_group_id" ref="tax_group_pst"/>
+        <field name="description">PST-MB</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <record id="tax_qst_9975" model="account.tax">
+        <field name="name">QST 9.975% (QC)</field>
+        <field name="type_tax_use">sale</field>
+        <field name="amount_type">percent</field>
+        <field name="amount">9.975</field>
+        <field name="tax_group_id" ref="tax_group_pst"/>
+        <field name="description">QST</field>
+        <field name="country_id" ref="base.ca"/>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Fiscal Positions — Odoo 19 style
+         In v19: account.fiscal.position.tax is removed.
+         Tax mapping uses tax_ids on fiscal position and original_tax_ids on
+         replacement taxes (dest tax → replaces src taxes).
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Set original_tax_ids on HST taxes (they replace GST) ────────── -->
+    <record id="tax_hst_13" model="account.tax">
+        <field name="original_tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+    <record id="tax_hst_15_ns" model="account.tax">
+        <field name="original_tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+    <record id="tax_hst_15_nb" model="account.tax">
+        <field name="original_tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+    <record id="tax_hst_15_nl" model="account.tax">
+        <field name="original_tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+    <record id="tax_hst_15_pe" model="account.tax">
+        <field name="original_tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+
+    <!-- ── Fiscal Positions ──────────────────────────────────────────────── -->
+
+    <!-- Alberta (GST only) -->
+    <record id="fiscal_position_ab" model="account.fiscal.position">
+        <field name="name">Alberta (GST 5%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_ab')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_gst_5')])]"/>
+    </record>
+
+    <!-- Ontario (HST 13%) -->
+    <record id="fiscal_position_on" model="account.fiscal.position">
+        <field name="name">Ontario (HST 13%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_on')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_hst_13')])]"/>
+    </record>
+
+    <!-- British Columbia (GST 5% + PST 7%) -->
+    <record id="fiscal_position_bc" model="account.fiscal.position">
+        <field name="name">British Columbia (GST 5% + PST 7%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_bc')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_gst_5'), ref('tax_pst_bc_7')])]"/>
+    </record>
+
+    <!-- Saskatchewan (GST 5% + PST 6%) -->
+    <record id="fiscal_position_sk" model="account.fiscal.position">
+        <field name="name">Saskatchewan (GST 5% + PST 6%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_sk')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_gst_5'), ref('tax_pst_sk_6')])]"/>
+    </record>
+
+    <!-- Manitoba (GST 5% + PST 7%) -->
+    <record id="fiscal_position_mb" model="account.fiscal.position">
+        <field name="name">Manitoba (GST 5% + PST 7%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_mb')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_gst_5'), ref('tax_pst_mb_7')])]"/>
+    </record>
+
+    <!-- Quebec (GST 5% + QST 9.975%) -->
+    <record id="fiscal_position_qc" model="account.fiscal.position">
+        <field name="name">Quebec (GST 5% + QST 9.975%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_qc')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_gst_5'), ref('tax_qst_9975')])]"/>
+    </record>
+
+    <!-- Nova Scotia (HST 15%) -->
+    <record id="fiscal_position_ns" model="account.fiscal.position">
+        <field name="name">Nova Scotia (HST 15%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_ns')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_hst_15_ns')])]"/>
+    </record>
+
+    <!-- New Brunswick (HST 15%) -->
+    <record id="fiscal_position_nb" model="account.fiscal.position">
+        <field name="name">New Brunswick (HST 15%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_nb')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_hst_15_nb')])]"/>
+    </record>
+
+    <!-- Newfoundland and Labrador (HST 15%) -->
+    <record id="fiscal_position_nl" model="account.fiscal.position">
+        <field name="name">Newfoundland and Labrador (HST 15%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_nl')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_hst_15_nl')])]"/>
+    </record>
+
+    <!-- Prince Edward Island (HST 15%) -->
+    <record id="fiscal_position_pe" model="account.fiscal.position">
+        <field name="name">Prince Edward Island (HST 15%)</field>
+        <field name="auto_apply" eval="True"/>
+        <field name="country_id" ref="base.ca"/>
+        <field name="state_ids" eval="[(6, 0, [ref('base.state_ca_pe')])]"/>
+        <field name="tax_ids" eval="[(6, 0, [ref('tax_hst_15_pe')])]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Report action: Profile Cutlist PDF — selectable from the Profile
+         Cutlists list view's Print menu (binding_model_id below). -->
+    <record id="action_wincraft_profile_cutlist_report" model="ir.actions.report">
+        <field name="name">Profile Cutlist</field>
+        <field name="model">wincraft.cutlist.profile.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wincraft_studio.report_wincraft_profile_cutlist</field>
+        <field name="report_file">wincraft_studio.report_wincraft_profile_cutlist</field>
+        <field name="print_report_name">'Profile_Cutlist'</field>
+        <field name="binding_model_id" ref="model_wincraft_cutlist_profile_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Profile Cutlist — QWeb PDF Report Template
+         Grouped by Project, then listing each Unit's profile cut pieces.
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <template id="report_wincraft_profile_cutlist">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Profile Cutlist</h2>
+                    <t t-foreach="docs.mapped('project_id')" t-as="project">
+                        <h4>
+                            <span t-field="project.ref"/> — <span t-field="project.name"/>
+                        </h4>
+                        <table class="table table-sm table-bordered mt-2">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Unit</th>
+                                    <th>Profile Code</th>
+                                    <th>Profile Name</th>
+                                    <th>Part Type</th>
+                                    <th>Length (mm)</th>
+                                    <th>Qty</th>
+                                    <th>Angle Left</th>
+                                    <th>Angle Right</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs.filtered(lambda l: l.project_id == project)" t-as="line">
+                                    <tr>
+                                        <td><span t-field="line.window_id.name"/></td>
+                                        <td><t t-esc="line.profile_code"/></td>
+                                        <td><t t-esc="line.profile_name"/></td>
+                                        <td><span t-field="line.part_type"/></td>
+                                        <td><t t-esc="line.length_mm"/></td>
+                                        <td><t t-esc="line.quantity"/></td>
+                                        <td><t t-esc="line.angle_left"/>&#176;</td>
+                                        <td><t t-esc="line.angle_right"/>&#176;</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

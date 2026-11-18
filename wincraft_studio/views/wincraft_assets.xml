@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Load Google Fonts via <link> tag instead of SCSS @import.
+         The @import url() breaks the asset bundler because semicolons
+         in the Google Fonts CSS2 API URL are misinterpreted as CSS
+         statement delimiters, corrupting the entire CSS bundle. -->
+    <template id="google_fonts_link" inherit_id="web.layout" name="WinCraft Google Fonts">
+        <xpath expr="//head/link[1]" position="before">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+            <link rel="stylesheet"
+                  href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Sora:wght@300;400;500;600;700&amp;display=swap"/>
+        </xpath>
+    </template>
+</odoo>

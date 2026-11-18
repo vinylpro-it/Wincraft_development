@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             WinCraft Studio — Project Views
+             ============================================================ -->
+
+        <!-- ── Form View ── -->
+        <record id="wincraft_project_view_form" model="ir.ui.view">
+            <field name="name">wincraft.project.form</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <form string="WinCraft Project">
+                    <header>
+                        <button name="action_set_state_designing"
+                                string="Start Designing"
+                                type="object"
+                                class="btn-primary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_set_state_quoted"
+                                string="Mark as Quoted"
+                                type="object"
+                                invisible="state not in ('designing',)"/>
+                        <button name="action_set_state_accepted"
+                                string="Mark Accepted"
+                                type="object"
+                                invisible="state != 'quoted'"/>
+                        <button name="action_set_state_fabricating"
+                                string="Start Fabrication"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state != 'accepted'"/>
+                        <button name="action_set_state_delivered"
+                                string="Mark Delivered"
+                                type="object"
+                                invisible="state != 'fabricating'"/>
+                        <button name="action_create_sale_order"
+                                string="Create Sale Order"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="sale_order_id or not window_ids or state not in ('designing','quoted')"/>
+                        <button name="action_print_quote"
+                                string="Print Quote"
+                                type="object"
+                                invisible="state == 'draft'"/>
+                        <button name="action_print_cutlist"
+                                string="Print Cut List"
+                                type="object"
+                                invisible="state not in ('accepted','fabricating','delivered')"/>
+                        <button name="action_view_cutlist"
+                                string="View Cut List"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state not in ('accepted','fabricating','delivered')"/>
+                        <button name="action_create_revision"
+                                string="Create Revision"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state not in ('quoted','accepted')"/>
+                        <button name="action_share_whatsapp"
+                                string="Share on WhatsApp"
+                                type="object"
+                                class="btn-secondary"
+                                icon="fa-whatsapp"
+                                invisible="state == 'draft'"/>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="draft,designing,quoted,accepted,fabricating,delivered"
+                               readonly="1"/>
+                    </header>
+
+                    <sheet>
+                        <!-- Smart buttons row -->
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_designer"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-pencil-square-o"
+                                    groups="wincraft_studio.group_wincraft_sales">
+                                <span class="o_stat_text">Open Designer</span>
+                            </button>
+                            <button type="action"
+                                    name="%(wincraft_studio.wincraft_window_action_all)d"
+                                    class="oe_stat_button"
+                                    icon="fa-window-maximize">
+                                <field name="total_windows" widget="statinfo" string="Windows"/>
+                            </button>
+                            <button name="action_view_sale_order"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-shopping-cart"
+                                    invisible="not sale_order_id">
+                                <span class="o_stat_text">Sale Order</span>
+                            </button>
+                            <button name="action_open_wincraft_project"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-usd">
+                                <field name="total_price" widget="statinfo" string="Total"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="name" string="Project Name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Sharma Residence — Floor 3"/>
+                            </h1>
+                            <div>
+                                <label for="ref" string="Ref: "/>
+                                <field name="ref" readonly="1"/>
+                            </div>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="partner_id" widget="many2one"/>
+                                <field name="user_id"/>
+                                <field name="fabricator_id"
+                                       groups="wincraft_studio.group_wincraft_admin"/>
+                                <field name="dealer_id"/>
+                                <field name="branch_id"/>
+                                <field name="due_date"/>
+                            </group>
+                            <group>
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="lead_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Pricing">
+                            <group>
+                                <field name="installation_charge"/>
+                                <field name="discount_pct"/>
+                                <field name="quote_version" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="subtotal_price" readonly="1"/>
+                                <field name="tax_amount" readonly="1" string="Tax"/>
+                                <field name="total_price" readonly="1" class="o_field_monetary fw-bold"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Windows" name="windows">
+                                <field name="window_ids"
+                                       widget="one2many_list"
+                                       context="{'default_project_id': id}">
+                                    <list editable="bottom" decoration-success="fabricated == True">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="window_type"/>
+                                        <field name="width_mm" string="W (mm)"/>
+                                        <field name="height_mm" string="H (mm)"/>
+                                        <field name="panels_horizontal" string="Panels H" optional="show"/>
+                                        <field name="panels_vertical" string="Panels V" optional="show"/>
+                                        <field name="panels" optional="hide"/>
+                                        <field name="frame_material_id"/>
+                                        <field name="glass_type_id"/>
+                                        <field name="unit_price"/>
+                                        <field name="fabricated"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Canvas Snapshots" name="canvas">
+                                <field name="canvas_layout_ids" readonly="1">
+                                    <list>
+                                        <field name="version"/>
+                                        <field name="created_at"/>
+                                        <field name="created_by"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Terms &amp; Notes" name="terms">
+                                <group>
+                                    <field name="terms" widget="html" nolabel="1"/>
+                                </group>
+                                <separator string="Internal Notes"/>
+                                <group>
+                                    <field name="note" widget="html" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Quote History" name="quote_history">
+                                <field name="quote_history_ids">
+                                    <list>
+                                        <field name="version"/>
+                                        <field name="snapshot_date"/>
+                                        <field name="subtotal"/>
+                                        <field name="total"/>
+                                        <field name="created_by"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="QR Code" name="qr_code">
+                                <field name="qr_available" invisible="1"/>
+                                <div class="alert alert-warning" role="alert"
+                                     invisible="qr_available">
+                                    <i class="fa fa-exclamation-triangle me-1"/>
+                                    QR codes are disabled — install the
+                                    <code>qrcode</code> and <code>Pillow</code> Python packages:
+                                    <code>pip install qrcode[pil]</code>
+                                </div>
+                                <group>
+                                    <field name="qr_code_image" widget="image"
+                                           class="oe_avatar" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Tree / List View ── -->
+        <record id="wincraft_project_view_list" model="ir.ui.view">
+            <field name="name">wincraft.project.list</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <list string="WinCraft Projects"
+                      decoration-muted="state == 'delivered'"
+                      decoration-info="state in ('draft','designing')"
+                      decoration-warning="state == 'quoted'"
+                      decoration-success="state in ('accepted','fabricating')">
+                    <field name="ref" optional="show"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="fabricator_id" optional="hide"/>
+                    <field name="branch_id" optional="show"/>
+                    <field name="due_date"/>
+                    <field name="total_windows" string="Windows"/>
+                    <field name="total_price" string="Total"/>
+                    <field name="state" widget="badge"
+                           decoration-info="state in ('draft','designing')"
+                           decoration-warning="state == 'quoted'"
+                           decoration-success="state in ('accepted','fabricating')"
+                           decoration-muted="state == 'delivered'"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Kanban View ── -->
+        <record id="wincraft_project_view_kanban" model="ir.ui.view">
+            <field name="name">wincraft.project.kanban</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state"
+                        group_create="false"
+                        quick_create="false"
+                        class="o_wincraft_kanban">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="partner_id"/>
+                    <field name="state"/>
+                    <field name="total_windows"/>
+                    <field name="total_price"/>
+                    <field name="due_date"/>
+                    <field name="user_id"/>
+                    <field name="currency_id"/>
+                    <progressbar field="state"
+                                 colors='{"draft": "muted", "designing": "info", "quoted": "warning", "accepted": "success", "fabricating": "primary", "delivered": "success"}'/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="d-flex align-items-baseline mb-2">
+                                <field name="name" class="fw-bolder fs-5 me-2"/>
+                                <field name="total_price" widget="monetary"
+                                       class="fw-bolder ms-auto flex-shrink-0"/>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 text-muted mb-1">
+                                <field name="ref"/>
+                                <span>—</span>
+                                <field name="partner_id"/>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 text-muted mb-1">
+                                <span>
+                                    <i class="fa fa-window-maximize me-1" title="Windows"/>
+                                    <field name="total_windows"/> windows
+                                </span>
+                            </div>
+                            <div class="text-muted mb-1" t-if="record.due_date.value">
+                                <i class="fa fa-calendar me-1"/>
+                                Due: <field name="due_date"/>
+                            </div>
+                            <footer class="align-items-end">
+                                <field name="user_id" widget="many2one_avatar_user"/>
+                                <field name="state" widget="badge"/>
+                            </footer>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- ── Search View ── -->
+        <record id="wincraft_project_view_search" model="ir.ui.view">
+            <field name="name">wincraft.project.search</field>
+            <field name="model">wincraft.project</field>
+            <field name="arch" type="xml">
+                <search string="Search WinCraft Projects">
+                    <field name="name" string="Project Name"/>
+                    <field name="ref" string="Reference"/>
+                    <field name="partner_id" string="Client"/>
+                    <field name="user_id" string="Salesperson"/>
+                    <field name="fabricator_id" string="Fabricator"/>
+                    <field name="branch_id" string="Branch"/>
+                    <separator/>
+                    <filter string="Draft" name="filter_draft" domain="[('state','=','draft')]"/>
+                    <filter string="Designing" name="filter_designing" domain="[('state','=','designing')]"/>
+                    <filter string="Quoted" name="filter_quoted" domain="[('state','=','quoted')]"/>
+                    <filter string="Accepted" name="filter_accepted" domain="[('state','=','accepted')]"/>
+                    <filter string="Fabricating" name="filter_fabricating" domain="[('state','=','fabricating')]"/>
+                    <filter string="Delivered" name="filter_delivered" domain="[('state','=','delivered')]"/>
+                    <separator/>
+                    <filter string="My Projects" name="filter_mine" domain="[('user_id','=',uid)]"/>
+                    <filter string="Overdue" name="filter_overdue"
+                            domain="[('due_date','&lt;',context_today().strftime('%Y-%m-%d')), ('state','not in',('delivered',))]"/>
+                    <filter string="Archived" name="filter_archived" domain="[('active','=',False)]"/>
+                    <group>
+                        <filter string="Client" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Salesperson" name="group_user" context="{'group_by': 'user_id'}"/>
+                        <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Branch" name="group_branch" context="{'group_by': 'branch_id'}"/>
+                        <filter string="Due Date" name="group_due" context="{'group_by': 'due_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ── Action ── -->
+        <record id="wincraft_project_action" model="ir.actions.act_window">
+            <field name="name">WinCraft Projects</field>
+            <field name="res_model">wincraft.project</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="domain">[('is_template_workspace', '=', False)]</field>
+            <field name="context">{'search_default_filter_mine': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first WinCraft project!
+                </p>
+                <p>
+                    A project links a client to one or more configured windows.
+                    Open the designer to lay out windows on the canvas.
+                </p>
+            </field>
+        </record>
+
+        <record id="wincraft_project_action_all" model="ir.actions.act_window">
+            <field name="name">All Projects</field>
+            <field name="res_model">wincraft.project</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="domain">[('is_template_workspace', '=', False)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No WinCraft projects yet.
+                </p>
+            </field>
+        </record>
+
+        <record id="wincraft_project_action_quoted" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="res_model">wincraft.project</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="domain">[('state', 'in', ('quoted',))]</field>
+        </record>
+
+    </data>
+</odoo>

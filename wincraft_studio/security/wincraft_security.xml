@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================
+             WinCraft Studio — Record-Level Security Rules
+             ============================================================ -->
+
+        <!-- ────────── wincraft.project ────────── -->
+
+        <!-- Admins: see everything (no additional restrictions) -->
+
+        <!-- Sales: can read/write their own projects (user_id = current user)
+             AND projects where they are the fabricator -->
+        <record id="rule_wincraft_project_sales_own" model="ir.rule">
+            <field name="name">WinCraft Project: Sales sees own projects</field>
+            <field name="model_id" ref="model_wincraft_project"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_sales'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Fabricator: can only read projects assigned to them (fabricator_id = user) -->
+        <record id="rule_wincraft_project_fabricator" model="ir.rule">
+            <field name="name">WinCraft Project: Fabricator sees assigned projects</field>
+            <field name="model_id" ref="model_wincraft_project"/>
+            <field name="domain_force">[('fabricator_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_fabricator'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Viewer: can read projects where their partner matches the project partner -->
+        <record id="rule_wincraft_project_viewer" model="ir.rule">
+            <field name="name">WinCraft Project: Viewer sees partner's projects</field>
+            <field name="model_id" ref="model_wincraft_project"/>
+            <field name="domain_force">[
+                '|',
+                ('partner_id', '=', user.partner_id.id),
+                ('partner_id.commercial_partner_id', '=', user.partner_id.commercial_partner_id.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_viewer'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ────────── wincraft.window ────────── -->
+
+        <!-- Sales: can manage windows in their own projects -->
+        <record id="rule_wincraft_window_sales" model="ir.rule">
+            <field name="name">WinCraft Window: Sales manages own project windows</field>
+            <field name="model_id" ref="model_wincraft_window"/>
+            <field name="domain_force">[('project_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_sales'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Fabricator: can only write the fabricated field on assigned windows -->
+        <record id="rule_wincraft_window_fabricator" model="ir.rule">
+            <field name="name">WinCraft Window: Fabricator reads/writes assigned windows</field>
+            <field name="model_id" ref="model_wincraft_window"/>
+            <field name="domain_force">[('project_id.fabricator_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_fabricator'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ────────── wincraft.cutlist.line (read-only reporting view) ────────── -->
+
+        <!-- Sales: only cut-list lines for their own projects -->
+        <record id="rule_wincraft_cutlist_line_sales" model="ir.rule">
+            <field name="name">WinCraft Cut-List Line: Sales sees own projects</field>
+            <field name="model_id" ref="model_wincraft_cutlist_line"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_sales'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Fabricator: only cut-list lines for projects assigned to them -->
+        <record id="rule_wincraft_cutlist_line_fabricator" model="ir.rule">
+            <field name="name">WinCraft Cut-List Line: Fabricator sees assigned projects</field>
+            <field name="model_id" ref="model_wincraft_cutlist_line"/>
+            <field name="domain_force">[('fabricator_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_fabricator'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Viewer: only cut-list lines for their own partner's projects -->
+        <record id="rule_wincraft_cutlist_line_viewer" model="ir.rule">
+            <field name="name">WinCraft Cut-List Line: Viewer sees partner's projects</field>
+            <field name="model_id" ref="model_wincraft_cutlist_line"/>
+            <field name="domain_force">[
+                '|',
+                ('partner_id', '=', user.partner_id.id),
+                ('partner_id.commercial_partner_id', '=', user.partner_id.commercial_partner_id.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_viewer'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ────────── wincraft.cutlist.profile.line / wincraft.cutlist.glass.line ────────── -->
+
+        <!-- Fabricator: only cutlist lines for projects assigned to them -->
+        <record id="rule_wincraft_cutlist_profile_line_fabricator" model="ir.rule">
+            <field name="name">WinCraft Profile Cutlist Line: Fabricator sees assigned projects</field>
+            <field name="model_id" ref="model_wincraft_cutlist_profile_line"/>
+            <field name="domain_force">[('project_id.fabricator_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_fabricator'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_wincraft_cutlist_glass_line_fabricator" model="ir.rule">
+            <field name="name">WinCraft Glass Cutlist Line: Fabricator sees assigned projects</field>
+            <field name="model_id" ref="model_wincraft_cutlist_glass_line"/>
+            <field name="domain_force">[('project_id.fabricator_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('wincraft_studio.group_wincraft_fabricator'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- ────────── Multi-company rules ────────── -->
+
+        <!-- Projects are scoped to company -->
+        <record id="rule_wincraft_project_company" model="ir.rule">
+            <field name="name">WinCraft Project: Multi-company</field>
+            <field name="model_id" ref="model_wincraft_project"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Cut-list lines are scoped to company -->
+        <record id="rule_wincraft_cutlist_line_company" model="ir.rule">
+            <field name="name">WinCraft Cut-List Line: Multi-company</field>
+            <field name="model_id" ref="model_wincraft_cutlist_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Profile/Glass cutlist lines are scoped to company -->
+        <record id="rule_wincraft_cutlist_profile_line_company" model="ir.rule">
+            <field name="name">WinCraft Profile Cutlist Line: Multi-company</field>
+            <field name="model_id" ref="model_wincraft_cutlist_profile_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_wincraft_cutlist_glass_line_company" model="ir.rule">
+            <field name="name">WinCraft Glass Cutlist Line: Multi-company</field>
+            <field name="model_id" ref="model_wincraft_cutlist_glass_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Report action: Window Labels PDF (bound to wincraft.window) -->
+    <record id="action_wincraft_window_label_report" model="ir.actions.report">
+        <field name="name">Window Labels</field>
+        <field name="model">wincraft.window</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wincraft_studio.report_wincraft_window_labels</field>
+        <field name="report_file">wincraft_studio.report_wincraft_window_labels</field>
+        <field name="print_report_name">'WindowLabels_%s' % (object.project_id.ref or 'draft')</field>
+        <field name="binding_model_id" ref="model_wincraft_window"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

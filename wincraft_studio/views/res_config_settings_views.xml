@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Settings: inherit res.config.settings form ── -->
+        <record id="wincraft_res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.wincraft</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app string="WinCraft Studio" data-string="WinCraft Studio" name="wincraft_studio">
+                        <block title="Quote Defaults" name="wincraft_quote_defaults">
+                            <setting string="Default Quote Validity"
+                                     help="Number of days a quote remains valid">
+                                <field name="wincraft_default_validity_days"/>
+                            </setting>
+                            <setting string="Default Installation Rate"
+                                     help="Default installation charge applied to new projects">
+                                <field name="wincraft_installation_rate"/>
+                            </setting>
+                        </block>
+                        <block title="Tax &amp; Terms" name="wincraft_tax_terms">
+                            <setting string="Default GST Tax"
+                                     help="Tax applied to WinCraft sale order lines">
+                                <field name="wincraft_gst_tax_id"
+                                       domain="[('type_tax_use','=','sale')]"/>
+                            </setting>
+                            <setting string="Default Terms &amp; Conditions"
+                                     help="Prepopulated on all new WinCraft projects">
+                                <field name="wincraft_terms" widget="html"/>
+                            </setting>
+                        </block>
+                        <block title="AI Configuration" name="wincraft_ai_config">
+                            <setting string="Anthropic API Key"
+                                     help="Enter your Anthropic API key to enable AI-powered window parsing. Leave blank to use the built-in regex parser.">
+                                <field name="wincraft_anthropic_api_key" password="True"/>
+                            </setting>
+                        </block>
+                        <block title="Window Types" name="wincraft_window_types">
+                            <setting string="Enabled Window Types"
+                                     help="Select which window types are available in the designer. Unchecked types will be hidden from the System Type grid.">
+                                <field name="wincraft_enabled_window_types"/>
+                            </setting>
+                        </block>
+                        <block title="Units" name="wincraft_units">
+                            <setting string="Unit System"
+                                     help="Choose metric (mm) or imperial (inches) for dimension display in the designer.">
+                                <field name="wincraft_unit_system" widget="radio"/>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

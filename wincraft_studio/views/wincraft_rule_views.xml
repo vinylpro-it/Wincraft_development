@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Tree View ── -->
+        <record id="wincraft_rule_view_list" model="ir.ui.view">
+            <field name="name">wincraft.rule.list</field>
+            <field name="model">wincraft.rule</field>
+            <field name="arch" type="xml">
+                <list editable="bottom" default_order="sequence">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="profile_type_id" optional="show"/>
+                    <field name="window_type"/>
+                    <field name="condition_field"/>
+                    <field name="operator"/>
+                    <field name="threshold"/>
+                    <field name="threshold_upper" column_invisible="True"/>
+                    <field name="severity" widget="badge"
+                           decoration-danger="severity == 'error'"
+                           decoration-warning="severity == 'warning'"/>
+                    <field name="action"/>
+                    <field name="message"/>
+                    <field name="active" column_invisible="True"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ── Form View ── -->
+        <record id="wincraft_rule_view_form" model="ir.ui.view">
+            <field name="name">wincraft.rule.form</field>
+            <field name="model">wincraft.rule</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Rule Name"/></h1>
+                        </div>
+                        <group>
+                            <group string="Scope">
+                                <field name="profile_type_id"/>
+                                <field name="window_type"/>
+                                <field name="active"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group string="Condition">
+                                <field name="condition_field"/>
+                                <field name="operator"/>
+                                <field name="threshold"/>
+                                <field name="threshold_upper"
+                                       invisible="operator != 'between'"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Action">
+                                <field name="severity"/>
+                                <field name="action"/>
+                                <field name="message"/>
+                            </group>
+                            <group string="Notes">
+                                <field name="description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Action ── -->
+        <record id="wincraft_rule_action" model="ir.actions.act_window">
+            <field name="name">Design Rules</field>
+            <field name="res_model">wincraft.rule</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create design rules
+                </p>
+                <p>Rules define manufacturing constraints such as maximum dimensions,
+                sash weight limits, and panel count restrictions per profile type.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

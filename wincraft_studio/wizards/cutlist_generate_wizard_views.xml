@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Generate Cutlists Wizard — Form View
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_wincraft_cutlist_generate_wizard_form" model="ir.ui.view">
+        <field name="name">wincraft.cutlist.generate.wizard.form</field>
+        <field name="model">wincraft.cutlist.generate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Cutlists">
+                <group>
+                    <field name="project_id"/>
+                </group>
+                <p class="text-muted">
+                    Generates manufacturing cutlists from the selected project's windows.
+                    Each window's BOM must already be generated (Designer → Generate BOM).
+                    Re-running replaces that project's existing cutlist lines.
+                </p>
+                <footer>
+                    <button name="action_generate_profile"
+                            string="Generate Profile Cutlist"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_generate_glass"
+                            string="Generate Glass Cutlist"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_generate_all"
+                            string="Generate All Cutlists"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Generate Cutlists Wizard — Action
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="action_wincraft_cutlist_generate_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Cutlists</field>
+        <field name="res_model">wincraft.cutlist.generate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

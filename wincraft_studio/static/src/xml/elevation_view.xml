@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Elevation View — Architectural front/side view of window placement
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <t t-name="wincraft_studio.ElevationView">
+        <div class="wc-elevation-view">
+            <div class="wc-elevation-header">
+                <h5>Elevation View</h5>
+                <span class="text-muted">Front elevation showing window placement on wall</span>
+            </div>
+            <div class="wc-elevation-canvas">
+                <svg t-att-width="svgWidth"
+                     t-att-height="svgHeight"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <t t-out="wallSVG"/>
+                </svg>
+            </div>
+        </div>
+    </t>
+
+</templates>

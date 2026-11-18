@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Imperial UOM Data for Canadian Market
+         Adds Lineal Foot/Inch and Square Inch UOMs used in fenestration.
+         Odoo 19: uses relative_uom_id + relative_factor (no category_id).
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Lineal Length UOMs ────────────────────────────────────────────── -->
+    <!-- Fenestration aliases under the existing Length chain.
+         Odoo 19 already ships: mm, cm, m, km, in, ft, yd, mi.
+         Lineal Foot chains from inch (1 ft = 12 in).
+         Lineal Inch chains from cm   (1 in = 2.54 cm).                     -->
+
+    <record id="uom_lineal_foot" model="uom.uom">
+        <field name="name">Lineal Foot</field>
+        <field name="relative_uom_id" ref="uom.product_uom_inch"/>
+        <field name="relative_factor" eval="12"/>
+        <field name="rounding">0.01</field>
+    </record>
+
+    <record id="uom_lineal_inch" model="uom.uom">
+        <field name="name">Lineal Inch</field>
+        <field name="relative_uom_id" ref="uom.product_uom_cm"/>
+        <field name="relative_factor" eval="2.54"/>
+        <field name="rounding">0.01</field>
+    </record>
+
+    <!-- ── Area UOM ──────────────────────────────────────────────────────── -->
+    <!-- Odoo 19 already ships m² and ft² (product_uom_square_meter/foot).
+         We only add Square Inch for fine-grained glass area pricing.
+         1 in² = 0.00064516 m².                                             -->
+
+    <record id="uom_sqin" model="uom.uom">
+        <field name="name">Square Inch</field>
+        <field name="relative_uom_id" ref="uom.product_uom_square_meter"/>
+        <field name="relative_factor" eval="0.00064516"/>
+        <field name="rounding">0.01</field>
+    </record>
+
+</odoo>

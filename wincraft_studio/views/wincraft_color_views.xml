@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══ Color ══════════════════════════════════════════════════════
+             Single model (WS-15, collapsed from color+vendor to one model
+             2026-09-23 — see wincraft_color.py's docstring). Vendor is a
+             free-text field, not a relation, so there's a single "Colors"
+             menu entry rather than one per vendor. -->
+        <record id="wincraft_color_view_form" model="ir.ui.view">
+            <field name="name">wincraft.color.form</field>
+            <field name="model">wincraft.color</field>
+            <field name="arch" type="xml">
+                <form string="Color">
+                    <sheet>
+                        <group>
+                            <field name="vendor"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="wincraft_color_view_list" model="ir.ui.view">
+            <field name="name">wincraft.color.list</field>
+            <field name="model">wincraft.color</field>
+            <field name="arch" type="xml">
+                <list string="Colors" default_order="vendor, sequence, code">
+                    <field name="vendor"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="wincraft_color_action" model="ir.actions.act_window">
+            <field name="name">Colors</field>
+            <field name="res_model">wincraft.color</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'group_by': 'vendor'}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No colors yet.
+                </p>
+                <p>
+                    Import a vendor's CSV via Odoo's native "Import records"
+                    screen (⋮ menu → Import records). The source files
+                    (VPR058/059/060) don't carry a vendor column themselves —
+                    either add one before importing (fill
+                    "Gentek"/"Kaycan"/"Stain" down a "Vendor" column) so it
+                    auto-maps to the Vendor field, or use the "Import Colors"
+                    menu item instead, which prompts for the vendor name once
+                    and applies it to every unmapped row. Re-importing
+                    updates existing rows matched by vendor + name instead of
+                    duplicating them.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

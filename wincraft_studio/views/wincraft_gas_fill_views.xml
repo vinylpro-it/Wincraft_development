@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form View -->
+        <record id="wincraft_gas_fill_view_form" model="ir.ui.view">
+            <field name="name">wincraft.gas.fill.form</field>
+            <field name="model">wincraft.gas.fill</field>
+            <field name="arch" type="xml">
+                <form string="Gas Fill">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived"
+                                bg_color="text-bg-danger"
+                                invisible="active"/>
+                        <group>
+                            <group string="Details">
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="sequence"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- List View -->
+        <record id="wincraft_gas_fill_view_list" model="ir.ui.view">
+            <field name="name">wincraft.gas.fill.list</field>
+            <field name="model">wincraft.gas.fill</field>
+            <field name="arch" type="xml">
+                <list string="Gas Fills" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="wincraft_gas_fill_action" model="ir.actions.act_window">
+            <field name="name">Gas Fills</field>
+            <field name="res_model">wincraft.gas.fill</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a gas fill option
+                </p>
+                <p>Gas fill types appear in the sealed-unit configuration dropdowns of the designer.</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

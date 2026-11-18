@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="wincraft_studio.SvgPreviewField">
+        <div t-att-class="{ 'wc-svg-preview': true, 'wc-svg-preview-sm': props.small }">
+            <t t-if="svgMarkup" t-out="svgMarkup"/>
+            <span t-else="" class="text-muted wc-svg-preview-empty">No design yet</span>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ── Form view ── -->
+        <record id="view_wincraft_product_setup_wizard_form" model="ir.ui.view">
+            <field name="name">wincraft.product.setup.wizard.form</field>
+            <field name="model">wincraft.product.setup.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product Setup Wizard">
+                    <div class="oe_title mb-3">
+                        <h2>WinCraft Product Setup Wizard</h2>
+                        <p class="text-muted">
+                            Bulk-create frame, glass, and spacer products linked to
+                            WinCraft Studio configuration records.
+                        </p>
+                    </div>
+
+                    <!-- ── Stage: Profile Type ── -->
+                    <group invisible="stage != 'profile'" string="Step 1 — Profile Type">
+                        <group>
+                            <field name="profile_type_id" required="stage == 'profile'" />
+                        </group>
+                        <p class="text-muted ms-3">
+                            Select the profile type (brand / series) for which you want to create frame products.
+                        </p>
+                    </group>
+
+                    <!-- ── Stage: Opening Types ── -->
+                    <group invisible="stage != 'openings'" string="Step 2 — Opening Types">
+                        <group>
+                            <field name="opening_type_ids"
+                                   widget="text"
+                                   placeholder="fixed,casement-l,casement-r,awning,sliding,tiltturn" />
+                        </group>
+                        <p class="text-muted ms-3">
+                            Enter comma-separated opening type keys. Available keys:
+                            fixed, casement-l, casement-r, awning, hopper, tiltturn,
+                            sliding, lift-slide, single-hung, double-hung, bifold, pivot, louvre
+                        </p>
+                    </group>
+
+                    <!-- ── Stage: Colors ── -->
+                    <group invisible="stage != 'colors'" string="Step 3 — Color Variants">
+                        <group>
+                            <field name="color_attribute_id"
+                                   domain="[('create_variant', '!=', 'no_variant')]" />
+                            <field name="color_value_ids"
+                                   domain="[('attribute_id', '=', color_attribute_id)]"
+                                   widget="many2many_tags"
+                                   invisible="not color_attribute_id" />
+                        </group>
+                        <p class="text-muted ms-3">
+                            Optional — select a Color attribute and values to automatically
+                            create product variants for each frame product.
+                        </p>
+                    </group>
+
+                    <!-- ── Stage: Glass ── -->
+                    <group invisible="stage != 'glass'" string="Step 4 — Glass Products">
+                        <group>
+                            <field name="create_glass_products" />
+                            <field name="glass_count" invisible="not create_glass_products" />
+                        </group>
+                        <p class="text-muted ms-3">
+                            If enabled, a placeholder glass product is created for each
+                            glass option that does not yet have a product linked.
+                        </p>
+                    </group>
+
+                    <!-- ── Stage: Spacer ── -->
+                    <group invisible="stage != 'spacer'" string="Step 5 — Spacer Products">
+                        <group>
+                            <field name="create_spacer_products" />
+                            <field name="spacer_count" invisible="not create_spacer_products" />
+                        </group>
+                        <p class="text-muted ms-3">
+                            If enabled, a placeholder spacer product is created for each spacer config
+                            that does not yet have a product linked.
+                        </p>
+                    </group>
+
+                    <!-- ── Stage: Summary ── -->
+                    <group invisible="stage != 'summary'" string="Step 6 — Summary">
+                        <field name="summary_html" nolabel="1" colspan="2" />
+                        <field name="frame_count" invisible="1" />
+                    </group>
+
+                    <!-- Hidden stage field for conditional logic -->
+                    <field name="stage" invisible="1" />
+
+                    <!-- ── Footer buttons ── -->
+                    <footer>
+                        <button string="← Back"
+                                type="object" name="action_prev"
+                                class="btn-secondary"
+                                invisible="stage == 'profile'" />
+                        <button string="Next →"
+                                type="object" name="action_next"
+                                class="btn-primary"
+                                invisible="stage == 'summary'" />
+                        <button string="Create Products"
+                                type="object" name="action_create_products"
+                                class="btn-primary"
+                                invisible="stage != 'summary'" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ── Action ── -->
+        <record id="action_wincraft_product_setup_wizard" model="ir.actions.act_window">
+            <field name="name">Product Setup Wizard</field>
+            <field name="res_model">wincraft.product.setup.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

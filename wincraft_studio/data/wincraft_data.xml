@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WinCraft Studio — Default Data
+         Loaded on module install. Provides sensible factory seed data.
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Sequence ────────────────────────────────────────────────────────── -->
+    <record id="seq_wincraft_project" model="ir.sequence">
+        <field name="name">WinCraft Project</field>
+        <field name="code">wincraft.project</field>
+        <field name="prefix">WC-%(year)s-</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_wincraft_profile_optimiser" model="ir.sequence">
+        <field name="name">WinCraft Profile Optimiser</field>
+        <field name="code">wincraft.profile.optimiser</field>
+        <field name="prefix">PO-%(year)s-</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- ── Materials ───────────────────────────────────────────────────────── -->
+    <record id="mat_upvc_white" model="wincraft.material">
+        <field name="name">uPVC White</field>
+        <field name="colour_code">#FFFFFF</field>
+        <field name="rate_per_sqm">2800</field>
+    </record>
+    <record id="mat_upvc_grey" model="wincraft.material">
+        <field name="name">uPVC Anthracite Grey</field>
+        <field name="colour_code">#383E42</field>
+        <field name="rate_per_sqm">3200</field>
+    </record>
+    <record id="mat_aluminium_natural" model="wincraft.material">
+        <field name="name">Aluminium Natural Anodised</field>
+        <field name="colour_code">#C0C0C0</field>
+        <field name="rate_per_sqm">4500</field>
+    </record>
+    <record id="mat_aluminium_black" model="wincraft.material">
+        <field name="name">Aluminium Powder-Coated Black</field>
+        <field name="colour_code">#1A1A1A</field>
+        <field name="rate_per_sqm">5000</field>
+    </record>
+    <record id="mat_timber_oak" model="wincraft.material">
+        <field name="name">Solid Oak Timber</field>
+        <field name="colour_code">#B5883C</field>
+        <field name="rate_per_sqm">7500</field>
+    </record>
+
+    <!-- ── Profile Types ─────────────────────────────────────────────────── -->
+    <record id="profile_upvc_classic" model="wincraft.window.type.series">
+        <field name="name">Classic 70</field>
+        <field name="material_type">upvc</field>
+        <field name="available_depths" eval="[40, 70, 90]"/>
+        <field name="default_depth_mm">70</field>
+        <field name="mullion_width_mm">20</field>
+        <field name="max_sash_weight_kg">80</field>
+        <field name="max_span_mm">1500</field>
+        <field name="u_value">1.4</field>
+        <field name="material_id" ref="mat_upvc_white"/>
+        <field name="sequence">10</field>
+        <field name="description">Standard uPVC profile type. Versatile and cost-effective for residential projects.</field>
+    </record>
+    <record id="profile_upvc_slimline" model="wincraft.window.type.series">
+        <field name="name">SlimLine 40</field>
+        <field name="material_type">upvc</field>
+        <field name="available_depths" eval="[40, 50]"/>
+        <field name="default_depth_mm">40</field>
+        <field name="mullion_width_mm">16</field>
+        <field name="max_sash_weight_kg">50</field>
+        <field name="max_span_mm">1200</field>
+        <field name="u_value">1.8</field>
+        <field name="material_id" ref="mat_upvc_white"/>
+        <field name="sequence">20</field>
+        <field name="description">Slim uPVC profile for maximum glass area and modern aesthetics.</field>
+    </record>
+    <record id="profile_alu_prestige" model="wincraft.window.type.series">
+        <field name="name">Prestige 90</field>
+        <field name="material_type">aluminium</field>
+        <field name="available_depths" eval="[70, 90, 120]"/>
+        <field name="default_depth_mm">90</field>
+        <field name="mullion_width_mm">24</field>
+        <field name="max_sash_weight_kg">120</field>
+        <field name="max_span_mm">2000</field>
+        <field name="u_value">1.1</field>
+        <field name="material_id" ref="mat_aluminium_natural"/>
+        <field name="sequence">30</field>
+        <field name="description">Premium aluminium profile type for commercial and high-end residential projects.</field>
+    </record>
+    <record id="profile_alu_minimal" model="wincraft.window.type.series">
+        <field name="name">Minimal Frame</field>
+        <field name="material_type">aluminium</field>
+        <field name="available_depths" eval="[50, 65]"/>
+        <field name="default_depth_mm">50</field>
+        <field name="mullion_width_mm">18</field>
+        <field name="max_sash_weight_kg">100</field>
+        <field name="max_span_mm">1800</field>
+        <field name="u_value">1.3</field>
+        <field name="material_id" ref="mat_aluminium_black"/>
+        <field name="sequence">40</field>
+        <field name="description">Ultra-slim aluminium frame for floor-to-ceiling glazing.</field>
+    </record>
+    <record id="profile_timber_heritage" model="wincraft.window.type.series">
+        <field name="name">Heritage Oak</field>
+        <field name="material_type">timber</field>
+        <field name="available_depths" eval="[68, 90]"/>
+        <field name="default_depth_mm">68</field>
+        <field name="mullion_width_mm">30</field>
+        <field name="max_sash_weight_kg">60</field>
+        <field name="max_span_mm">1200</field>
+        <field name="u_value">1.6</field>
+        <field name="material_id" ref="mat_timber_oak"/>
+        <field name="sequence">50</field>
+        <field name="description">Traditional timber profile for heritage and conservation projects.</field>
+    </record>
+
+    <!-- ── Design Rules ────────────────────────────────────────────────────── -->
+    <record id="rule_max_width" model="wincraft.rule">
+        <field name="name">Maximum Window Width</field>
+        <field name="window_type">all</field>
+        <field name="condition_field">width_mm</field>
+        <field name="operator">></field>
+        <field name="threshold">4000</field>
+        <field name="severity">error</field>
+        <field name="action">block_save</field>
+        <field name="message">Window width {value}mm exceeds maximum 4000mm</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_max_height" model="wincraft.rule">
+        <field name="name">Maximum Window Height</field>
+        <field name="window_type">all</field>
+        <field name="condition_field">height_mm</field>
+        <field name="operator">></field>
+        <field name="threshold">3000</field>
+        <field name="severity">error</field>
+        <field name="action">block_save</field>
+        <field name="message">Window height {value}mm exceeds maximum 3000mm</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="rule_casement_max_width" model="wincraft.rule">
+        <field name="name">Casement Max Sash Width</field>
+        <field name="window_type">casement</field>
+        <field name="condition_field">pane_width_mm</field>
+        <field name="operator">></field>
+        <field name="threshold">900</field>
+        <field name="severity">warning</field>
+        <field name="action">show_warning</field>
+        <field name="message">Casement sash width {value}mm exceeds recommended 900mm</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="rule_tilt_turn_weight" model="wincraft.rule">
+        <field name="name">Tilt &amp; Turn Sash Weight Limit</field>
+        <field name="window_type">tilt_turn</field>
+        <field name="condition_field">sash_weight_kg</field>
+        <field name="operator">></field>
+        <field name="threshold">130</field>
+        <field name="severity">error</field>
+        <field name="action">block_save</field>
+        <field name="message">Tilt &amp; turn sash weight {value}kg exceeds {threshold}kg limit</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="rule_sliding_min_width" model="wincraft.rule">
+        <field name="name">Sliding Panel Min Width</field>
+        <field name="window_type">sliding</field>
+        <field name="condition_field">pane_width_mm</field>
+        <field name="operator">&lt;</field>
+        <field name="threshold">400</field>
+        <field name="severity">warning</field>
+        <field name="action">show_warning</field>
+        <field name="message">Sliding panel width {value}mm is below recommended minimum 400mm</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="rule_upvc_max_span" model="wincraft.rule">
+        <field name="name">uPVC Classic Max Span</field>
+        <field name="profile_type_id" ref="profile_upvc_classic"/>
+        <field name="window_type">all</field>
+        <field name="condition_field">width_mm</field>
+        <field name="operator">></field>
+        <field name="threshold">2400</field>
+        <field name="severity">warning</field>
+        <field name="action">show_warning</field>
+        <field name="message">Width {value}mm exceeds Classic 70 recommended max span of {threshold}mm. Consider adding a mullion.</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="rule_alu_minimal_max_area" model="wincraft.rule">
+        <field name="name">Minimal Frame Max Glass Area</field>
+        <field name="profile_type_id" ref="profile_alu_minimal"/>
+        <field name="window_type">all</field>
+        <field name="condition_field">area_sqm</field>
+        <field name="operator">></field>
+        <field name="threshold">4</field>
+        <field name="severity">warning</field>
+        <field name="action">show_warning</field>
+        <field name="message">Glass area {value}m² exceeds Minimal Frame recommended max of {threshold}m². Consider structural glazing.</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="rule_bifold_max_panels" model="wincraft.rule">
+        <field name="name">Bi-Fold Max Panels</field>
+        <field name="window_type">bifold</field>
+        <field name="condition_field">panels_horizontal</field>
+        <field name="operator">></field>
+        <field name="threshold">7</field>
+        <field name="severity">error</field>
+        <field name="action">block_save</field>
+        <field name="message">Bi-fold with {value} panels exceeds maximum of {threshold}</field>
+        <field name="sequence">80</field>
+    </record>
+
+    <!-- ── Glass Types ─────────────────────────────────────────────────────── -->
+    <record id="glass_single_4mm" model="wincraft.glass.type">
+        <field name="name">Single Clear 4mm</field>
+        <field name="rate_per_sqm">800</field>
+    </record>
+    <record id="glass_single_6mm" model="wincraft.glass.type">
+        <field name="name">Single Clear 6mm</field>
+        <field name="rate_per_sqm">1100</field>
+    </record>
+    <record id="glass_double_24mm" model="wincraft.glass.type">
+        <field name="name">Double Glazed 24mm (4-16-4)</field>
+        <field name="rate_per_sqm">2200</field>
+    </record>
+    <record id="glass_double_toughened" model="wincraft.glass.type">
+        <field name="name">Double Glazed Toughened 24mm</field>
+        <field name="rate_per_sqm">3500</field>
+    </record>
+    <record id="glass_triple_lowe" model="wincraft.glass.type">
+        <field name="name">Triple Low-E Argon 36mm</field>
+        <field name="rate_per_sqm">5200</field>
+    </record>
+
+    <!-- ── Hardware ────────────────────────────────────────────────────────── -->
+
+    <!-- Handles -->
+    <record id="hw_espagnolette" model="wincraft.hardware">
+        <field name="name">Espagnolette Handle — Chrome</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">450</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning')])]"/>
+    </record>
+    <record id="hw_tilt_turn_handle" model="wincraft.hardware">
+        <field name="name">Tilt-Turn Handle — White</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">650</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_tiltturn')])]"/>
+    </record>
+    <record id="hw_tilt_turn_handle_blk" model="wincraft.hardware">
+        <field name="name">Tilt-Turn Handle — Matte Black</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">720</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_tiltturn')])]"/>
+    </record>
+    <record id="hw_lever_handle_black" model="wincraft.hardware">
+        <field name="name">Lever Handle — Matte Black</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">520</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r')])]"/>
+    </record>
+    <record id="hw_sliding_handle" model="wincraft.hardware">
+        <field name="name">Sliding Flush Handle — Chrome</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">380</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_sliding_handle_ergo" model="wincraft.hardware">
+        <field name="name">Sliding Ergonomic Handle — White</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">420</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_lift_slide_handle" model="wincraft.hardware">
+        <field name="name">Lift &amp; Slide Lever Handle — Satin</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">680</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_bifold_handle" model="wincraft.hardware">
+        <field name="name">Bi-Fold D-Handle — Satin</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">480</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_bifold')])]"/>
+    </record>
+    <record id="hw_bifold_handle_blk" model="wincraft.hardware">
+        <field name="name">Bi-Fold Flush Pull — Matte Black</field>
+        <field name="category">handle</field>
+        <field name="hardware_role">handle</field>
+        <field name="unit_price">550</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_bifold')])]"/>
+    </record>
+
+    <!-- Hinges -->
+    <record id="hw_friction_stay_12" model="wincraft.hardware">
+        <field name="name">Friction Stay Hinge 12″</field>
+        <field name="category">hinge</field>
+        <field name="hardware_role">hinge</field>
+        <field name="unit_price">320</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning')])]"/>
+    </record>
+    <record id="hw_friction_stay_16" model="wincraft.hardware">
+        <field name="name">Friction Stay Hinge 16″</field>
+        <field name="category">hinge</field>
+        <field name="hardware_role">hinge</field>
+        <field name="unit_price">420</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_awning')])]"/>
+    </record>
+    <record id="hw_butt_hinge" model="wincraft.hardware">
+        <field name="name">Butt Hinge — Stainless Steel</field>
+        <field name="category">hinge</field>
+        <field name="hardware_role">hinge</field>
+        <field name="unit_price">280</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_hopper')])]"/>
+    </record>
+    <record id="hw_butt_hinge_heavy" model="wincraft.hardware">
+        <field name="name">Butt Hinge — Heavy Duty Brass</field>
+        <field name="category">hinge</field>
+        <field name="hardware_role">hinge</field>
+        <field name="unit_price">380</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_hopper')])]"/>
+    </record>
+
+    <!-- Locks -->
+    <record id="hw_multipoint_lock" model="wincraft.hardware">
+        <field name="name">Multi-Point Locking System</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">1200</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_tiltturn'), ref('opening_type_bifold')])]"/>
+    </record>
+    <record id="hw_espag_lock" model="wincraft.hardware">
+        <field name="name">Espagnolette Locking Bar</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">850</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_tiltturn')])]"/>
+    </record>
+    <record id="hw_crescent_lock" model="wincraft.hardware">
+        <field name="name">Crescent Cam Lock</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">250</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+    </record>
+    <record id="hw_sash_lock" model="wincraft.hardware">
+        <field name="name">Sash Lock — Ventilation Position</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">310</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+    </record>
+    <record id="hw_sliding_lock" model="wincraft.hardware">
+        <field name="name">Sliding Window Lock — Chrome</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">350</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_sliding_lock_keyed" model="wincraft.hardware">
+        <field name="name">Sliding Keyed Lock — Security</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">480</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_shoot_bolt_lock" model="wincraft.hardware">
+        <field name="name">Shoot Bolt Lock</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">180</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_awning'), ref('opening_type_hopper'), ref('opening_type_pivot')])]"/>
+    </record>
+    <record id="hw_deadbolt_lock" model="wincraft.hardware">
+        <field name="name">Surface Mounted Deadbolt</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">220</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_hopper'), ref('opening_type_pivot')])]"/>
+    </record>
+    <record id="hw_bifold_lock" model="wincraft.hardware">
+        <field name="name">Bi-Fold Shootbolt Lock — Multi-Point</field>
+        <field name="category">lock</field>
+        <field name="hardware_role">lock</field>
+        <field name="unit_price">950</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_bifold')])]"/>
+    </record>
+
+    <!-- Operators -->
+    <record id="hw_crank_operator" model="wincraft.hardware">
+        <field name="name">Crank Operator — Folding Arm</field>
+        <field name="category">other</field>
+        <field name="hardware_role">operator</field>
+        <field name="unit_price">750</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_awning'), ref('opening_type_louvre')])]"/>
+    </record>
+    <record id="hw_chain_winder" model="wincraft.hardware">
+        <field name="name">Chain Winder Operator</field>
+        <field name="category">other</field>
+        <field name="hardware_role">operator</field>
+        <field name="unit_price">950</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_awning'), ref('opening_type_louvre')])]"/>
+    </record>
+    <record id="hw_electric_operator" model="wincraft.hardware">
+        <field name="name">Electric Chain Actuator — 230V</field>
+        <field name="category">other</field>
+        <field name="hardware_role">operator</field>
+        <field name="unit_price">2200</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_awning'), ref('opening_type_louvre')])]"/>
+    </record>
+
+    <!-- Balances -->
+    <record id="hw_spiral_balance" model="wincraft.hardware">
+        <field name="name">Spiral Balance — 20 lb</field>
+        <field name="category">other</field>
+        <field name="hardware_role">balance</field>
+        <field name="unit_price">400</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+    </record>
+    <record id="hw_block_tackle_balance" model="wincraft.hardware">
+        <field name="name">Block &amp; Tackle Balance — 30 lb</field>
+        <field name="category">other</field>
+        <field name="hardware_role">balance</field>
+        <field name="unit_price">550</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+    </record>
+    <record id="hw_constant_force_balance" model="wincraft.hardware">
+        <field name="name">Constant Force Balance — 25 lb</field>
+        <field name="category">other</field>
+        <field name="hardware_role">balance</field>
+        <field name="unit_price">620</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_single_hung'), ref('opening_type_double_hung')])]"/>
+    </record>
+
+    <!-- Stays / Restrictors -->
+    <record id="hw_restrictor" model="wincraft.hardware">
+        <field name="name">Opening Restrictor — Child Safety</field>
+        <field name="category">stay</field>
+        <field name="hardware_role">restrictor</field>
+        <field name="unit_price">180</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_hopper'), ref('opening_type_pivot')])]"/>
+    </record>
+    <record id="hw_cable_restrictor" model="wincraft.hardware">
+        <field name="name">Cable Restrictor — 150 mm</field>
+        <field name="category">stay</field>
+        <field name="hardware_role">restrictor</field>
+        <field name="unit_price">140</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r'), ref('opening_type_hopper'), ref('opening_type_pivot')])]"/>
+    </record>
+    <record id="hw_friction_stay_arm" model="wincraft.hardware">
+        <field name="name">Friction Stay Arm — Heavy Duty</field>
+        <field name="category">stay</field>
+        <field name="hardware_role">stay</field>
+        <field name="unit_price">340</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r')])]"/>
+    </record>
+    <record id="hw_telescopic_stay" model="wincraft.hardware">
+        <field name="name">Telescopic Window Stay</field>
+        <field name="category">stay</field>
+        <field name="hardware_role">stay</field>
+        <field name="unit_price">260</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_casement_l'), ref('opening_type_casement_r')])]"/>
+    </record>
+
+    <!-- Tracks -->
+    <record id="hw_sliding_roller" model="wincraft.hardware">
+        <field name="name">Sliding Roller Assembly</field>
+        <field name="category">other</field>
+        <field name="hardware_role">track</field>
+        <field name="unit_price">550</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_sliding_track_tandem" model="wincraft.hardware">
+        <field name="name">Tandem Roller Track — Heavy Duty</field>
+        <field name="category">other</field>
+        <field name="hardware_role">track</field>
+        <field name="unit_price">720</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_sliding'), ref('opening_type_lift_slide')])]"/>
+    </record>
+    <record id="hw_bifold_track" model="wincraft.hardware">
+        <field name="name">Bi-Fold Track System — Top Hung</field>
+        <field name="category">other</field>
+        <field name="hardware_role">track</field>
+        <field name="unit_price">850</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_bifold')])]"/>
+    </record>
+    <record id="hw_bifold_track_bottom" model="wincraft.hardware">
+        <field name="name">Bi-Fold Track — Bottom Rolling</field>
+        <field name="category">other</field>
+        <field name="hardware_role">track</field>
+        <field name="unit_price">780</field>
+        <field name="opening_type_ids" eval="[(6, 0, [ref('opening_type_bifold')])]"/>
+    </record>
+
+    <!-- Weather Seal (general, all types) -->
+    <record id="hw_weather_seal_5m" model="wincraft.hardware">
+        <field name="name">Weather Seal Strip 5m</field>
+        <field name="category">other</field>
+        <field name="hardware_role">other</field>
+        <field name="unit_price">150</field>
+    </record>
+
+    <!-- ── Add-on Categories ──────────────────────────────────────────────── -->
+    <record id="addon_cat_screen" model="wincraft.addon.category">
+        <field name="name">Screen</field>
+        <field name="code">screen</field>
+        <field name="icon">fa fa-th</field>
+        <field name="scope">pane</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_cat_grill" model="wincraft.addon.category">
+        <field name="name">Grill / Grille</field>
+        <field name="code">grill</field>
+        <field name="icon">fa fa-th-large</field>
+        <field name="scope">pane</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_cat_option" model="wincraft.addon.category">
+        <field name="name">Options</field>
+        <field name="code">option</field>
+        <field name="icon">fa fa-list-alt</field>
+        <field name="scope">window</field>
+        <field name="sequence">25</field>
+    </record>
+    <record id="addon_cat_blind" model="wincraft.addon.category">
+        <field name="name">Blind / Shade</field>
+        <field name="code">blind</field>
+        <field name="icon">fa fa-align-justify</field>
+        <field name="scope">pane</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="addon_cat_security" model="wincraft.addon.category">
+        <field name="name">Security</field>
+        <field name="code">security</field>
+        <field name="icon">fa fa-shield</field>
+        <field name="scope">window</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="addon_cat_ventilation" model="wincraft.addon.category">
+        <field name="name">Ventilation</field>
+        <field name="code">ventilation</field>
+        <field name="icon">fa fa-cloud</field>
+        <field name="scope">window</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="addon_cat_sun_control" model="wincraft.addon.category">
+        <field name="name">Sun Control</field>
+        <field name="code">sun_control</field>
+        <field name="icon">fa fa-sun-o</field>
+        <field name="scope">pane</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="addon_cat_decorative" model="wincraft.addon.category">
+        <field name="name">Decorative</field>
+        <field name="code">decorative</field>
+        <field name="icon">fa fa-diamond</field>
+        <field name="scope">pane</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="addon_cat_trim" model="wincraft.addon.category">
+        <field name="name">Trim / Accessory</field>
+        <field name="code">trim</field>
+        <field name="icon">fa fa-puzzle-piece</field>
+        <field name="scope">window</field>
+        <field name="sequence">80</field>
+    </record>
+
+    <!-- ── Add-ons ─────────────────────────────────────────────────────────── -->
+    <!-- Screen -->
+    <record id="addon_mosquito_net" model="wincraft.addon">
+        <field name="name">Mosquito Net (Retractable)</field>
+        <field name="category_id" ref="addon_cat_screen"/>
+        <field name="addon_code">retractable_screen</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1800</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_fixed_screen" model="wincraft.addon">
+        <field name="name">Fixed Frame Fly Screen</field>
+        <field name="category_id" ref="addon_cat_screen"/>
+        <field name="addon_code">fixed_screen</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1200</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_sliding_screen" model="wincraft.addon">
+        <field name="name">Sliding Fly Screen</field>
+        <field name="category_id" ref="addon_cat_screen"/>
+        <field name="addon_code">sliding_screen</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2000</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="addon_pleated_screen" model="wincraft.addon">
+        <field name="name">Pleated Insect Screen</field>
+        <field name="category_id" ref="addon_cat_screen"/>
+        <field name="addon_code">pleated_screen</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2500</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Grill -->
+    <record id="addon_grill_ms" model="wincraft.addon">
+        <field name="name">MS Safety Grill</field>
+        <field name="category_id" ref="addon_cat_grill"/>
+        <field name="addon_code">ms_grill</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2500</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_grill_colonial" model="wincraft.addon">
+        <field name="name">Colonial Grill (SDL)</field>
+        <field name="category_id" ref="addon_cat_grill"/>
+        <field name="addon_code">colonial_grill</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1800</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_grill_diamond" model="wincraft.addon">
+        <field name="name">Diamond Pattern Grill</field>
+        <field name="category_id" ref="addon_cat_grill"/>
+        <field name="addon_code">diamond_grill</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2200</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- Blind -->
+    <record id="addon_blinds" model="wincraft.addon">
+        <field name="name">Integrated Blinds (Between Glass)</field>
+        <field name="category_id" ref="addon_cat_blind"/>
+        <field name="addon_code">integrated_blind</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">4500</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_venetian_blind" model="wincraft.addon">
+        <field name="name">Venetian Blind (External)</field>
+        <field name="category_id" ref="addon_cat_blind"/>
+        <field name="addon_code">venetian_blind</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">3200</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_roller_blind" model="wincraft.addon">
+        <field name="name">Roller Blind</field>
+        <field name="category_id" ref="addon_cat_blind"/>
+        <field name="addon_code">roller_blind</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2800</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- Security -->
+    <record id="addon_security_mesh" model="wincraft.addon">
+        <field name="name">Security Mesh Screen</field>
+        <field name="category_id" ref="addon_cat_security"/>
+        <field name="addon_code">security_mesh</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">3500</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_multipoint_lock" model="wincraft.addon">
+        <field name="name">Multi-Point Locking System</field>
+        <field name="category_id" ref="addon_cat_security"/>
+        <field name="addon_code">multipoint_lock</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">2800</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_laminated_glass" model="wincraft.addon">
+        <field name="name">Laminated Safety Glass Upgrade</field>
+        <field name="category_id" ref="addon_cat_security"/>
+        <field name="addon_code">laminated_glass</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1800</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- Ventilation -->
+    <record id="addon_trickle_vent" model="wincraft.addon">
+        <field name="name">Trickle Vent</field>
+        <field name="category_id" ref="addon_cat_ventilation"/>
+        <field name="addon_code">trickle_vent</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">600</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_night_vent" model="wincraft.addon">
+        <field name="name">Night Vent Lock</field>
+        <field name="category_id" ref="addon_cat_ventilation"/>
+        <field name="addon_code">night_vent</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">450</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Sun Control -->
+    <record id="addon_tinting" model="wincraft.addon">
+        <field name="name">Solar Tinting Film</field>
+        <field name="category_id" ref="addon_cat_sun_control"/>
+        <field name="addon_code">solar_film</field>
+        <field name="per_window" eval="False"/>
+        <field name="price">600</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_low_e_coating" model="wincraft.addon">
+        <field name="name">Low-E Coating Upgrade</field>
+        <field name="category_id" ref="addon_cat_sun_control"/>
+        <field name="addon_code">low_e_coating</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1200</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Decorative -->
+    <record id="addon_obscure_glass" model="wincraft.addon">
+        <field name="name">Obscure / Frosted Glass</field>
+        <field name="category_id" ref="addon_cat_decorative"/>
+        <field name="addon_code">obscure_glass</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">800</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_leaded_glass" model="wincraft.addon">
+        <field name="name">Leaded / Beveled Glass</field>
+        <field name="category_id" ref="addon_cat_decorative"/>
+        <field name="addon_code">leaded_glass</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">3500</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Trim / Accessory -->
+    <record id="addon_window_sill" model="wincraft.addon">
+        <field name="name">Interior Window Sill</field>
+        <field name="category_id" ref="addon_cat_trim"/>
+        <field name="addon_code">window_sill</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">900</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="addon_casing_trim" model="wincraft.addon">
+        <field name="name">Casing / Trim Kit</field>
+        <field name="category_id" ref="addon_cat_trim"/>
+        <field name="addon_code">casing_trim</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">1500</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="addon_child_restrictor" model="wincraft.addon">
+        <field name="name">Child Safety Restrictor</field>
+        <field name="category_id" ref="addon_cat_trim"/>
+        <field name="addon_code">child_restrictor</field>
+        <field name="per_window" eval="True"/>
+        <field name="price">350</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- ── Default Pricing Rules ───────────────────────────────────────────── -->
+    <!-- Fallback rule (no specific material or glass) -->
+    <record id="pricing_fallback" model="wincraft.pricing.rule">
+        <field name="name">Fallback — Generic Rate</field>
+        <field name="base_rate">3000</field>
+        <field name="fabrication_rate">200</field>
+        <field name="margin_pct">20</field>
+    </record>
+    <!-- uPVC White + Double Glazed -->
+    <record id="pricing_upvc_dg" model="wincraft.pricing.rule">
+        <field name="name">uPVC White — Double Glazed 24mm</field>
+        <field name="material_id" ref="mat_upvc_white"/>
+        <field name="glass_type_id" ref="glass_double_24mm"/>
+        <field name="base_rate">2800</field>
+        <field name="fabrication_rate">180</field>
+        <field name="margin_pct">22</field>
+    </record>
+    <!-- Aluminium + Triple Low-E -->
+    <record id="pricing_alu_triple" model="wincraft.pricing.rule">
+        <field name="name">Aluminium — Triple Low-E Argon</field>
+        <field name="material_id" ref="mat_aluminium_natural"/>
+        <field name="glass_type_id" ref="glass_triple_lowe"/>
+        <field name="base_rate">4500</field>
+        <field name="fabrication_rate">250</field>
+        <field name="margin_pct">25</field>
+    </record>
+
+    <!-- ── Window Templates ────────────────────────────────────────────────── -->
+    <record id="tmpl_casement_standard" model="wincraft.window.template">
+        <field name="name">Standard Casement 1200×1000</field>
+        <field name="window_type">casement</field>
+        <field name="default_width">1200</field>
+        <field name="default_height">1000</field>
+        <field name="description">A standard single-pane casement window suitable for bedrooms and living areas.</field>
+    </record>
+    <record id="tmpl_sliding_2panel" model="wincraft.window.template">
+        <field name="name">Two-Panel Sliding 1800×1200</field>
+        <field name="window_type">sliding</field>
+        <field name="default_width">1800</field>
+        <field name="default_height">1200</field>
+        <field name="default_panels">2</field>
+        <field name="description">A two-panel horizontal slider ideal for balcony openings.</field>
+    </record>
+    <record id="tmpl_fixed_picture" model="wincraft.window.template">
+        <field name="name">Fixed Picture Window 1500×1500</field>
+        <field name="window_type">fixed</field>
+        <field name="default_width">1500</field>
+        <field name="default_height">1500</field>
+        <field name="description">Large fixed picture window for maximum light and views.</field>
+    </record>
+    <record id="tmpl_bifold_4panel" model="wincraft.window.template">
+        <field name="name">4-Panel Bi-Fold 3600×2100</field>
+        <field name="window_type">bifold</field>
+        <field name="default_width">3600</field>
+        <field name="default_height">2100</field>
+        <field name="default_panels">4</field>
+        <field name="description">Bi-fold door/window for open-plan indoor-outdoor living.</field>
+    </record>
+
+    <!-- ── Cavity Widths ───────────────────────────────────────────────── -->
+    <record id="cavity_6" model="wincraft.cavity.width">
+        <field name="name">6 mm</field>
+        <field name="width_mm">6</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="cavity_8" model="wincraft.cavity.width">
+        <field name="name">8 mm</field>
+        <field name="width_mm">8</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="cavity_10" model="wincraft.cavity.width">
+        <field name="name">10 mm</field>
+        <field name="width_mm">10</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="cavity_12" model="wincraft.cavity.width">
+        <field name="name">12 mm</field>
+        <field name="width_mm">12</field>
+        <field name="sequence">4</field>
+    </record>
+    <record id="cavity_14" model="wincraft.cavity.width">
+        <field name="name">14 mm</field>
+        <field name="width_mm">14</field>
+        <field name="sequence">5</field>
+    </record>
+    <record id="cavity_16" model="wincraft.cavity.width">
+        <field name="name">16 mm</field>
+        <field name="width_mm">16</field>
+        <field name="sequence">6</field>
+    </record>
+    <record id="cavity_20" model="wincraft.cavity.width">
+        <field name="name">20 mm</field>
+        <field name="width_mm">20</field>
+        <field name="sequence">7</field>
+    </record>
+
+    <!-- ── Gas Fills ───────────────────────────────────────────────────── -->
+    <record id="gas_air" model="wincraft.gas.fill">
+        <field name="name">Air</field>
+        <field name="code">air</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="gas_argon" model="wincraft.gas.fill">
+        <field name="name">Argon</field>
+        <field name="code">argon</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="gas_krypton" model="wincraft.gas.fill">
+        <field name="name">Krypton</field>
+        <field name="code">krypton</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="gas_xenon" model="wincraft.gas.fill">
+        <field name="name">Xenon</field>
+        <field name="code">xenon</field>
+        <field name="sequence">4</field>
+    </record>
+
+    <!-- ── Spacer Types ────────────────────────────────────────────────── -->
+    <record id="spacer_aluminium" model="wincraft.spacer.type">
+        <field name="name">Aluminium</field>
+        <field name="code">aluminium</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="spacer_warm_edge" model="wincraft.spacer.type">
+        <field name="name">Warm Edge</field>
+        <field name="code">warm_edge</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="spacer_tps" model="wincraft.spacer.type">
+        <field name="name">TPS (Thermo Plastic)</field>
+        <field name="code">tps</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="spacer_swisspacer" model="wincraft.spacer.type">
+        <field name="name">Swisspacer</field>
+        <field name="code">swisspacer</field>
+        <field name="sequence">4</field>
+    </record>
+    <record id="spacer_super_spacer" model="wincraft.spacer.type">
+        <field name="name">Super Spacer</field>
+        <field name="code">super_spacer</field>
+        <field name="sequence">5</field>
+    </record>
+
+    <!-- ── Glass Tints ─────────────────────────────────────────────────── -->
+    <record id="tint_clear" model="wincraft.glass.tint">
+        <field name="name">Clear</field>
+        <field name="code">clear</field>
+        <field name="hex_colour">#d4eaf7</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="tint_green" model="wincraft.glass.tint">
+        <field name="name">Green</field>
+        <field name="code">green</field>
+        <field name="hex_colour">#8bc9a0</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="tint_teal" model="wincraft.glass.tint">
+        <field name="name">Teal</field>
+        <field name="code">teal</field>
+        <field name="hex_colour">#6ba3a0</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="tint_bronze" model="wincraft.glass.tint">
+        <field name="name">Bronze</field>
+        <field name="code">bronze</field>
+        <field name="hex_colour">#c4a35a</field>
+        <field name="sequence">4</field>
+    </record>
+    <record id="tint_grey" model="wincraft.glass.tint">
+        <field name="name">Grey</field>
+        <field name="code">grey</field>
+        <field name="hex_colour">#9ca3af</field>
+        <field name="sequence">5</field>
+    </record>
+    <record id="tint_blue" model="wincraft.glass.tint">
+        <field name="name">Blue</field>
+        <field name="code">blue</field>
+        <field name="hex_colour">#7da7d9</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Deduction Formulas — Industry-standard defaults per opening type
+         profile_type_id left blank = fallback for any profile family
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Fixed (Picture window) — no sash, glass sits in outer frame -->
+    <record id="deduction_fixed" model="wincraft.deduction.formula">
+        <field name="opening_type">fixed</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">0.0</field>
+        <field name="sash_rebate_mm">0.0</field>
+        <field name="sash_mitre_allowance_mm">0.0</field>
+        <field name="sash_weld_allowance_mm">0.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">0.0</field>
+    </record>
+
+    <!-- Casement Left Hinge -->
+    <record id="deduction_casement_l" model="wincraft.deduction.formula">
+        <field name="opening_type">casement-l</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Casement Right Hinge -->
+    <record id="deduction_casement_r" model="wincraft.deduction.formula">
+        <field name="opening_type">casement-r</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Awning (Top Hinge) -->
+    <record id="deduction_awning" model="wincraft.deduction.formula">
+        <field name="opening_type">awning</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Hopper (Bottom Hinge) -->
+    <record id="deduction_hopper" model="wincraft.deduction.formula">
+        <field name="opening_type">hopper</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Tilt & Turn — larger rebates for dual-mechanism hardware -->
+    <record id="deduction_tiltturn" model="wincraft.deduction.formula">
+        <field name="opening_type">tiltturn</field>
+        <field name="frame_rebate_mm">14.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">12.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">25.0</field>
+    </record>
+
+    <!-- Sliding — tighter sash clearance, track-based -->
+    <record id="deduction_sliding" model="wincraft.deduction.formula">
+        <field name="opening_type">sliding</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">2.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">15.0</field>
+    </record>
+
+    <!-- Lift & Slide -->
+    <record id="deduction_lift_slide" model="wincraft.deduction.formula">
+        <field name="opening_type">lift-slide</field>
+        <field name="frame_rebate_mm">14.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">2.0</field>
+        <field name="sash_rebate_mm">12.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">15.0</field>
+    </record>
+
+    <!-- Single Hung -->
+    <record id="deduction_single_hung" model="wincraft.deduction.formula">
+        <field name="opening_type">single-hung</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">2.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">15.0</field>
+    </record>
+
+    <!-- Double Hung -->
+    <record id="deduction_double_hung" model="wincraft.deduction.formula">
+        <field name="opening_type">double-hung</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">2.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">15.0</field>
+    </record>
+
+    <!-- Bi-Fold -->
+    <record id="deduction_bifold" model="wincraft.deduction.formula">
+        <field name="opening_type">bifold</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">3.0</field>
+        <field name="sash_rebate_mm">10.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Pivot — larger clearances for pivot mechanism -->
+    <record id="deduction_pivot" model="wincraft.deduction.formula">
+        <field name="opening_type">pivot</field>
+        <field name="frame_rebate_mm">14.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">4.0</field>
+        <field name="sash_rebate_mm">12.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">3.0</field>
+        <field name="glazing_bead_depth_mm">15.0</field>
+        <field name="gasket_allowance_mm">10.0</field>
+        <field name="reinforcement_required" eval="True"/>
+        <field name="reinforcement_deduction_mm">30.0</field>
+        <field name="weatherseal_overlap_mm">20.0</field>
+    </record>
+
+    <!-- Louvre / Jalousie -->
+    <record id="deduction_louvre" model="wincraft.deduction.formula">
+        <field name="opening_type">louvre</field>
+        <field name="frame_rebate_mm">12.0</field>
+        <field name="frame_mitre_allowance_mm">3.0</field>
+        <field name="frame_weld_allowance_mm">3.0</field>
+        <field name="sash_clearance_mm">2.0</field>
+        <field name="sash_rebate_mm">8.0</field>
+        <field name="sash_mitre_allowance_mm">3.0</field>
+        <field name="sash_weld_allowance_mm">3.0</field>
+        <field name="glass_clearance_mm">2.0</field>
+        <field name="glazing_bead_depth_mm">12.0</field>
+        <field name="gasket_allowance_mm">8.0</field>
+        <field name="reinforcement_required" eval="False"/>
+        <field name="reinforcement_deduction_mm">0.0</field>
+        <field name="weatherseal_overlap_mm">10.0</field>
+    </record>
+
+</odoo>
